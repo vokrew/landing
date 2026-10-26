@@ -13,7 +13,7 @@
 const DEFAULT_BRIDGE = "http://127.0.0.1:7717";
 const LS_BRIDGE = "vokrew.bridgeUrl";
 const LS_TOKEN = "vokrew.token";
-const UNREACHABLE_MSG = "Can't reach your crew — is `vokrew serve` running on your machine?";
+const UNREACHABLE_MSG = "Can't reach your crew — is the Vokrew bridge running on this device? (See “How this works” above.)";
 
 const $ = (id) => document.getElementById(id);
 

@@ -94,6 +94,19 @@ pre { white-space: pre-wrap; word-wrap: break-word; font-family: var(--mono); fo
   background: var(--bg); border: 1px solid var(--line); border-radius: 9px;
   padding: 13px 16px; color: var(--lime); margin: 0 0 14px;
 }
+.how { border-top: 1px solid var(--line-soft); margin-top: 18px; padding-top: 16px; }
+.how h2 { margin: 0 0 10px; font-size: 19px; font-weight: 800; letter-spacing: -0.01em; }
+.how ol { margin: 0; padding-left: 22px; color: var(--mut); }
+.how li { margin-bottom: 12px; }
+.how li strong { color: var(--ink); }
+.how .cmd { margin: 10px 0 6px; font-size: 12.5px; overflow-x: auto; white-space: pre; }
+.how .mono { font-family: var(--mono); font-size: 13px; }
+.reach-note {
+  color: var(--mut); font-size: 14.5px; margin: 4px 0 20px;
+  border: 1px solid var(--line); border-left: 3px solid var(--amber);
+  border-radius: 9px; padding: 12px 14px; background: var(--bg-raise);
+}
+.reach-note strong { color: var(--amber); }
 .demo-note {
   margin-top: 20px; border-top: 1px solid var(--line-soft); padding-top: 16px;
   color: var(--dim); font-size: 14px;

@@ -21,11 +21,36 @@
   <section id="connectScreen" class="screen">
     <div class="card connect-card">
       <h1>Connect to your crew</h1>
-      <p class="lede">This page is a remote control. Your crew runs on <strong>your machine</strong> —
-        start the bridge there, then pair this page to it:</p>
-      <pre class="cmd">vokrew serve</pre>
-      <p class="mut">The bridge prints a 6-digit pairing code. Nothing here phones home:
-        this page talks only to the bridge address below.</p>
+      <p class="lede">This page is a remote control — <strong>it does not run any AI itself.</strong>
+        Your crew runs on <strong>your own machine</strong>, and this page pairs to it.</p>
+
+      <div class="how" id="how">
+        <h2>How this works</h2>
+        <ol>
+          <li><strong>Run Vokrew on your own computer first.</strong> Vokrew is a small
+            program (the “bridge”) that talks to the AI lanes you already have — like
+            Ollama running locally, or your own free/API lanes. Nothing runs on a
+            Vokrew server. With Node 18+ installed, start it in a terminal:
+            <pre class="cmd">git clone https://github.com/vokrew/vokrew.git
+cd vokrew
+node src/cli.js serve</pre>
+            <span class="mut">A one-line install is coming soon.</span></li>
+          <li><strong>Copy the code it prints.</strong> The bridge prints a one-time
+            6-digit pairing code, good for 10 minutes. There is no master code to
+            guess — the code only exists once your bridge is running.</li>
+          <li><strong>Open this page on that same device and pair.</strong> Type the
+            code below and tap Pair. This page connects only to the bridge on the
+            same device (<span class="mono">127.0.0.1:7717</span>) — nowhere else.</li>
+          <li><strong>Then chat and run tasks.</strong> Your prompts go from this
+            browser straight to your own bridge and your own AI. Your crew, your
+            machine — your data stays with you.</li>
+        </ol>
+        <p class="reach-note"><strong>Seeing “Can't reach your crew”?</strong> That just
+          means no bridge is answering on this device yet — most often this page was
+          opened on a phone with nothing running on it. Start the bridge first, on
+          the device you want to use, then come back and pair.</p>
+      </div>
+
       <form id="pairForm">
         <label>Bridge URL
           <input id="bridgeUrl" type="text" value="http://127.0.0.1:7717" spellcheck="false" autocomplete="off" />
