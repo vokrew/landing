@@ -1,0 +1,438 @@
+"use strict";
+/*
+ * Vokrew web face — a remote control for the user's own local bridge.
+ *
+ * Honesty rules baked in:
+ * - This page makes NO external requests. Every fetch goes to the bridge
+ *   URL the user entered (default http://127.0.0.1:7717) plus one of the
+ *   bridge's known endpoints: /pair /health /run /chat /budget /lanes /crews.
+ * - The pairing token lives in localStorage and is sent ONLY to that bridge.
+ * - If the bridge can't be reached, the UI goes back to Connect with a plain
+ *   message. No fake data, no spinner forever, no hosted demo (coming soon).
+ */
+const DEFAULT_BRIDGE = "http://127.0.0.1:7717";
+const LS_BRIDGE = "vokrew.bridgeUrl";
+const LS_TOKEN = "vokrew.token";
+const UNREACHABLE_MSG = "Can't reach your crew — is `vokrew serve` running on your machine?";
+
+const $ = (id) => document.getElementById(id);
+
+const state = {
+  bridge: (localStorage.getItem(LS_BRIDGE) || DEFAULT_BRIDGE).replace(/\/+$/, ""),
+  token: localStorage.getItem(LS_TOKEN) || null,
+  sessionId: null,
+  crewsLoaded: false,
+};
+
+function esc(s) {
+  return String(s ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+/* ---------------- bridge calls ---------------- */
+
+async function bridgeFetch(path, { method = "GET", body, auth = true, timeoutMs = 30000 } = {}) {
+  const headers = {};
+  if (body !== undefined) headers["Content-Type"] = "application/json";
+  if (auth && state.token) headers["Authorization"] = `Bearer ${state.token}`;
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), timeoutMs);
+  try {
+    const res = await fetch(state.bridge + path, {
+      method,
+      headers,
+      body: body !== undefined ? JSON.stringify(body) : undefined,
+      signal: ctrl.signal,
+    });
+    let data = null;
+    try { data = await res.json(); } catch { /* non-JSON error body */ }
+    return { status: res.status, data };
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+async function checkHealth() {
+  try {
+    const { status, data } = await bridgeFetch("/health", { auth: false, timeoutMs: 4000 });
+    return status === 200 && data && data.ok === true;
+  } catch {
+    return false;
+  }
+}
+
+/* ---------------- connection state ---------------- */
+
+function setStatus(mode, text) {
+  const pill = $("statusPill");
+  pill.classList.remove("ok", "bad");
+  if (mode) pill.classList.add(mode);
+  $("statusText").textContent = text;
+}
+
+function showConnect(message) {
+  state.sessionId = null;
+  $("connectScreen").classList.remove("hidden");
+  $("appShell").classList.add("hidden");
+  $("disconnectBtn").classList.add("hidden");
+  setStatus(state.token ? "" : "", state.token ? "bridge unreachable" : "not connected");
+  if (state.token) setStatus("bad", "bridge unreachable");
+  const err = $("pairError");
+  if (message) {
+    err.textContent = message;
+    err.classList.remove("hidden");
+  }
+}
+
+async function enterApp() {
+  // Health first, then prove the stored token still works.
+  if (!(await checkHealth())) {
+    showConnect(UNREACHABLE_MSG);
+    return false;
+  }
+  try {
+    const { status } = await bridgeFetch("/crews");
+    if (status === 401) {
+      disconnect("That pairing is no longer valid — pair again to continue.");
+      return false;
+    }
+  } catch {
+    showConnect(UNREACHABLE_MSG);
+    return false;
+  }
+  $("pairError").classList.add("hidden");
+  $("connectScreen").classList.add("hidden");
+  $("appShell").classList.remove("hidden");
+  $("disconnectBtn").classList.remove("hidden");
+  setStatus("ok", "connected");
+  loadRunCrews();
+  return true;
+}
+
+function disconnect(message) {
+  state.token = null;
+  localStorage.removeItem(LS_TOKEN);
+  showConnect(message);
+  setStatus("", "not connected");
+  if (message) {
+    const err = $("pairError");
+    err.textContent = message;
+    err.classList.remove("hidden");
+  }
+}
+
+// Any authed call that comes back 401 or unreachable mid-session drops the
+// UI back to Connect — never a dead screen or a stuck spinner.
+function handleDeadBridge(status) {
+  if (status === 401) {
+    disconnect("That pairing is no longer valid — pair again to continue.");
+    return true;
+  }
+  return false;
+}
+
+async function guardedCall(path, opts) {
+  let out;
+  try {
+    out = await bridgeFetch(path, opts);
+  } catch {
+    showConnect(UNREACHABLE_MSG);
+    setStatus("bad", "bridge unreachable");
+    throw new Error("unreachable");
+  }
+  if (handleDeadBridge(out.status)) throw new Error("unauthorized");
+  if (out.status !== 200 || !out.data || out.data.ok !== true) {
+    throw new Error((out.data && out.data.error) || `bridge returned ${out.status}`);
+  }
+  return out.data;
+}
+
+/* ---------------- pairing ---------------- */
+
+$("pairForm").addEventListener("submit", async (ev) => {
+  ev.preventDefault();
+  const err = $("pairError");
+  err.classList.add("hidden");
+  const urlInput = $("bridgeUrl").value.trim().replace(/\/+$/, "");
+  if (urlInput) {
+    state.bridge = urlInput;
+    localStorage.setItem(LS_BRIDGE, state.bridge);
+  }
+  const code = $("pairCode").value.trim();
+  const btn = $("pairBtn");
+  btn.disabled = true;
+  btn.textContent = "Pairing…";
+  try {
+    let res;
+    try {
+      res = await bridgeFetch("/pair", { method: "POST", body: { code }, auth: false, timeoutMs: 8000 });
+    } catch {
+      err.textContent = UNREACHABLE_MSG;
+      err.classList.remove("hidden");
+      return;
+    }
+    if (res.status !== 200 || !res.data || !res.data.token) {
+      err.textContent = (res.data && res.data.error) || "Pairing failed — check the code and try again.";
+      err.classList.remove("hidden");
+      return;
+    }
+    state.token = res.data.token;
+    localStorage.setItem(LS_TOKEN, state.token);
+    $("pairCode").value = "";
+    await enterApp();
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "Pair";
+  }
+});
+
+$("disconnectBtn").addEventListener("click", () => disconnect());
+
+/* ---------------- tabs ---------------- */
+
+document.querySelectorAll(".tab").forEach((tab) => {
+  tab.addEventListener("click", () => {
+    document.querySelectorAll(".tab").forEach((t) => t.classList.toggle("active", t === tab));
+    const name = tab.dataset.screen;
+    ["chat", "run", "budget", "crew"].forEach((s) => {
+      $("screen-" + s).classList.toggle("hidden", s !== name);
+    });
+    if (name === "budget") refreshBudget();
+    if (name === "crew") refreshCrew();
+  });
+});
+
+/* ---------------- chat ---------------- */
+
+function addMessage(who, text, { stamp = "", verdict = null, error = false } = {}) {
+  const thread = $("chatThread");
+  const wrap = document.createElement("div");
+  wrap.className = "msg " + who + (error ? " error" : "");
+  const whoEl = document.createElement("div");
+  whoEl.className = "who";
+  whoEl.textContent = who === "user" ? "YOU" : "CREW";
+  const textEl = document.createElement("div");
+  textEl.className = "text";
+  textEl.textContent = text;
+  wrap.append(whoEl, textEl);
+  if (verdict) {
+    const v = document.createElement("div");
+    v.className = "verdictline " + (verdict === "CHANGES" ? "bad" : "ok");
+    v.textContent = verdict === "CHANGES" ? "Reviewer verdict: CHANGES requested" : `Reviewer verdict: ${verdict}`;
+    wrap.appendChild(v);
+  }
+  if (stamp) {
+    const s = document.createElement("div");
+    s.className = "stamp";
+    s.textContent = stamp;
+    wrap.appendChild(s);
+  }
+  thread.appendChild(wrap);
+  wrap.scrollIntoView({ block: "end", behavior: "smooth" });
+}
+
+$("chatForm").addEventListener("submit", async (ev) => {
+  ev.preventDefault();
+  const input = $("chatInput");
+  const message = input.value.trim();
+  if (!message) return;
+  input.value = "";
+  addMessage("user", message);
+  const btn = $("chatSend");
+  btn.disabled = true;
+  try {
+    const body = { message, verify: $("verifyToggle").checked };
+    if (state.sessionId) body.sessionId = state.sessionId;
+    const data = await guardedCall("/chat", { method: "POST", body });
+    if (data.sessionId) state.sessionId = data.sessionId;
+    addMessage("crew", data.text, {
+      stamp: (data.compactStamps || []).join("  "),
+      verdict: data.verdict || null,
+    });
+  } catch (err) {
+    if (err.message !== "unreachable" && err.message !== "unauthorized") {
+      addMessage("crew", `The run failed: ${err.message}`, { error: true });
+    }
+  } finally {
+    btn.disabled = false;
+    input.focus();
+  }
+});
+
+/* ---------------- run ---------------- */
+
+async function loadRunCrews() {
+  if (state.crewsLoaded) return;
+  try {
+    const data = await guardedCall("/crews");
+    const sel = $("runCrew");
+    sel.innerHTML = "";
+    (data.crews || []).forEach((crew) => {
+      const opt = document.createElement("option");
+      opt.value = crew.name;
+      opt.textContent = crew.name;
+      sel.appendChild(opt);
+    });
+    if ((data.crews || []).some((c) => c.name === "default")) sel.value = "default";
+    state.crewsLoaded = true;
+  } catch { /* guardedCall already surfaced the problem */ }
+}
+
+$("runForm").addEventListener("submit", async (ev) => {
+  ev.preventDefault();
+  const err = $("runError");
+  err.classList.add("hidden");
+  const task = $("runTask").value.trim();
+  if (!task) {
+    err.textContent = "Give the crew a task first.";
+    err.classList.remove("hidden");
+    return;
+  }
+  const body = { task, crew: $("runCrew").value || "default" };
+  const ws = $("runWorkspace").value.trim();
+  if (ws) body.workspace = ws;
+  const btn = $("runBtn");
+  btn.disabled = true;
+  btn.textContent = "Running…";
+  try {
+    const data = await guardedCall("/run", { method: "POST", body });
+    const verdictEl = $("runVerdict");
+    if (data.verdict === "CHANGES") {
+      verdictEl.className = "verdict changes";
+      verdictEl.textContent = "!! Reviewer verdict: CHANGES requested — read the review !!";
+    } else {
+      verdictEl.className = "verdict";
+      verdictEl.textContent = `Reviewer verdict: ${data.verdict || "—"}`;
+    }
+    $("runPlan").textContent = data.plan || "";
+    $("runWork").textContent = data.work || "";
+    $("runReview").textContent = data.review || "";
+    const footer = [];
+    if (data.crew && data.crew !== "default") footer.push(`crew=${data.crew}`);
+    if (data.workspace) footer.push(`workspace=${data.workspace}`);
+    footer.push(`cross-family=${data.crossFamily ? "yes" : "no"}`);
+    $("runStamps").textContent = [...(data.stampLines || []), footer.join(" ")].join("\n");
+    $("runResult").classList.remove("hidden");
+    $("runResult").scrollIntoView({ block: "start", behavior: "smooth" });
+  } catch (e) {
+    if (e.message !== "unreachable" && e.message !== "unauthorized") {
+      err.textContent = `The run failed: ${e.message}`;
+      err.classList.remove("hidden");
+    }
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "Run the crew";
+  }
+});
+
+/* ---------------- budget ---------------- */
+
+function renderBudgetPanel(el, data) {
+  el.innerHTML = "";
+  (data.lanes || []).forEach((lane) => {
+    const row = document.createElement("div");
+    row.className = "lane-row";
+    if (lane.cap === null || lane.cap === undefined) {
+      row.innerHTML =
+        `<div class="lane-head"><span>${esc(lane.id)}</span><span class="nums">${lane.used} used · unlimited</span></div>` +
+        `<div class="budget-note">no cap on this lane</div>`;
+    } else {
+      const pct = lane.cap > 0 ? Math.min(100, Math.round((lane.used / lane.cap) * 100)) : 0;
+      const cls = lane.used >= lane.cap ? "maxed" : pct >= 75 ? "hot" : "";
+      row.innerHTML =
+        `<div class="lane-head"><span>${esc(lane.id)}</span><span class="nums">${lane.used} / ${lane.cap} · ${lane.remaining} left</span></div>` +
+        `<div class="bar"><i class="${cls}" style="width:${pct}%"></i></div>`;
+    }
+    el.appendChild(row);
+  });
+  const note = document.createElement("div");
+  note.className = "budget-note";
+  note.textContent = `today (${data.day}) · the other surface used ${data.otherSurfaceTotal} calls — counted separately`;
+  el.appendChild(note);
+}
+
+async function refreshBudget() {
+  try {
+    const [coding, chat] = await Promise.all([
+      guardedCall("/budget?surface=coding"),
+      guardedCall("/budget?surface=chat"),
+    ]);
+    renderBudgetPanel($("budgetCoding"), coding);
+    renderBudgetPanel($("budgetChat"), chat);
+  } catch { /* guardedCall already surfaced the problem */ }
+}
+$("budgetRefresh").addEventListener("click", refreshBudget);
+
+/* ---------------- crew ---------------- */
+
+function laneHealthClass(health) {
+  if (/^NOT reachable/.test(health)) return "bad";
+  if (/unsupported|no .*KEY|no API key/i.test(health)) return "warn";
+  return "ok";
+}
+
+async function refreshCrew() {
+  try {
+    const [crewsData, lanesData] = await Promise.all([guardedCall("/crews"), guardedCall("/lanes")]);
+    const crewList = $("crewList");
+    crewList.innerHTML = "";
+    (crewsData.crews || []).forEach((crew) => {
+      const card = document.createElement("div");
+      card.className = "crew-card";
+      let html = `<h4>${esc(crew.name)}</h4>`;
+      const roles = crew.roles || {};
+      const roleNames = Object.keys(roles);
+      if (!roleNames.length) html += `<div class="role-line">Default crew — plain pipeline roles, no named agents.</div>`;
+      ["planner", "executor", "reviewer", ...roleNames.filter((r) => !["planner", "executor", "reviewer"].includes(r))].forEach((role) => {
+        const slot = roles[role];
+        if (!slot) return;
+        const bits = [];
+        if (slot.name) bits.push(`<span class="agent-name">${esc(slot.name)}</span>`);
+        if (slot.instructions) bits.push(`<span class="instr">${esc(slot.instructions)}</span>`);
+        if (Array.isArray(slot.lanes) && slot.lanes.length) bits.push(`lanes: ${esc(slot.lanes.join(", "))}`);
+        if (slot.model) bits.push(`model: ${esc(slot.model)}`);
+        html += `<div class="role-line"><b>${esc(role)}</b> ${bits.join(" · ") || "—"}</div>`;
+      });
+      card.innerHTML = html;
+      crewList.appendChild(card);
+    });
+    const laneList = $("laneList");
+    laneList.innerHTML = "";
+    (lanesData.lanes || []).forEach((lane) => {
+      const card = document.createElement("div");
+      card.className = "lane-card";
+      card.innerHTML =
+        `<h4>${esc(lane.id)}</h4>` +
+        `<div class="meta">${esc(lane.provider)} · ${esc(lane.model)} · family ${esc(lane.family)} · tier ${esc(lane.tier)} · cap ${lane.cap === null ? "unlimited" : lane.cap}</div>` +
+        `<div class="health ${laneHealthClass(lane.health)}">${esc(lane.health)}</div>`;
+      laneList.appendChild(card);
+    });
+  } catch { /* guardedCall already surfaced the problem */ }
+}
+
+/* ---------------- boot + health watch ---------------- */
+
+$("bridgeUrl").value = state.bridge;
+
+if (state.token) {
+  enterApp();
+}
+
+// Health watch: if the bridge dies mid-session, drop back to Connect with
+// the unreachable message (spec rule). If it comes back and we still hold a
+// token, re-enter quietly.
+setInterval(async () => {
+  const inApp = !$("appShell").classList.contains("hidden");
+  const ok = await checkHealth();
+  if (inApp && !ok) {
+    showConnect(UNREACHABLE_MSG);
+    setStatus("bad", "bridge unreachable");
+  } else if (!inApp && ok && state.token) {
+    enterApp();
+  } else if (inApp && ok) {
+    setStatus("ok", "connected");
+  }
+}, 20000);
