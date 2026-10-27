@@ -304,7 +304,14 @@
 #floorRoot .tb {border-color:#33404a;background:linear-gradient(180deg,#16222d,#0d151d)}
 #floorRoot .tb:hover {border-color:#8d6a3c;background:linear-gradient(180deg,#22303c,#131d26);box-shadow:0 0 18px rgba(240,195,122,.10)}
 #floorRoot #hint {bottom:16px;top:auto;left:16px;background:rgba(7,12,18,.82);border-color:#2d382f;color:#768a9c}
-#floorRoot #viewbar {bottom:272px;right:16px;border-color:#3b4a3b;background:rgba(7,12,18,.92);box-shadow:var(--hudglow)}
+/* HUD fix (KC, 2026-10-27): the tab strip docks ABOVE the sector
+   map with real air. The map panel is bottom:72 + 216 tall (fixed
+   220x172 canvas at 216 CSS px + header + legend + padding), so its
+   top edge sits at 288; the strip's old 272 perch put its bottom
+   edge ~16px INSIDE the panel (measured overlap 3,658px2 — Kevin's
+   live report). bottom:300 = 72 + 216 + 12px of air. If the map's
+   height ever changes, move this with it. */
+#floorRoot #viewbar {bottom:300px;right:16px;border-color:#3b4a3b;background:rgba(7,12,18,.92);box-shadow:var(--hudglow)}
 #floorRoot #viewbar button {color:#9aacbc}
 #floorRoot #viewbar button.on {background:#241a0e;color:var(--gold);border-color:#7a5426}
 #floorRoot #hudfx {position:absolute;inset:0;z-index:11;pointer-events:none;
@@ -458,12 +465,24 @@
   #floorRoot .clock { font-size:11px; padding-left:6px; }
   #floorRoot .topstat { padding-left:6px; gap:4px; font-size:9.5px; }
   #floorRoot #questtracker { width:min(280px, calc(100% - 20px)); left:10px; top:10px; }
-  #floorRoot #noticeboard { width:min(262px, calc(100% - 20px)); right:10px; top:10px; max-height:calc(100% - 76px); }
+  /* max-height keeps the noticeboard's designed clearance from the
+     tab strip: the strip's phone dock moved 12..50 -> 90..128 in
+     the HUD fix, so the board's floor moves 76 -> 136 (tab top +
+     8px air), the same relationship it was built with. */
+  #floorRoot #noticeboard { width:min(262px, calc(100% - 20px)); right:10px; top:10px; max-height:calc(100% - 136px); }
   /* The holds badge keeps its count at phone width; the word
      yields so the room clock is not pushed off the bar (the same
      shedding the bar already does for its tagline + phase chip). */
   #floorRoot #holdStat .tb-label { display:none; }
-  #floorRoot #viewbar { bottom:12px; right:8px; }
+  /* HUD fix (KC, 2026-10-27): at phone width the tab strip shared
+     the docked run strip's band (bottom:12, strip spans 12..46 at
+     z-30 over the tabs' z-20) — mid-run the strip covered every tab
+     (measured overlap 10,542px2, no tab clickable through). The
+     bottom chrome now stacks in three clear rows: run strip
+     12..46, hint pill 54..82, tab strip docked at 90 (8px of air
+     above the hint row, which is too wide to share a row with the
+     tabs on a 412px stage). */
+  #floorRoot #viewbar { bottom:90px; right:8px; }
   #floorRoot #hint { left:8px; bottom:54px; }
   #floorRoot .panel { width:calc(100% - 16px); right:8px; top:58px; }
   #floorCardBody { max-height:44dvh; }

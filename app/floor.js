@@ -2546,7 +2546,11 @@ function lightSources(now) {
   const src = [];
   Object.values(CUBICLES).forEach(c => {
     const owner = agents.find(a => a.deskId === c.id);
-    let s = 0.12;
+    /* Unowned-desk spill 0.12 -> 0.22 with the ambient floor: every
+       desk reads as a place even with no crew seated. The state
+       ladder is unchanged (empty 0.22 < idle 0.38 < ready 0.55 <
+       running 1.0). */
+    let s = 0.22;
     if (owner) s = owner.status === "running" ? 1.0 : (owner.lifecycleState === "ready" ? 0.55 : 0.38);
     src.push({ x: c.desk.x + c.desk.w / 2, y: c.desk.y + c.desk.h / 2, r: 170, s, warm: 1 });
   });
@@ -2569,9 +2573,20 @@ function drawLighting(now) {
   sg.setTransform(1, 0, 0, 1, 0, 0);
   sg.globalCompositeOperation = "source-over";
   sg.clearRect(0, 0, _shadeCv.width, _shadeCv.height);
-  sg.fillStyle = "rgba(5,9,17,.92)";
+  sg.fillStyle = "rgba(5,9,17,.84)";
   sg.fillRect(0, 0, _shadeCv.width, _shadeCv.height);
   sg.globalCompositeOperation = "destination-out";
+  /* Ambient floor (KC, 2026-10-27, Kevin's live report: on a real
+     PC the empty room read COMPLETELY BLACK — the rig's software
+     rendering flatters the shade plate). A uniform soft cut across
+     the whole plate before the per-light cuts: base illumination
+     so desks, zones and layout stay legible in shell / idle /
+     offline states. It is multiplicative — far-field plate alpha
+     .84*(1-.46) = .45 vs the original .92 — so lamp pools keep
+     their contrast and stay warm accents ON TOP of the base; the
+     veil (0.45) and the run-state lighting are untouched. */
+  sg.fillStyle = "rgba(255,255,255,0.46)";
+  sg.fillRect(0, 0, _shadeCv.width, _shadeCv.height);
   src.forEach(L => {
     const gx = L.x / 2, gy = L.y / 2, gr = L.r / 2;
     const rad = sg.createRadialGradient(gx, gy, 0, gx, gy, gr);
