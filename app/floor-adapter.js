@@ -38,6 +38,15 @@
  *           instructions  roles[r].instructions, else ""
  *           memory        stamp lines for this role, oldest → newest
  *                         ({ text, at }) — the focus panel's stamp record
+ *           dossier       Phase 2 Stage 1 focus-panel data (see
+ *                         dossierFor): { crew, role, name|null,
+ *                         nameless, laneId, provider, model, family,
+ *                         tier — from the /lanes view, else the last
+ *                         stamp's — laneCallsToday / crewCallsToday /
+ *                         sharePct from GET /budget (calls, never
+ *                         tokens; null when the payload cannot
+ *                         attribute them), history (this role's
+ *                         stamps across recent runs, newest first) }
  *           beliefs       [] (no bridge source; engine tolerates empty)
  *           xp            0 (no XP source on the bridge — spec §4 cut)
  *           tasksDone     count of this role's landed stamps
@@ -262,6 +271,102 @@
     return rows;
   }
 
+  /* ---------------- Stage 1 dossier (Phase 2 spec, Stage 1) ----------------
+     The focus panel's dossier, translated here — the only place
+     bridge vocabulary meets the panel — from the payloads the
+     adapter already polls: crews (the role's slot), lanes (the
+     lane view), budget (the per-lane call ledger) and run records
+     (the stamp history). Every field traces to one of those
+     payloads; anything the bridge did not supply stays null and
+     the panel renders "—" for it. */
+
+  function laneCallsToday(laneId) {
+    if (!S.budget || !laneId) return null;
+    const row = (S.budget.lanes || []).find((l) => l.id === laneId);
+    return row ? (row.used || 0) : null;
+  }
+
+  function crewLaneIds(crew) {
+    const ids = new Set();
+    ROLES.forEach((r) => {
+      const slot = (crew.roles && crew.roles[r]) || {};
+      (Array.isArray(slot.lanes) ? slot.lanes : []).forEach((id) => ids.add(id));
+    });
+    return ids;
+  }
+
+  /* Σ GET /budget used over the lanes the crew's slots name. Null
+     when the crew names no lanes (the default crew): /budget alone
+     cannot attribute a crew total then, so the panel shows "—"
+     rather than a number mixed in from a different source. */
+  function crewCallsToday(crew) {
+    const ids = crewLaneIds(crew);
+    if (!S.budget || !ids.size) return null;
+    let n = 0;
+    ids.forEach((id) => { const c = laneCallsToday(id); if (c !== null) n += c; });
+    return n;
+  }
+
+  /* This role's stamps across the registry's recent runs (records
+     the fast poll fetched — it pulls every run in the seated crew),
+     newest run first. verdict is the run's own, present only once
+     the run is done; crossFamily rides along so the panel labels a
+     same-family review exactly as the record states it. Nothing is
+     cached beyond the page session — the records themselves are
+     the bridge's, refreshed every poll. */
+  function historyFor(role) {
+    const rows = [];
+    const recs = [...S.records.values()]
+      .filter((rec) => !rec.crew || rec.crew === S.selectedCrew)
+      .sort((a, b) => b.startedAt - a.startedAt);
+    recs.forEach((rec) => {
+      (rec.stamps || []).forEach((st) => {
+        if (st.role !== role) return;
+        rows.push({
+          runId: rec.id,
+          identifier: "RUN-" + shortId(rec.id),
+          role: st.role,
+          agent: st.agent || null,
+          lane: st.lane || null,
+          provider: st.provider || null,
+          model: st.model || null,
+          family: st.family || null,
+          tier: st.tier || null,
+          latencyMs: st.latencyMs,
+          attempts: st.attempts || [],
+          failover: !!st.failover,
+          verdict: rec.state === "done" ? (rec.verdict || null) : null,
+          runState: rec.state,
+          crossFamily: rec.crossFamily === undefined ? null : rec.crossFamily,
+          at: rec.startedAt,
+        });
+      });
+    });
+    return rows.slice(0, 12);
+  }
+
+  function dossierFor(role, slot, stamp, lane, model) {
+    const crew = crewObj();
+    const laneId = lane ? lane.id : (stamp ? stamp.lane : null);
+    const laneCalls = laneCallsToday(laneId);
+    const crewCalls = crewCallsToday(crew);
+    return {
+      crew: S.selectedCrew,
+      role,
+      name: slot.name || null,
+      nameless: !slot.name,
+      laneId,
+      provider: lane ? lane.provider : (stamp ? stamp.provider || null : null),
+      model: model || null,
+      family: lane ? lane.family : (stamp ? stamp.family || null : null),
+      tier: lane ? lane.tier : (stamp ? stamp.tier || null : null),
+      laneCallsToday: laneCalls,
+      crewCallsToday: crewCalls,
+      sharePct: laneCalls !== null && crewCalls ? Math.round((laneCalls / crewCalls) * 100) : null,
+      history: historyFor(role),
+    };
+  }
+
   function statusFor(role, active, failedRole) {
     if (active && active.phase === role) return "running";
     if (!active && failedRole === role) return "rejected";
@@ -301,6 +406,7 @@
         heartbeat: false,
         instructions: slot.instructions || "",
         memory: memoryFor(role),
+        dossier: dossierFor(role, slot, stamp, lane, model),
         beliefs: [],
         xp: 0,
         tasksDone: stampCountFor(role),
@@ -721,6 +827,10 @@
       if (activeSum) want.add(activeSum.id);
       if (S.trackedId) want.add(S.trackedId);
       if (S.selectedId) want.add(S.selectedId);
+      // Stage 1: the dossier's stamp history spans the seated crew's
+      // recent runs, so their records ride the same poll (the list
+      // is capped at 20 and the bridge is on this machine).
+      S.summaries.forEach((sum) => { if (!sum.crew || sum.crew === S.selectedCrew) want.add(sum.id); });
       // A lost run never comes back (in-memory registry): probe it
       // once, render the loss, and never 404 it again.
       S.lostIds.forEach((id) => want.delete(id));
@@ -769,6 +879,14 @@
       }
       noteStamps();
       applyOnce();
+      // Stage 1: while a dossier is open, keep its slower sources
+      // (crews / lanes / budget) fresh on a ~4 s cadence instead of
+      // the loop's 15 s, so the panel's figures are of the moment.
+      const focusEl = $("focus");
+      if (focusEl && focusEl.classList.contains("open") && Date.now() - S.lastSlow > 4000) {
+        S.lastSlow = Date.now();
+        await slowPoll();
+      }
     } catch {
       markOffline();
     } finally {
