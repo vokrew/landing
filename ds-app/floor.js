@@ -7,6 +7,10 @@
 // day): the working spots are cutaway buildings — interior floor slabs,
 // side walls, foundation courses — and the Terrace/Smithy wear room
 // shells (posts, wall plates, door sills). Drawing only, again.
+// Pass 3 (same day): authored surfaces over procedural ones — shaped
+// grass tufts, plank grain and flag bevels, roof volume, a pond
+// shoreline, a sculpted oak, and the cottages' framed windows made
+// real. Drawing only, still.
 //   The Green  x 2..20,  y 2..14   the three home spots (facades row 2–3,
 //                                  worktables row 3, seats row 4), the square
 //   The Lane   x 22..24, y 2..19   connects the Green, Terrace, Smithy, Meadow
@@ -146,6 +150,19 @@ function limb(g, x1, y1, x2, y2, width, color) {
   g.beginPath();
   g.moveTo(x1, y1);
   g.lineTo(x2, y2);
+  g.stroke();
+}
+
+// A shaped grass tuft: four blades fanning from a root point, drawn as
+// strokes — the authored replacement for speckle scatter (pass 3).
+function tuft(g, x, y, s, tone) {
+  g.strokeStyle = tone;
+  g.lineWidth = 1.1;
+  g.beginPath();
+  for (const [dx, h, lean] of [[-2.6, 5.5, -1.6], [-0.9, 7, -0.5], [0.9, 6.2, 0.7], [2.6, 5, 1.7]]) {
+    g.moveTo(x + dx * s, y);
+    g.quadraticCurveTo(x + dx * s + lean * s * 0.4, y - h * s * 0.6, x + (dx + lean) * s, y - h * s);
+  }
   g.stroke();
 }
 
@@ -554,19 +571,23 @@ export function createFloor(canvas, { onSelect } = {}) {
               g.stroke();
             }
           }
-          if (base === "#6d8148" || base === "#ab9a78") {
-            // grass blades on the green, joints on the plaza
-            if (base === "#6d8148") {
-              g.strokeStyle = "rgba(30,50,20,.18)";
-              g.lineWidth = 1;
+          if (base === "#9a7c55") {
+            // worn dirt path: a pebble edge and grass creeping in
+            g.fillStyle = "rgba(70,54,34,.25)";
+            for (let pb2 = 0; pb2 < 2; pb2++) {
               g.beginPath();
-              for (let b = 0; b < 3; b++) {
-                const bx = px + 5 + hash(x * 3 + b, y) * 26;
-                const by = py + 8 + hash(x, y * 3 + b) * 22;
-                g.moveTo(bx, by);
-                g.lineTo(bx + 1.4, by - 3.4);
+              g.ellipse(px + 6 + hash(x * 11 + pb2, y * 3) * 24, py + 27 + hash(x * 3, y * 13 + pb2) * 6, 1.9, 1.2, 0, 0, Math.PI * 2);
+              g.fill();
+            }
+            if (n > 0.55) tuft(g, px + 4 + hash(x, y * 9) * 6, py + TILE - 2, 0.7, "rgba(46,70,28,.4)");
+          }
+          if (base === "#6d8148" || base === "#ab9a78") {
+            // shaped grass tufts on the green, joints + bevels on the plaza
+            if (base === "#6d8148") {
+              if (n > 0.16) {
+                tuft(g, px + 6 + hash(x * 3, y * 7) * 10, py + 14 + hash(x * 5, y * 3) * 9, 0.9, "rgba(34,56,22,.34)");
+                tuft(g, px + 19 + hash(x * 7, y * 5) * 10, py + 25 + hash(x * 3, y * 11) * 8, 0.75, "rgba(56,86,34,.30)");
               }
-              g.stroke();
               if (n > 0.86) {
                 g.fillStyle = "rgba(255,240,180,.14)";
                 g.fillRect(px + 6 + n * 18, py + 6 + hash(y, x) * 22, 2, 2);
@@ -589,6 +610,13 @@ export function createFloor(canvas, { onSelect } = {}) {
                 g.lineTo(px + TILE - 0.5, py + TILE);
               }
               g.stroke();
+              // flagstone bevels: a lit top edge per stone, a worn chip
+              g.fillStyle = "rgba(255,246,225,.10)";
+              g.fillRect(px + 2, py + 1.5, TILE - 4, 1);
+              if (n > 0.7) {
+                g.fillStyle = "rgba(60,48,30,.12)";
+                g.fillRect(px + 8 + n * 14, py + TILE - 5, 5, 1.4);
+              }
             }
           }
         } else if (zname === "workshop") {
@@ -600,6 +628,9 @@ export function createFloor(canvas, { onSelect } = {}) {
           g.fillStyle = flagLite > 0 ? `rgba(255,246,225,${flagLite / 90})` : `rgba(30,24,18,${-flagLite / 80})`;
           rr(g, px + 1.5, py + 1.5, TILE - 3, TILE - 3, 3);
           g.fill();
+          // bevel highlight along the flag's top edge (pass 3)
+          g.fillStyle = "rgba(255,250,236,.09)";
+          g.fillRect(px + 3.5, py + 2.5, TILE - 7, 1.1);
           g.strokeStyle = "rgba(52,42,30,.38)";
           g.lineWidth = 1;
           g.beginPath();
@@ -633,11 +664,26 @@ export function createFloor(canvas, { onSelect } = {}) {
           g.moveTo(px + (y % 2 ? 9 : 25) + 0.5, py);
           g.lineTo(px + (y % 2 ? 9 : 25) + 0.5, py + TILE);
           g.stroke();
-          g.strokeStyle = "rgba(255,230,190,.06)";
+          // authored grain: two wavy strokes per tile, a knot now and then
+          g.strokeStyle = "rgba(70,44,20,.13)";
+          g.lineWidth = 0.8;
+          for (const gy2 of [8 + n * 6, 21 + n * 5]) {
+            g.beginPath();
+            g.moveTo(px + 3, py + gy2);
+            g.quadraticCurveTo(px + 16, py + gy2 + (n > 0.5 ? 1.6 : -1.6), px + 33, py + gy2 + 0.8);
+            g.stroke();
+          }
+          g.strokeStyle = "rgba(255,230,190,.07)";
           g.beginPath();
-          g.moveTo(px + 4, py + 7 + (n * 10));
-          g.lineTo(px + 28, py + 8 + (n * 10));
+          g.moveTo(px + 5, py + 14 + n * 8);
+          g.quadraticCurveTo(px + 17, py + 13 + n * 8, px + 30, py + 14.6 + n * 8);
           g.stroke();
+          if (n > 0.82) {
+            g.strokeStyle = "rgba(70,44,20,.20)";
+            g.beginPath();
+            g.ellipse(px + 10 + n * 12, py + 11 + hash(y, x) * 12, 1.9, 1.3, 0.3, 0, Math.PI * 2);
+            g.stroke();
+          }
         } else if (zname === "hall") {
           // the Lane: dirt with a worn stone centre line
           g.fillStyle = shade(base, (n - 0.5) * 8);
@@ -676,13 +722,12 @@ export function createFloor(canvas, { onSelect } = {}) {
     g.fillStyle = moon;
     g.fillRect(24 * TILE, 1 * TILE, 11 * TILE, 9 * TILE);
 
-    // yard grass speckle + stone path
-    for (let i = 0; i < 420; i++) {
+    // yard grass — shaped tufts scattered like the Green's, not speckle
+    for (let i = 0; i < 170; i++) {
       const x = 2 + hash(i, 3) * 18;
       const y = 17 + hash(i, 7) * 3.7;
       if (!isPassable(grid, Math.floor(x), Math.floor(y)) && !inYard(x, y)) continue;
-      g.fillStyle = `rgba(120,190,140,${0.05 + hash(i, 11) * 0.08})`;
-      g.fillRect(x * TILE, y * TILE, 2, 2);
+      tuft(g, x * TILE, (y + 0.12) * TILE, 0.72 + hash(i, 13) * 0.4, i % 3 ? "rgba(146,204,126,.28)" : "rgba(40,66,26,.38)");
     }
     g.fillStyle = "rgba(122,94,60,.4)";
     g.fillRect(10 * TILE + 6, 16 * TILE, TILE - 12, 4.6 * TILE);
@@ -741,10 +786,30 @@ export function createFloor(canvas, { onSelect } = {}) {
     g.stroke();
     g.restore();
 
-    // terrace rug
+    // terrace rug — woven bands and warp lines over the flat fill
     g.fillStyle = "rgba(146,84,52,.4)";
     rr(g, 27 * TILE, 3 * TILE + 4, 6 * TILE, 3 * TILE, 12);
     g.fill();
+    g.save();
+    rr(g, 27 * TILE, 3 * TILE + 4, 6 * TILE, 3 * TILE, 12);
+    g.clip();
+    for (let ry2 = 0; ry2 < 7; ry2++) {
+      g.fillStyle = ry2 % 2 ? "rgba(242,234,216,.05)" : "rgba(70,36,18,.05)";
+      g.fillRect(27 * TILE, 3 * TILE + 4 + ry2 * 15.5, 6 * TILE, 7.5);
+    }
+    g.strokeStyle = "rgba(242,234,216,.10)";
+    g.lineWidth = 1;
+    for (let wx = 0; wx < 12; wx++) {
+      g.beginPath();
+      g.moveTo(27 * TILE + 9 + wx * 17, 3 * TILE + 6);
+      g.lineTo(27 * TILE + 9 + wx * 17, 6 * TILE + 2);
+      g.stroke();
+    }
+    g.restore();
+    g.strokeStyle = "rgba(240,220,185,.18)";
+    g.lineWidth = 1;
+    rr(g, 27 * TILE + 5, 3 * TILE + 9, 6 * TILE - 10, 3 * TILE - 10, 9);
+    g.stroke();
 
     // smithy straw mat inside the door line
     g.fillStyle = "rgba(198,164,94,.20)";
@@ -754,6 +819,19 @@ export function createFloor(canvas, { onSelect } = {}) {
     g.setLineDash([12, 10]);
     g.strokeRect(26.2 * TILE, 11.2 * TILE, 8.6 * TILE, 5.6 * TILE);
     g.setLineDash([]);
+    // the mat is woven, not printed — a plain over-under grid
+    g.strokeStyle = "rgba(120,90,44,.10)";
+    g.lineWidth = 1;
+    g.beginPath();
+    for (let mx2 = 0; mx2 < 8; mx2++) {
+      g.moveTo(26.2 * TILE + 12 + mx2 * 36, 11.2 * TILE + 3);
+      g.lineTo(26.2 * TILE + 12 + mx2 * 36, 16.8 * TILE - 3);
+    }
+    for (let my2 = 0; my2 < 5; my2++) {
+      g.moveTo(26.2 * TILE + 3, 11.2 * TILE + 12 + my2 * 36);
+      g.lineTo(34.8 * TILE - 3, 11.2 * TILE + 12 + my2 * 36);
+    }
+    g.stroke();
 
     // walls — warm village stone with a sunlit cap, timber baseboards,
     // ivy creeping on the inner faces and a tree-line along the outer ring
@@ -1194,7 +1272,9 @@ export function createFloor(canvas, { onSelect } = {}) {
     const fb = 3.18 * TILE;               // facade bottom (ground line)
     const doorW = 0.52 * TILE;
     const doorX = home.doorSide > 0 ? cx + 0.28 * TILE : cx - 0.28 * TILE - doorW;
-    const winCx = (home.doorSide > 0 ? cx - 0.68 : cx + 0.68) * TILE;
+    // the framed window sits on the wall opposite the door, centred on
+    // the HOME_WINDOWS line (2.62) the lamplight and working flare use
+    const winCx = cx + (home.doorSide > 0 ? -0.68 : 0.68) * TILE;
     const winCy = 2.62 * TILE;
 
     /* ---- the cutaway interior (building pass, 2026-10-27) ----
@@ -1211,11 +1291,11 @@ export function createFloor(canvas, { onSelect } = {}) {
     const seed = role === "planner" ? 3 : role === "executor" ? 7 : 11;
 
     // ground shadow spilling from under the front foundation
-    const slabShadow = g.createLinearGradient(0, slabBot + 9, 0, slabBot + 18);
+    const slabShadow = g.createLinearGradient(0, slabBot + 12, 0, slabBot + 20);
     slabShadow.addColorStop(0, "rgba(24,32,14,.34)");
     slabShadow.addColorStop(1, "rgba(24,32,14,0)");
     g.fillStyle = slabShadow;
-    g.fillRect(slabX0 - 3, slabBot + 9, slabX1 - slabX0 + 6, 9);
+    g.fillRect(slabX0 - 3, slabBot + 12, slabX1 - slabX0 + 6, 8);
 
     // interior floor surface — a material, not the yard
     const floorBase = role === "executor" ? "#8f887b" : role === "planner" ? "#a57c50" : "#9c7a58";
@@ -1236,6 +1316,9 @@ export function createFloor(canvas, { onSelect } = {}) {
             g.fillStyle = lite ? "rgba(255,246,225,.07)" : "rgba(40,34,26,.07)";
             rr(g, fx2 + 1, fy2 + 1, flagW, fh - 2, 2.4);
             g.fill();
+            // bevel: the flag's top edge catches the light
+            g.fillStyle = "rgba(255,250,236,.10)";
+            g.fillRect(fx2 + 3, fy2 + 2, Math.max(0, flagW - 5), 1);
           }
           fx2 += fwFlag;
         }
@@ -1252,6 +1335,16 @@ export function createFloor(canvas, { onSelect } = {}) {
         g.fillRect(slabX0, Math.min(cy2 + courseH - 1, slabBot - 1), slabX1 - slabX0, 1);
         const jointX = slabX0 + 12 + hash(ci * 3, seed) * (slabX1 - slabX0 - 24);
         g.fillRect(jointX, cy2, 1, Math.min(courseH, slabBot - cy2));
+        // grain running the course's length + a pale cut face at the end
+        const gy3 = Math.min(cy2 + 3 + hash(ci * 7, seed) * 4, slabBot - 2);
+        g.strokeStyle = "rgba(66,40,16,.12)";
+        g.lineWidth = 0.8;
+        g.beginPath();
+        g.moveTo(slabX0 + 6 + hash(ci, seed * 2) * 22, gy3);
+        g.quadraticCurveTo(slabX0 + (slabX1 - slabX0) / 2, gy3 + 1.2, slabX0 + (slabX1 - slabX0) - 8 - hash(ci * 3, seed) * 16, gy3 + 0.6);
+        g.stroke();
+        g.fillStyle = "rgba(255,236,200,.13)";
+        g.fillRect(jointX - 1, cy2 + 1.5, 1, Math.max(0, Math.min(courseH, slabBot - cy2) - 3));
       }
     }
     // a woven rug under the worktable and seat — the lived-in middle
@@ -1291,11 +1384,11 @@ export function createFloor(canvas, { onSelect } = {}) {
     // opening in the middle — the cutaway tell
     for (const stX of [slabX0, slabX1 - 0.5 * TILE]) {
       g.fillStyle = shade(home.wall, -14);
-      g.fillRect(stX, slabBot - 13, 0.5 * TILE, 13);
+      g.fillRect(stX, slabBot - 16, 0.5 * TILE, 16);
       g.fillStyle = shade(home.wall, 18);
-      g.fillRect(stX, slabBot - 13, 0.5 * TILE, 3);
+      g.fillRect(stX, slabBot - 16, 0.5 * TILE, 3);
       g.fillStyle = "rgba(255,246,220,.35)";
-      g.fillRect(stX, slabBot - 13, 0.5 * TILE, 1);
+      g.fillRect(stX, slabBot - 16, 0.5 * TILE, 1);
       g.fillStyle = "rgba(30,20,10,.35)";
       g.fillRect(stX, slabBot - 1, 0.5 * TILE, 1);
     }
@@ -1303,20 +1396,22 @@ export function createFloor(canvas, { onSelect } = {}) {
     // foundation course: stone blocks carrying the front edge, with
     // short returns running back under the side walls
     g.fillStyle = "#7d7466";
-    g.fillRect(slabX0 - 2, slabBot, slabX1 - slabX0 + 4, 10);
+    g.fillRect(slabX0 - 2, slabBot, slabX1 - slabX0 + 4, 13);
     for (let bx = slabX0 - 2, bi = 0; bx < slabX1 + 2; bx += 17, bi++) {
       g.fillStyle = bi % 2 ? "rgba(255,246,225,.07)" : "rgba(38,32,24,.07)";
-      g.fillRect(bx, slabBot, Math.min(17, slabX1 + 2 - bx), 10);
+      g.fillRect(bx, slabBot, Math.min(17, slabX1 + 2 - bx), 13);
       g.fillStyle = "rgba(40,34,26,.45)";
-      g.fillRect(bx, slabBot, 1, 10);
+      g.fillRect(bx, slabBot, 1, 13);
     }
     g.fillStyle = "rgba(255,242,214,.4)";
     g.fillRect(slabX0 - 2, slabBot, slabX1 - slabX0 + 4, 1);
+    g.fillStyle = "rgba(255,242,214,.16)";
+    g.fillRect(slabX0 - 2, slabBot + 1, slabX1 - slabX0 + 4, 1);
     g.fillStyle = "rgba(20,16,10,.4)";
-    g.fillRect(slabX0 - 2, slabBot + 9, slabX1 - slabX0 + 4, 1);
+    g.fillRect(slabX0 - 2, slabBot + 12, slabX1 - slabX0 + 4, 1);
     g.fillStyle = "#6b6357";
-    g.fillRect(slabX0 - 4, slabTop + 12, 3, slabBot + 10 - slabTop - 12);
-    g.fillRect(slabX1 + 1, slabTop + 12, 3, slabBot + 10 - slabTop - 12);
+    g.fillRect(slabX0 - 4, slabTop + 12, 3, slabBot + 13 - slabTop - 12);
+    g.fillRect(slabX1 + 1, slabTop + 12, 3, slabBot + 13 - slabTop - 12);
 
     // stepping stones from the front opening down across the terrace —
     // the path arrives at the room instead of the lawn
@@ -1368,6 +1463,32 @@ export function createFloor(canvas, { onSelect } = {}) {
     g.lineTo(fx - 2, fy + 9);
     g.closePath();
     g.fill();
+    // two planes meeting at the ridge (pass 3): the west slope takes
+    // the sun, the east slope sits a breath darker — volume, not stencil
+    g.fillStyle = shadeA(shade(home.roof, 10), 0.30);
+    g.beginPath();
+    g.moveTo(fx - 7, fy + 3);
+    g.lineTo(cx, fy - 0.55 * TILE);
+    g.lineTo(cx, fy - 0.42 * TILE);
+    g.lineTo(fx - 2, fy + 9);
+    g.closePath();
+    g.fill();
+    g.fillStyle = shadeA(shade(home.roof, -16), 0.38);
+    g.beginPath();
+    g.moveTo(cx, fy - 0.55 * TILE);
+    g.lineTo(fx + fw + 7, fy + 3);
+    g.lineTo(fx + fw + 2, fy + 9);
+    g.lineTo(cx, fy - 0.42 * TILE);
+    g.closePath();
+    g.fill();
+    // bargeboard trim just inside both slopes
+    g.strokeStyle = "rgba(255,240,210,.22)";
+    g.lineWidth = 1.4;
+    g.beginPath();
+    g.moveTo(fx + 1, fy + 7);
+    g.lineTo(cx, fy - 0.50 * TILE);
+    g.lineTo(fx + fw - 1, fy + 7);
+    g.stroke();
     g.strokeStyle = "rgba(46,28,14,.30)";
     g.lineWidth = 1;
     for (const t of [0.38, 0.66]) {
@@ -1404,6 +1525,33 @@ export function createFloor(canvas, { onSelect } = {}) {
     eaveShadow.addColorStop(1, "rgba(43,26,10,0)");
     g.fillStyle = eaveShadow;
     g.fillRect(fx - 2, fy + 13, fw + 4, 17);
+    // the far slope (pass 3): a sliver of roof plane behind the ridge
+    // on the door side, and eave returns where the roof wraps the two
+    // front corners — the shell gains a third dimension
+    const farSide = home.doorSide > 0 ? 1 : -1;
+    const eaveFarX = farSide > 0 ? fx + fw + 7 : fx - 7;
+    g.fillStyle = shadeA(shade(home.roof, -34), 0.85);
+    g.beginPath();
+    g.moveTo(cx, fy - 0.55 * TILE);
+    g.lineTo(eaveFarX, fy + 3);
+    g.lineTo(eaveFarX + farSide * 9, fy - 1);
+    g.lineTo(cx + farSide * 9, fy - 0.55 * TILE - 4);
+    g.closePath();
+    g.fill();
+    g.strokeStyle = "rgba(255,240,210,.30)";
+    g.lineWidth = 1.2;
+    g.beginPath();
+    g.moveTo(cx + farSide * 9, fy - 0.55 * TILE - 4);
+    g.lineTo(eaveFarX + farSide * 9, fy - 1);
+    g.stroke();
+    for (const retX of [fx - 14, fx + fw + 7]) {
+      g.fillStyle = shade(home.roof, -20);
+      g.fillRect(retX, fy + 1, 7, 6);
+      g.fillStyle = "rgba(255,240,210,.28)";
+      g.fillRect(retX, fy + 1, 7, 1);
+      g.fillStyle = "rgba(43,26,10,.30)";
+      g.fillRect(retX, fy + 6, 7, 1);
+    }
     // chimney puff house gets a chimney on the executor's smithy-cottage
     if (role === "executor") {
       g.fillStyle = "#8d8578";
@@ -1441,37 +1589,44 @@ export function createFloor(canvas, { onSelect } = {}) {
     rr(g, doorX - 2, 3.2 * TILE, doorW + 4, 4.6, 2);
     g.fill();
 
-    // window with a warm lit interior and a flower box
+    // window with a warm lit interior, a stone sill and a flower box —
+    // sized to read at full-room zoom (pass 3)
     g.fillStyle = "#54402a";
-    rr(g, winCx - 10.4, winCy - 9.4, 20.8, 18.8, 2.6);
+    rr(g, winCx - 12.7, winCy - 11.2, 25.4, 22.4, 3);
     g.fill();
-    const glow = g.createRadialGradient(winCx, winCy, 1, winCx, winCy, 10);
+    const glow = g.createRadialGradient(winCx, winCy, 1, winCx, winCy, 12);
     glow.addColorStop(0, "#fff3c4");
     glow.addColorStop(1, "#eda93e");
     g.fillStyle = glow;
-    rr(g, winCx - 8.4, winCy - 7.4, 16.8, 14.8, 1.8);
+    rr(g, winCx - 10.7, winCy - 9.2, 21.4, 18.4, 2);
     g.fill();
     g.strokeStyle = "rgba(84,64,42,.75)";
     g.lineWidth = 1.4;
     g.beginPath();
-    g.moveTo(winCx, winCy - 7.4);
-    g.lineTo(winCx, winCy + 7.4);
-    g.moveTo(winCx - 8.4, winCy);
-    g.lineTo(winCx + 8.4, winCy);
+    g.moveTo(winCx, winCy - 9.2);
+    g.lineTo(winCx, winCy + 9.2);
+    g.moveTo(winCx - 10.7, winCy);
+    g.lineTo(winCx + 10.7, winCy);
     g.stroke();
-    // flower box
+    // stone sill under the frame
+    g.fillStyle = "#6e675c";
+    rr(g, winCx - 13.7, winCy + 11.2, 27.4, 3.4, 1.4);
+    g.fill();
+    g.fillStyle = "rgba(255,246,220,.32)";
+    g.fillRect(winCx - 12.7, winCy + 11.2, 25.4, 1);
+    // flower box, sitting on the sill
     g.fillStyle = "#7a5a38";
-    rr(g, winCx - 9.4, winCy + 9.2, 18.8, 5.4, 2);
+    rr(g, winCx - 11.7, winCy + 13.4, 23.4, 5.6, 2);
     g.fill();
     g.fillStyle = "#4d7a38";
     g.beginPath();
-    g.ellipse(winCx - 5, winCy + 9.6, 3.6, 2.2, 0, 0, Math.PI * 2);
-    g.ellipse(winCx + 4.6, winCy + 9.8, 3.8, 2.3, 0, 0, Math.PI * 2);
+    g.ellipse(winCx - 6, winCy + 13.8, 4.2, 2.3, 0, 0, Math.PI * 2);
+    g.ellipse(winCx + 5.6, winCy + 14, 4.4, 2.4, 0, 0, Math.PI * 2);
     g.fill();
-    for (const [fxo, col] of [[-6.6, "#e86a7a"], [-1.4, "#f2f0e6"], [3.4, "#e8a84c"], [7.4, "#e86a7a"]]) {
+    for (const [fxo, col] of [[-8.6, "#e86a7a"], [-3.4, "#f2f0e6"], [1.8, "#e8a84c"], [6.8, "#e86a7a"], [9.8, "#f2b64f"]]) {
       g.fillStyle = col;
       g.beginPath();
-      g.arc(winCx + fxo, winCy + 8.2, 1.7, 0, Math.PI * 2);
+      g.arc(winCx + fxo, winCy + 12.4, 1.7, 0, Math.PI * 2);
       g.fill();
     }
 
@@ -1489,6 +1644,15 @@ export function createFloor(canvas, { onSelect } = {}) {
     g.strokeStyle = "rgba(255,225,175,.18)";
     g.lineWidth = 1;
     rr(g, tx + 0.5, top + 0.5, tw - 1, 17, 2.6);
+    g.stroke();
+    // grain along the tabletop boards
+    g.strokeStyle = "rgba(46,30,16,.25)";
+    g.lineWidth = 0.8;
+    g.beginPath();
+    g.moveTo(tx + 5, top + 6);
+    g.quadraticCurveTo(tx + tw / 2, top + 7.5, tx + tw - 5, top + 6);
+    g.moveTo(tx + 5, top + 12.5);
+    g.quadraticCurveTo(tx + tw / 2, top + 11, tx + tw - 5, top + 12.5);
     g.stroke();
 
     if (role === "planner") {
@@ -1832,7 +1996,8 @@ export function createFloor(canvas, { onSelect } = {}) {
     g.lineTo(ox + 10, oy + 37);
     g.closePath();
     g.fill();
-    // leafy branches reaching out
+    // leafy branches reaching out — two low limbs for the swing and
+    // the square, two more climbing into the canopy's shoulders
     g.strokeStyle = "#5d4630";
     g.lineWidth = 4;
     g.beginPath();
@@ -1841,12 +2006,27 @@ export function createFloor(canvas, { onSelect } = {}) {
     g.moveTo(ox + 2, oy - 9);
     g.quadraticCurveTo(ox + 24, oy - 22, ox + 36, oy - 14);
     g.stroke();
-    // canopy — layered blobs, sunlit top
-    const blobs = [
-      [0, -34, 34], [-30, -22, 24], [30, -24, 25], [-14, -44, 24], [16, -46, 23],
-      [-40, -8, 17], [42, -10, 17], [0, -18, 27],
+    g.lineWidth = 3;
+    g.beginPath();
+    g.moveTo(ox - 1, oy - 10);
+    g.quadraticCurveTo(ox - 14, oy - 30, ox - 20, oy - 38);
+    g.moveTo(ox + 1, oy - 10);
+    g.quadraticCurveTo(ox + 16, oy - 32, ox + 22, oy - 40);
+    g.stroke();
+    // canopy — sculpted lobes over a shadow underpass (pass 3): uneven
+    // radii and shoulders instead of uniform blobs, darkness pooled
+    // beneath so the silhouette has a top and an underside
+    const lobes = [
+      [0, -36, 30], [-27, -26, 22], [28, -28, 23], [-13, -47, 21], [15, -48, 20],
+      [-38, -10, 15], [40, -12, 16], [-4, -16, 24], [-20, -38, 16], [22, -40, 15],
     ];
-    for (const [bx, by, br] of blobs) {
+    g.fillStyle = "rgba(34,58,24,.5)";
+    for (const [bx, by, br] of lobes) {
+      g.beginPath();
+      g.arc(ox + bx + 3, oy + by + 5, br * 0.96, 0, Math.PI * 2);
+      g.fill();
+    }
+    for (const [bx, by, br] of lobes) {
       const cg = g.createRadialGradient(ox + bx - br * 0.3, oy + by - br * 0.34, 2, ox + bx, oy + by, br);
       cg.addColorStop(0, "#6da34c");
       cg.addColorStop(0.7, "#4d7a34");
@@ -1854,6 +2034,13 @@ export function createFloor(canvas, { onSelect } = {}) {
       g.fillStyle = cg;
       g.beginPath();
       g.arc(ox + bx, oy + by, br, 0, Math.PI * 2);
+      g.fill();
+    }
+    // underside shade, where the canopy hangs over the grass
+    g.fillStyle = "rgba(30,50,20,.20)";
+    for (const [ux, uy, ur] of [[-24, -8, 12], [18, -6, 13], [0, -4, 14]]) {
+      g.beginPath();
+      g.arc(ox + ux, oy + uy, ur, 0, Math.PI * 2);
       g.fill();
     }
     g.fillStyle = "rgba(190,230,140,.35)";
@@ -1872,7 +2059,12 @@ export function createFloor(canvas, { onSelect } = {}) {
       g.fillRect(ox + ax - 1.2, oy + ay - 1.6, 1.2, 1.2);
       g.fillStyle = "#d94f3d";
     }
-    // rope swing hanging from the east branch
+    // rope swing hanging from the east branch — a wider seat, rope
+    // knots, and its own shadow on the grass so it sits in the scene
+    g.fillStyle = "rgba(35,55,22,.18)";
+    g.beginPath();
+    g.ellipse(ox + 35, oy + 24, 15, 3.4, 0, 0, Math.PI * 2);
+    g.fill();
     g.strokeStyle = "rgba(120,96,60,.9)";
     g.lineWidth = 1.4;
     g.beginPath();
@@ -1882,7 +2074,14 @@ export function createFloor(canvas, { onSelect } = {}) {
     g.lineTo(ox + 40, oy + 16);
     g.stroke();
     g.fillStyle = "#8a6a44";
-    rr(g, ox + 24.6, oy + 16, 20.8, 3.6, 1.6);
+    rr(g, ox + 23, oy + 16, 24, 3.8, 1.6);
+    g.fill();
+    g.fillStyle = "rgba(255,235,200,.18)";
+    g.fillRect(ox + 24, oy + 16.6, 22, 1);
+    g.fillStyle = "#6e5133";
+    g.beginPath();
+    g.arc(ox + 30, oy + 17, 1.7, 0, Math.PI * 2);
+    g.arc(ox + 40, oy + 17, 1.7, 0, Math.PI * 2);
     g.fill();
 
     /* market stall, east green — striped awning, produce crates */
@@ -2141,9 +2340,14 @@ export function createFloor(canvas, { onSelect } = {}) {
     const y = 4 * TILE;
     const h = TILE;
     g.save();
-    // soft shade the foliage throws on the terrace
+    // soft shade the foliage throws on the terrace — in front of the
+    // reviewer's house it stops short of the foundation line and
+    // thins out, so the lattice reads as a garden fence standing in
+    // front of the house, not as growth swallowing it (pass 3)
     g.fillStyle = "rgba(40,60,25,.16)";
-    g.fillRect(x0 - 2, y + h - 2, x1 - x0 + 4, 7);
+    g.fillRect(x0 - 2, y + h - 2, 15.7 * TILE - x0 + 2, 7);
+    g.fillStyle = "rgba(40,60,25,.07)";
+    g.fillRect(15.7 * TILE, y + h - 2, x1 - 15.7 * TILE + 2, 4);
     // lattice rails
     g.fillStyle = "#6b4f35";
     g.fillRect(x0, y + 4, x1 - x0, 3.4);
@@ -2173,7 +2377,10 @@ export function createFloor(canvas, { onSelect } = {}) {
     // foliage — deterministic clusters so every frame agrees
     for (let c = 0; c < 26; c++) {
       const fx = x0 + 8 + hash(c * 3 + 1, 7) * (x1 - x0 - 16);
-      const fy = y + 4 + hash(3, c * 5 + 2) * (h - 10);
+      let fy = y + 4 + hash(3, c * 5 + 2) * (h - 10);
+      // in front of the reviewer's house the foliage stays up in the
+      // lattice, clear of the foundation course below
+      if (fx > 15.7 * TILE) fy = Math.min(fy, y + h - 17);
       const fr = 4.6 + hash(c, 11) * 4.6;
       g.fillStyle = c % 3 ? "rgba(84,128,58,.88)" : "rgba(104,152,70,.88)";
       g.beginPath();
@@ -2187,7 +2394,8 @@ export function createFloor(canvas, { onSelect } = {}) {
     // blooms: reviewer violet and planner amber along the green
     for (let bIdx = 0; bIdx < 9; bIdx++) {
       const bx = x0 + 12 + hash(bIdx * 7, 3) * (x1 - x0 - 24);
-      const by = y + 6 + hash(5, bIdx * 3) * (h - 13);
+      let by = y + 6 + hash(5, bIdx * 3) * (h - 13);
+      if (bx > 15.7 * TILE) by = Math.min(by, y + h - 18);
       g.fillStyle = bIdx % 2 ? "#a86fc0" : "#f2b64f";
       for (let p = 0; p < 5; p++) {
         const pa = (p / 5) * Math.PI * 2 + bIdx;
@@ -2974,10 +3182,52 @@ export function createFloor(canvas, { onSelect } = {}) {
       g.ellipse(pnx, pny, 1.38 * TILE * pr, 0.72 * TILE * pr, 0, 0.3, Math.PI * 0.9);
       g.stroke();
     }
+    // shoreline (pass 3): a wet-sand band inside the rim, a scalloped
+    // foam edge where water meets it, and the world smeared faintly
+    // on the surface — the stall's red, the oak's green
+    g.strokeStyle = "rgba(146,124,90,.35)";
+    g.lineWidth = 3;
+    g.beginPath();
+    g.ellipse(pnx, pny, 1.45 * TILE, 0.78 * TILE, 0, 0, Math.PI * 2);
+    g.stroke();
+    g.strokeStyle = "rgba(255,255,255,.45)";
+    g.lineWidth = 1.5;
+    g.setLineDash([6.5, 4.5]);
+    g.beginPath();
+    g.ellipse(pnx, pny, 1.36 * TILE, 0.70 * TILE, 0, 0, Math.PI * 2);
+    g.stroke();
+    g.setLineDash([]);
+    g.save();
+    g.beginPath();
+    g.ellipse(pnx, pny, 1.38 * TILE, 0.72 * TILE, 0, 0, Math.PI * 2);
+    g.clip();
+    g.fillStyle = "rgba(200,80,63,.10)";
+    g.beginPath();
+    g.ellipse(pnx - 24, pny - 9, 13, 3.8, -0.15, 0, Math.PI * 2);
+    g.fill();
+    g.fillStyle = "rgba(70,110,50,.12)";
+    g.beginPath();
+    g.ellipse(pnx - 2, pny + 11, 17, 4.4, 0.08, 0, Math.PI * 2);
+    g.fill();
+    g.fillStyle = "rgba(255,255,255,.35)";
+    g.fillRect(pnx - 30, pny - 12, 5, 1.2);
+    g.fillRect(pnx + 8, pny + 4, 6, 1.2);
+    g.restore();
     g.fillStyle = "#8d8578";
     for (const [sx3, sy3, sr3] of [[-50, 8, 5], [-38, 22, 4], [44, 16, 5.4], [52, -4, 4.2], [-46, -14, 4.4], [30, -22, 4]]) {
       g.beginPath();
       g.ellipse(pnx + sx3, pny + sy3, sr3, sr3 * 0.7, 0.3, 0, Math.PI * 2);
+      g.fill();
+    }
+    // stepping stones wading into the shallows on the west shore
+    for (const [sx4, sy4, sr4] of [[-49, 3, 4.6], [-42.5, -2.5, 3.5], [-36.5, 1.5, 2.6]]) {
+      g.fillStyle = "#8d8578";
+      g.beginPath();
+      g.ellipse(pnx + sx4, pny + sy4, sr4, sr4 * 0.66, 0.25, 0, Math.PI * 2);
+      g.fill();
+      g.fillStyle = "rgba(255,250,236,.22)";
+      g.beginPath();
+      g.ellipse(pnx + sx4 - 0.8, pny + sy4 - 0.9, sr4 * 0.55, sr4 * 0.3, 0.25, 0, Math.PI * 2);
       g.fill();
     }
     // lily pads, one in flower
