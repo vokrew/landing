@@ -1,0 +1,34 @@
+{
+  "mode": "before",
+  "pageDir": "/home/hatch/workspace/multi-brain-router-app/landing-repo/ds-app",
+  "checks": [
+    {
+      "name": "page boots offline against rig bridge",
+      "ok": true,
+      "detail": "{\"paired\":false,\"online\":false}"
+    },
+    {
+      "name": "paired via UI",
+      "ok": true,
+      "detail": "{\"paired\":true,\"online\":true,\"crew\":\"default\"}"
+    },
+    {
+      "name": "bridge token captured from page storage",
+      "ok": true,
+      "detail": "present"
+    },
+    {
+      "name": "zero console errors (before, idle)",
+      "ok": true,
+      "detail": "none"
+    }
+  ],
+  "notes": [
+    "pairing code captured (single-use, rig-isolated)",
+    "paired-idle room luminance samples: 0.4221, 0.4221"
+  ],
+  "luminanceIdle": [
+    0.4221,
+    0.4221
+  ]
+}
