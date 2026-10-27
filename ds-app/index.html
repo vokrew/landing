@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Vokrew — the floor</title>
+<meta name="description" content="One prompt. A crew of AIs. Checked before it ships. Pair your local bridge and watch the crew work." />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23111723'/%3E%3Cpath d='M16 6l8 10-8 10-8-10z' fill='%23ffa05c'/%3E%3C/svg%3E" />
+<link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+<div class="app">
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="mark" aria-hidden="true">◈</span>
+      <span class="wordmark">VOKREW</span>
+      <span class="tagline">one prompt · a crew of AIs · checked</span>
+    </div>
+
+    <nav class="tabs" id="tabs" aria-label="Views">
+      <button class="tab active" data-tab="floor" type="button">Floor</button>
+      <button class="tab" data-tab="chat" type="button">Chat</button>
+      <button class="tab" data-tab="run" type="button">Run</button>
+      <button class="tab" data-tab="budget" type="button">Budget</button>
+      <button class="tab" data-tab="crew" type="button">Crew</button>
+    </nav>
+
+    <div class="topbar-right">
+      <span class="pill budget" id="budgetPill" title="Calls served today, from GET /budget">⚡ CALLS TODAY — / —</span>
+      <span class="pill status" id="bridgeStatus" data-state="offline">
+        <span class="dot" aria-hidden="true"></span><span id="bridgeStatusText">OFFLINE</span>
+      </span>
+      <button class="icon-btn" id="connectBtn" type="button" title="Connect a bridge">connect</button>
+    </div>
+  </header>
+
+  <main class="views">
+
+    <!-- ───────────────────────────── FLOOR ───────────────────────────── -->
+    <section class="view active" id="view-floor" data-view="floor">
+      <div class="floor-toolbar">
+        <div class="floor-title">
+          <p class="eyebrow">LIVE OPERATIONS</p>
+          <h1>The Floor</h1>
+          <p class="sub" id="floorSub">No bridge paired — the room is dark.</p>
+        </div>
+
+        <div class="floor-tools">
+          <label class="crew-pick">
+            <span>Crew</span>
+            <select id="crewSelect" aria-label="Active crew"></select>
+          </label>
+          <form class="conduct" id="conductForm" autocomplete="off">
+            <input id="conductInput" type="text" placeholder="Conduct your crew — one instruction, all three answer…" aria-label="Instruction for the crew" disabled />
+            <button class="btn primary" id="conductBtn" type="submit" disabled>Send</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="floor-grid">
+        <div class="room-wrap" id="roomWrap">
+          <canvas id="floorCanvas" width="1296" height="792" aria-label="The floor: a top-down office with your crew at their desks"></canvas>
+
+          <div class="room-overlay live" id="liveBanner" hidden>
+            <span class="live-dot" aria-hidden="true"></span>
+            <span id="liveText">working</span>
+            <span class="live-spend" id="liveSpend"></span>
+          </div>
+
+          <div class="room-overlay locked" id="roomLocked">
+            <div class="lock-inner">
+              <span class="lock-icon" aria-hidden="true">⌁</span>
+              <strong>ROOM LOCKED · OFFLINE</strong>
+              <p id="lockText">Pair a bridge to seat your crew. Nothing is shown that the bridge did not report.</p>
+              <button class="btn primary" id="lockConnect" type="button">Connect a bridge</button>
+            </div>
+          </div>
+
+          <div class="minimap-wrap" aria-hidden="true">
+            <canvas id="minimap" width="176" height="108"></canvas>
+            <span class="minimap-label">floorplan</span>
+          </div>
+
+          <div class="focus-panel" id="focusPanel" hidden>
+            <button class="focus-close" id="focusClose" type="button" aria-label="Close focus panel">×</button>
+            <div class="focus-head">
+              <span class="palette-dot" id="focusDot"></span>
+              <div>
+                <strong id="focusName">—</strong>
+                <span class="focus-role" id="focusRole">—</span>
+              </div>
+            </div>
+            <dl class="focus-grid">
+              <dt>stage</dt><dd id="focusStage">—</dd>
+              <dt>lane</dt><dd id="focusLane">—</dd>
+              <dt>model</dt><dd id="focusModel">—</dd>
+              <dt>calls today</dt><dd id="focusCalls">—</dd>
+              <dt>stamps</dt><dd id="focusStampCount">—</dd>
+            </dl>
+            <div class="focus-history" id="focusHistory"></div>
+          </div>
+        </div>
+
+        <aside class="rails">
+          <section class="rail" aria-labelledby="rosterTitle">
+            <header class="rail-head">
+              <h2 id="rosterTitle">Party</h2>
+              <span class="rail-meta" id="rosterMeta">—</span>
+            </header>
+            <div class="roster" id="roster"></div>
+          </section>
+
+          <section class="rail" aria-labelledby="questTitle">
+            <header class="rail-head">
+              <h2 id="questTitle">Quest log</h2>
+              <span class="rail-meta" id="questMeta">0 runs</span>
+            </header>
+            <div class="quest" id="questLog"></div>
+            <p class="rail-note" id="questNote"></p>
+          </section>
+
+          <section class="rail" id="conductPanel" aria-labelledby="conductTitle" hidden>
+            <header class="rail-head">
+              <h2 id="conductTitle">Conduct transcript</h2>
+              <span class="rail-meta" id="conductMeta">—</span>
+            </header>
+            <div class="conduct-parts" id="conductParts"></div>
+          </section>
+        </aside>
+      </div>
+
+      <footer class="floor-foot">
+        <div class="legend" aria-hidden="true">
+          <span><i class="legend-dot idle"></i>at desk</span>
+          <span><i class="legend-dot working"></i>working</span>
+          <span><i class="legend-dot reviewing"></i>reviewing</span>
+          <span><i class="legend-dot walking"></i>walking</span>
+        </div>
+        <p>Phases, stamps and verdicts are read from your bridge — the room never guesses.</p>
+      </footer>
+    </section>
+
+    <!-- ───────────────────────────── CHAT ───────────────────────────── -->
+    <section class="view" id="view-chat" data-view="chat">
+      <div class="panel-page">
+        <header class="page-head">
+          <div>
+            <p class="eyebrow">CONVERSATION · CHAT SURFACE</p>
+            <h1>Chat</h1>
+            <p class="sub">The executor answers. Flip review on and the reviewer checks it — every turn stamped.</p>
+          </div>
+          <div class="page-badges">
+            <span class="pill subtle"><span class="glyph" aria-hidden="true">⌁</span> separate ledger</span>
+          </div>
+        </header>
+
+        <div class="page-split chat-split">
+          <div class="chat-box surface-card">
+            <div class="chat-log" id="chatLog" aria-live="polite">
+              <div class="chat-empty">
+                <span class="empty-mark" aria-hidden="true">◈</span>
+                <strong>Ask the crew anything.</strong>
+                <p>The executor answers from your bridge. Turn review on and the reviewer checks the turn before it lands.</p>
+                <div class="prompt-chips" aria-label="Suggested prompts">
+                  <button class="prompt-chip" type="button" data-prompt="What can you do in one short answer?">What can you do?</button>
+                  <button class="prompt-chip" type="button" data-prompt="Summarize the last run in one sentence.">Summarize the last run</button>
+                  <button class="prompt-chip" type="button" data-prompt="Draft a three-step plan for a small fix.">Draft a plan</button>
+                </div>
+              </div>
+            </div>
+            <form class="chat-compose" id="chatForm" autocomplete="off">
+              <textarea id="chatInput" rows="1" placeholder="Ask your crew…" aria-label="Chat message"></textarea>
+              <button class="btn primary" id="chatSend" type="submit">Send</button>
+            </form>
+            <p class="hint" id="chatHint">Chat calls are counted on the chat surface — separate from coding runs.</p>
+          </div>
+
+          <aside class="side-rail">
+            <section class="side-card">
+              <header class="side-head">
+                <h2>Review</h2>
+                <span class="side-meta">on demand</span>
+              </header>
+              <label class="switch switch-card">
+                <span>review every turn</span>
+                <input type="checkbox" id="chatVerify" />
+              </label>
+              <p class="side-copy">With review on, the reviewer checks the executor's answer and the verdict lands with the reply.</p>
+            </section>
+
+            <section class="side-card">
+              <header class="side-head">
+                <h2>Surface</h2>
+                <span class="side-meta" id="chatSurfaceMeta">chat</span>
+              </header>
+              <dl class="side-stats">
+                <div><dt>calls today</dt><dd id="chatCalls">—</dd></div>
+                <div><dt>seated crew</dt><dd id="chatCrew">—</dd></div>
+                <div><dt>session</dt><dd id="chatSessionId">new</dd></div>
+              </dl>
+            </section>
+
+            <section class="side-card">
+              <header class="side-head"><h2>How a turn lands</h2></header>
+              <ol class="side-steps">
+                <li><span>01</span><p>The executor answers from the bridge.</p></li>
+                <li><span>02</span><p>The reviewer checks it, when review is on.</p></li>
+                <li><span>03</span><p>Verdict and stamps arrive with the reply.</p></li>
+              </ol>
+            </section>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───────────────────────────── RUN ───────────────────────────── -->
+    <section class="view" id="view-run" data-view="run">
+      <div class="panel-page">
+        <header class="page-head">
+          <div>
+            <p class="eyebrow">CHAIN · ONE TASK, THREE ROLES</p>
+            <h1>Run a task</h1>
+            <p class="sub">Planner frames it, executor does it, reviewer checks it. Stamps come from the bridge.</p>
+          </div>
+          <div class="page-badges">
+            <span class="pill subtle"><span class="glyph" aria-hidden="true">⟐</span> 3 roles · 1 verdict</span>
+          </div>
+        </header>
+
+        <div class="page-split run-split">
+          <form class="run-form surface-card" id="runForm" autocomplete="off">
+            <label class="field grow">
+              <span>Task</span>
+              <textarea id="runTask" rows="4" placeholder="e.g. add a retry with backoff to the fetch helper"></textarea>
+            </label>
+            <div class="prompt-chips run-prompts" aria-label="Suggested tasks">
+              <button class="prompt-chip" type="button" data-task="Add a retry with backoff to the fetch helper.">Retry with backoff</button>
+              <button class="prompt-chip" type="button" data-task="Write a one-paragraph README for this project.">Write a README</button>
+              <button class="prompt-chip" type="button" data-task="Find one edge case in the current plan and fix it.">Find an edge case</button>
+            </div>
+            <div class="field-row">
+              <label class="field">
+                <span>Surface</span>
+                <select id="runSurface">
+                  <option value="coding">coding</option>
+                  <option value="chat">chat</option>
+                </select>
+              </label>
+              <label class="field">
+                <span>Workspace <em>optional</em></span>
+                <input id="runWorkspace" type="text" placeholder="/path/to/project" />
+              </label>
+              <button class="btn primary" id="runBtn" type="submit">Run chain</button>
+            </div>
+            <p class="hint" id="runHint">No run in flight.</p>
+          </form>
+
+          <aside class="side-rail">
+            <section class="side-card chain-card">
+              <header class="side-head">
+                <h2>The chain</h2>
+                <span class="side-meta" id="chainMeta">3 roles</span>
+              </header>
+              <div class="chain-roles" id="chainRoles"></div>
+              <p class="side-copy">One served call per stage. Failed and capped attempts never advance the room.</p>
+            </section>
+
+            <section class="side-card">
+              <header class="side-head">
+                <h2>Counted in calls</h2>
+                <span class="side-meta">not tokens</span>
+              </header>
+              <p class="side-copy">The header pill is the bridge's own ledger. A run adds one call for every stage that actually served.</p>
+            </section>
+          </aside>
+        </div>
+
+        <div class="run-live" id="runLive" hidden>
+          <div class="phase-track" id="phaseTrack">
+            <span class="phase" data-phase="planner">plan</span>
+            <span class="phase" data-phase="executor">work</span>
+            <span class="phase" data-phase="reviewer">review</span>
+          </div>
+          <p class="hint" id="runPhaseText"></p>
+        </div>
+
+        <article class="run-card inline" id="runResult" hidden></article>
+      </div>
+    </section>
+
+    <!-- ───────────────────────────── BUDGET ───────────────────────────── -->
+    <section class="view" id="view-budget" data-view="budget">
+      <div class="panel-page">
+        <header class="page-head">
+          <div>
+            <p class="eyebrow">LEDGER · CALLS, NOT TOKENS</p>
+            <h1>Budget</h1>
+            <p class="sub">Budgets are counted in calls per lane per day — never tokens.</p>
+          </div>
+          <div class="page-badges">
+            <span class="pill subtle" id="budgetDay">day —</span>
+            <button class="btn" id="budgetRefresh" type="button">Refresh</button>
+          </div>
+        </header>
+        <div class="budget-summary" id="budgetSummary"></div>
+        <div class="surface-card ledger-card">
+          <header class="ledger-head">
+            <div>
+              <h2>Lane ledger</h2>
+              <p class="side-copy">Every served call, read from the bridge. Caps are never invented.</p>
+            </div>
+            <span class="chip" id="budgetSurface">coding</span>
+          </header>
+          <div class="table-wrap">
+            <table class="budget-table">
+              <thead><tr><th>lane</th><th>used today</th><th>cap</th><th>remaining</th></tr></thead>
+              <tbody id="budgetRows"></tbody>
+            </table>
+          </div>
+        </div>
+        <p class="rail-note" id="budgetNote"></p>
+      </div>
+    </section>
+
+    <!-- ───────────────────────────── CREW ───────────────────────────── -->
+    <section class="view" id="view-crew" data-view="crew">
+      <div class="panel-page">
+        <header class="page-head">
+          <div>
+            <p class="eyebrow">ROSTER · BRIDGE CREWS</p>
+            <h1>Crew</h1>
+            <p class="sub">Crews live on your bridge. The room seats whichever crew is active.</p>
+          </div>
+          <div class="page-badges">
+            <label class="crew-pick">
+              <span>Active crew</span>
+              <select id="crewSelectPage" aria-label="Active crew"></select>
+            </label>
+          </div>
+        </header>
+        <div class="crew-grid" id="crewGrid"></div>
+        <p class="rail-note" id="crewNote"></p>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- ───────────────────────────── PAIRING ───────────────────────────── -->
+<div class="modal" id="pairModal" hidden>
+  <div class="modal-card narrow" role="dialog" aria-modal="true" aria-labelledby="pairTitle">
+    <header class="modal-head">
+      <h2 id="pairTitle">Pair your bridge</h2>
+      <button class="modal-close" id="pairClose" type="button" aria-label="Close">×</button>
+    </header>
+    <p class="modal-sub">Run <code>vokrew serve</code> on your machine. It prints a pairing code — paste it here. The code is single-use and expires in 10 minutes.</p>
+    <form class="pair-form" id="pairForm" autocomplete="off">
+      <label class="field">
+        <span>Bridge URL</span>
+        <input id="pairUrl" type="text" value="http://127.0.0.1:7717" spellcheck="false" />
+      </label>
+      <label class="field">
+        <span>Pairing code</span>
+        <input id="pairCode" type="text" inputmode="numeric" placeholder="6 digits" maxlength="12" spellcheck="false" />
+      </label>
+      <p class="error" id="pairError" hidden></p>
+      <button class="btn primary wide" id="pairBtn" type="submit">Pair</button>
+    </form>
+    <div class="pair-foot">
+      <span id="pairFootState">not paired</span>
+      <button class="linkish" id="forgetBtn" type="button" hidden>forget pairing</button>
+    </div>
+  </div>
+</div>
+
+<!-- ───────────────────────────── RUN CARD ───────────────────────────── -->
+<div class="modal" id="runModal" hidden>
+  <div class="modal-card wide" role="dialog" aria-modal="true" aria-labelledby="runModalTitle">
+    <header class="modal-head">
+      <h2 id="runModalTitle">Run</h2>
+      <button class="modal-close" id="runClose" type="button" aria-label="Close">×</button>
+    </header>
+    <div id="runCardBody"></div>
+  </div>
+</div>
+
+<script type="module" src="./app.js"></script>
+</body>
+</html>
