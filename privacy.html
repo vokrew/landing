@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Privacy — Vokrew</title>
+<meta name="description" content="What Vokrew collects, what it never sees, and where your keys live. Asked straight, answered straight." />
+<style>
+  :root { --bg:#0a0c0f; --panel:#10131a; --line:#232833; --ink:#eef1f5; --mut:#9aa4b1; --dim:#68727f; --lime:#b7f04a; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.65 -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 32px 20px 64px; }
+  .wm { color:var(--ink); text-decoration:none; font-weight:700; letter-spacing:.06em; }
+  .wm i { display:inline-block; width:9px; height:9px; border-radius:50%; background:var(--lime); margin-right:8px; }
+  h1 { font-size: 30px; margin: 34px 0 6px; }
+  h2 { font-size: 19px; margin: 30px 0 6px; }
+  p, li { color: var(--mut); }
+  b, strong { color: var(--ink); }
+  a { color: var(--lime); }
+  .lede { font-size: 17px; }
+  footer { border-top: 1px solid var(--line); margin-top: 48px; padding-top: 18px; }
+  footer nav a { color: var(--mut); text-decoration:none; margin-right: 16px; font-size: 14px; }
+  small { color: var(--dim); display:block; margin-top: 12px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="wm" href="/"><i></i>VOKREW</a>
+
+  <h1>Privacy</h1>
+  <p class="lede">Short version: <b>your keys live on your machine, your prompts travel from your machine to the providers you chose, and this website runs no AI.</b> The only thing we store is your waitlist email — if you give it to us.</p>
+
+  <h2>What we collect</h2>
+  <ul>
+    <li><b>Waitlist email.</b> If you join the waitlist, we store the email address you submit so we can send one invite email when your batch opens. No drip campaign. We don't sell it, rent it, or share it with advertisers. Ask us and we'll delete it.</li>
+    <li><b>Basic server logs.</b> Our host (Cloudflare) keeps standard request logs — the same ones every website gets — to serve pages and stop abuse.</li>
+  </ul>
+  <p>This page carries <b>no ad trackers and no third-party analytics</b>.</p>
+
+  <h2>What we never see</h2>
+  <ul>
+    <li><b>Your API keys.</b> Keys you bring are stored by the bridge program on your own device. They are never sent to Vokrew — there is no Vokrew server in the run path.</li>
+    <li><b>Your prompts and code.</b> When you run a task, your bridge sends it directly to the AI providers <em>you</em> configured. Those providers' own privacy policies apply to what they receive. If a model runs locally on your machine (for example via Ollama), nothing leaves the device.</li>
+    <li><b>Your quota ledger.</b> The ledger lives with your bridge, on your machine. It's your record, not ours.</li>
+  </ul>
+
+  <h2>Who's behind this</h2>
+  <p>Vokrew is an independent project built by a solo developer in Michigan, USA. The public home of the project is <a href="https://github.com/vokrew">github.com/vokrew</a> — questions and deletion requests are welcome there.</p>
+
+  <h2>Changes</h2>
+  <p>If this policy changes in a way that matters, we'll note it here with a date. Last updated: October 27, 2026.</p>
+
+  <footer>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/app">Open the app</a>
+      <a href="/security">Security</a>
+      <a href="/terms">Terms</a>
+    </nav>
+    <small>© 2026 Vokrew — your voice, your crew.</small>
+  </footer>
+</div>
+</body>
+</html>

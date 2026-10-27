@@ -412,7 +412,7 @@
         <div class="brandrow">
           <div class="wordmark"><span class="dot"></span>VOKREW <small>your voice, your crew</small></div>
           <div class="status-pill"><span class="pulse"></span> Waitlist open — invites roll out in batches</div>
-          <a class="status-pill" href="/app" style="text-decoration:none;color:var(--lime);border-color:var(--lime)">Open the app →</a>
+          <a href="/app" style="text-decoration:none;color:var(--mut);font-size:13px">Open the app →</a>
         </div>
 
         <div class="hero-grid">
@@ -441,9 +441,10 @@
               </div>
             </div>
 
-            <p class="proof">Vokrew runs on a <b>36-route router already in production</b> for the people building it — free lanes first, paid only as a catcher.</p>
+            <p class="proof"><b>The honest fine print, up top:</b> using the app means running a small free program — the bridge — on your own machine, and pairing it with a 6-digit code. That's deliberate: your API keys and your local models live on your machine, not on our servers. This website runs no AI.</p>
+            <p class="proof">Vokrew runs on a <b>36-route router already in production</b> for the people building it — free lanes first, paid only as a catcher (a paid lane that fires only when a free one caps out, and only when you say so).</p>
             <p class="proof">Already running the bridge on your machine? <a href="/app" style="color:var(--lime)">Open the app →</a></p>
-            <p class="proof"><b>How the app works:</b> Vokrew runs on your own machine first — a small bridge program that talks to your local AI (like Ollama) or your own lanes. This website runs no AI on a server. Start the bridge, it prints a 6-digit code, then open the app <b>on that same device</b> and pair. <a href="/app#how" style="color:var(--lime)">Step by step →</a></p>
+            <p class="proof"><b>How pairing works:</b> start the bridge, it prints a 6-digit code, then open the app <b>on that same device</b> and enter it. <a href="/app#how" style="color:var(--lime)">Step by step →</a></p>
           </div>
 
           <div class="runpanel" aria-label="Example of a Vokrew crew run">
@@ -539,6 +540,7 @@
             </div>
           </div>
         </div>
+        <p style="color:var(--mut);font-size:14px;margin-top:20px">Plain words: a <b>brain</b> is one AI model. A <b>lane</b> is one route to a brain — a free tier, your own API key, or a model running on your machine. A <b>catcher</b> is a paid lane that fires only when a free lane caps out, and only when you say so.</p>
       </div>
     </section>
 
@@ -551,13 +553,13 @@
         <div class="versus">
           <div class="vrow">
             <span class="who"><span class="vmark no">✕</span> Poe</span>
-            <p>Free points were cut from <b>3,000 to 300 a day</b>. The sampler keeps getting smaller, and one model still grades its own homework.</p>
-            <span class="vstat">free tier<b>3,000 → 300 /day</b></span>
+            <p>Free points were cut from <b>~3,000 to ~300 a day</b> (2026, by third-party tracking — Poe never announced it). The sampler keeps getting smaller, and one model still grades its own homework.</p>
+            <span class="vstat">free tier<b>~3,000 → ~300 /day</b></span>
           </div>
           <div class="vrow">
             <span class="who"><span class="vmark no">✕</span> OpenRouter</span>
-            <p>A good pipe — but a pipe. Free is capped at <b>50 requests a day</b>, and routing, failover, and verification are still your problem.</p>
-            <span class="vstat">free tier<b>50 req /day</b></span>
+            <p>A good pipe — but a pipe. Free is capped at <b>50 requests a day</b> (1,000 once you've ever bought $10 of credits), it will fall through to a backup provider when one fails — but nothing checks the work, and your other lanes live somewhere else.</p>
+            <span class="vstat">free tier<b>50–1,000 req /day</b></span>
           </div>
           <div class="vrow">
             <span class="who"><span class="vmark no">✕</span> A dropdown</span>
@@ -631,7 +633,7 @@
           <div class="plan">
             <span class="pname">Free</span>
             <div class="price">$0</div>
-            <p class="pdesc">BYOK-free + local, plus a hosted taste of the crew. Strong on purpose — the free tier is the product, not the demo.</p>
+            <p class="pdesc">BYOK-free + local, plus a small hosted taste — a capped demo crew, so you can feel it before you install anything. Strong on purpose — the free tier is the product, not the demo.</p>
             <ul>
               <li><b>Bring your own free keys</b> — routed for you</li>
               <li><b>Local Ollama</b> as a first-class brain</li>
@@ -646,7 +648,7 @@
             <p class="pdesc">Managed routing with a capped open-model bundle — you stop thinking about lanes entirely.</p>
             <ul>
               <li><b>Managed routing</b> across the full roster</li>
-              <li><b>Capped open-model bundle</b> included</li>
+              <li><b>Capped bundle of hosted crew calls</b> included — counted in the same quota ledger, so the cap is never a surprise</li>
               <li>Longer crew chains, bigger tasks</li>
               <li><b>Reviewer pass on everything</b></li>
               <li>Conduct mode — voice, full crew</li>
@@ -731,6 +733,9 @@
             <a href="#ledger">Quota ledger</a>
             <a href="#pricing">Pricing</a>
             <a href="#faq">FAQ</a>
+            <a href="/privacy">Privacy</a>
+            <a href="/security">Security</a>
+            <a href="/terms">Terms</a>
           </nav>
           <small>© 2026 Vokrew — your voice, your crew. Vokrew is in development; invites roll out in batches.</small>
         </div>

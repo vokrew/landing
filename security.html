@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Security — Vokrew</title>
+<meta name="description" content="How the Vokrew bridge protects your keys: local-only by design, single-use pairing, nothing in the cloud to breach." />
+<style>
+  :root { --bg:#0a0c0f; --panel:#10131a; --line:#232833; --ink:#eef1f5; --mut:#9aa4b1; --dim:#68727f; --lime:#b7f04a; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.65 -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 32px 20px 64px; }
+  .wm { color:var(--ink); text-decoration:none; font-weight:700; letter-spacing:.06em; }
+  .wm i { display:inline-block; width:9px; height:9px; border-radius:50%; background:var(--lime); margin-right:8px; }
+  h1 { font-size: 30px; margin: 34px 0 6px; }
+  h2 { font-size: 19px; margin: 30px 0 6px; }
+  p, li { color: var(--mut); }
+  b, strong { color: var(--ink); }
+  a { color: var(--lime); }
+  .lede { font-size: 17px; }
+  footer { border-top: 1px solid var(--line); margin-top: 48px; padding-top: 18px; }
+  footer nav a { color: var(--mut); text-decoration:none; margin-right: 16px; font-size: 14px; }
+  small { color: var(--dim); display:block; margin-top: 12px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="wm" href="/"><i></i>VOKREW</a>
+
+  <h1>Security</h1>
+  <p class="lede">The safest key store is the one that doesn't exist. <b>Vokrew keeps your API keys on your own machine</b> — there is no Vokrew cloud holding them, so there is no Vokrew cloud to breach.</p>
+
+  <h2>How the bridge protects you</h2>
+  <ul>
+    <li><b>Local only.</b> The bridge program listens on your own device (127.0.0.1). It is not exposed to your network or the internet.</li>
+    <li><b>Single-use pairing.</b> The app pairs with a 6-digit code the bridge prints. Each code works once, expires in 10 minutes, and the bridge locks pairing after 5 wrong guesses.</li>
+    <li><b>Your keys stay put.</b> Provider keys are stored in the bridge's configuration on your device and are used only to call the providers you chose, directly from your machine.</li>
+    <li><b>Honest stamps.</b> Every run is stamped with the brain that served it and the tier it cost, computed from the bridge's own responses — the app can't dress up a paid call as a free one.</li>
+  </ul>
+
+  <h2>What this doesn't cover</h2>
+  <p>Once your bridge sends a prompt to a provider you configured, that provider's security and data practices apply — pick providers you'd trust with the work you're sending. Models you run locally never leave your device. And, as with any software on your machine, keeping your own device secure is the foundation everything else stands on.</p>
+
+  <h2>Reporting a problem</h2>
+  <p>Found something that looks wrong? Tell us at <a href="https://github.com/vokrew">github.com/vokrew</a> — open an issue, or reach out there first if it's sensitive and we'll arrange a private channel. We'd rather hear it from you than read about it.</p>
+
+  <p><small>Last updated: October 27, 2026.</small></p>
+
+  <footer>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/app">Open the app</a>
+      <a href="/privacy">Privacy</a>
+      <a href="/terms">Terms</a>
+    </nav>
+    <small>© 2026 Vokrew — your voice, your crew.</small>
+  </footer>
+</div>
+</body>
+</html>
