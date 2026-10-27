@@ -1,0 +1,372 @@
+{
+  "assertions": [
+    {
+      "name": "(0) connect door up over the locked room",
+      "ok": true,
+      "detail": "{\"overlayVisible\":true,\"chip\":\"OFFLINE\"}"
+    },
+    {
+      "name": "(1) paired through the page form",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "(1) warm-up chat served by the real lane",
+      "ok": true,
+      "detail": "ok"
+    },
+    {
+      "name": "(1) quiet warm-up run (pre-browser) outcome",
+      "ok": true,
+      "note": true,
+      "detail": "done in 100s"
+    },
+    {
+      "name": "(2) conductor is present in the Floor sidebar with an empty transcript and no holds",
+      "ok": true,
+      "detail": "present=true entries=0 holds=0"
+    },
+    {
+      "name": "(2) snapshot: the page pill reads the same coding ledger as GET /budget",
+      "ok": true,
+      "detail": "pill=3 api=3 chat=1 registry=0"
+    },
+    {
+      "name": "(1) named task creates exactly one hold",
+      "ok": true,
+      "detail": "holds=1"
+    },
+    {
+      "name": "(1) the hold names the called-out agent and its seat",
+      "ok": true,
+      "detail": "[{\"role\":\"planner\",\"name\":\"Scout\"}]"
+    },
+    {
+      "name": "(1) the hold carries the task text verbatim and the seated crew",
+      "ok": true,
+      "detail": "crew=rig text=\"Scout, draft the release checklist and tag the open issues\""
+    },
+    {
+      "name": "(1) the transcript records the hold as issued (one hold entry, same id, same text)",
+      "ok": true,
+      "detail": "entry=h1 hold=h1"
+    },
+    {
+      "name": "(1) the holds list + transcript render the hold (DOM rows carry its id, crew, seats)",
+      "ok": true,
+      "detail": "holdRows=[{\"hold\":\"h1\",\"crew\":\"rig\",\"seats\":\"planner\",\"text\":\"HELD FOR SCOUT · PLANNER · CREW RIGScout, draft the release checklist and tag the open issues\"}] count=1 held"
+    },
+    {
+      "name": "(1) fires nothing: registry + both budgets unchanged, zero /chat calls",
+      "ok": true,
+      "detail": "registry=0/0 coding=3/3 chat=1/1 chats=0 holds=1"
+    },
+    {
+      "name": "(1) conductor hold screenshot captured",
+      "ok": true,
+      "detail": "438476 bytes"
+    },
+    {
+      "name": "(1) multi-seat call-out creates exactly one more hold, naming both seats in order",
+      "ok": true,
+      "detail": "[{\"role\":\"executor\",\"name\":\"Musky\"},{\"role\":\"reviewer\",\"name\":\"Judge\"}]"
+    },
+    {
+      "name": "(1b) fires nothing: registry + both budgets unchanged, zero /chat calls",
+      "ok": true,
+      "detail": "registry=0/0 coding=3/3 chat=1/1 chats=0 holds=2"
+    },
+    {
+      "name": "(2) the unknown call-out is flagged in the transcript, naming the unknown",
+      "ok": true,
+      "detail": "[\"Zebedee\"]"
+    },
+    {
+      "name": "(2) the flag renders inline in the transcript (DOM row names Zebedee, says nothing was fired)",
+      "ok": true,
+      "detail": "10:09:03NOT SENTno crewmate named Zebedee in crew rig — nothing was fired."
+    },
+    {
+      "name": "(2) no hold was created for the unknown name",
+      "ok": true,
+      "detail": "holds=2"
+    },
+    {
+      "name": "(2) fires nothing: registry + both budgets unchanged, zero /chat calls",
+      "ok": true,
+      "detail": "registry=0/0 coding=3/3 chat=1/1 chats=0 holds=2"
+    },
+    {
+      "name": "(2) unknown-flag screenshot captured",
+      "ok": true,
+      "detail": "445636 bytes"
+    },
+    {
+      "name": "(5) a plain instruction becomes a hold for the whole crew (no seats called out, standard chain)",
+      "ok": true,
+      "detail": "crew=rig seats=[]"
+    },
+    {
+      "name": "(5) fires nothing: registry + both budgets unchanged, zero /chat calls",
+      "ok": true,
+      "detail": "registry=0/0 coding=3/3 chat=1/1 chats=0 holds=3"
+    },
+    {
+      "name": "(3) the question returns a reply in the conductor transcript",
+      "ok": true,
+      "detail": "reply=\"The pwd command prints the root directory.\\n\""
+    },
+    {
+      "name": "(3) exactly one POST /chat was fired, carrying the question verbatim, surface=chat, the seated crew",
+      "ok": true,
+      "detail": "chats=1 req={\"message\":\"What does the pwd command print?\",\"surface\":\"chat\",\"crew\":\"rig\"} status=200"
+    },
+    {
+      "name": "(3) the transcript reply's stamp deep-equals the real /chat response stamp (role, agent, lane, provider, model, family, tier, latency, attempts, failover)",
+      "ok": true,
+      "detail": "entry={\"role\":\"executor\",\"agent\":\"Musky\",\"lane\":\"local-gemma\",\"provider\":\"openai-compatible\",\"model\":\"gemma-local\",\"family\":\"gemma\",\"tier\":\"local\",\"latencyMs\":7699,\"failover\":false,\"attempts\":[{\"lane\":\"local-gemma\",\"status\":\"served\"}]} response={\"role\":\"executor\",\"agent\":\"Musky\",\"lane\":\"local-gemma\",\"provider\":\"openai-compatible\",\"model\":\"gemma-local\",\"family\":\"gemma\",\"tier\":\"local\",\"latencyMs\":7699,\"failover\":false,\"attempts\":[{\"lane\":\"local-gemma\",\"status\":\"served\"}]}"
+    },
+    {
+      "name": "(3) the answering stage is the crew's executor, named by the bridge (Musky on local-gemma/gemma-local)",
+      "ok": true,
+      "detail": "{\"role\":\"executor\",\"agent\":\"Musky\",\"lane\":\"local-gemma\",\"provider\":\"openai-compatible\",\"model\":\"gemma-local\",\"family\":\"gemma\",\"tier\":\"local\",\"latencyMs\":7699,\"failover\":false,\"attempts\":[{\"lane\":\"local-gemma\",\"status\":\"served\"}]}"
+    },
+    {
+      "name": "(3) the rendered reply row carries the same stamp as data attributes",
+      "ok": true,
+      "detail": "{\"role\":\"executor\",\"agent\":\"Musky\",\"lane\":\"local-gemma\",\"model\":\"gemma-local\",\"latency\":\"7699\"}"
+    },
+    {
+      "name": "(3) the answering agent's nameplate pulse is live in the page (pulseUntil ahead of the clock at two samples)",
+      "ok": true,
+      "detail": "{\"first\":{\"executor\":3807,\"planner\":null,\"reviewer\":null},\"second\":{\"executor\":3149,\"planner\":null,\"reviewer\":null}}"
+    },
+    {
+      "name": "(3) only the answerer pulses — planner and reviewer nameplates stay quiet",
+      "ok": true,
+      "detail": "{\"first\":{\"executor\":3807,\"planner\":null,\"reviewer\":null},\"second\":{\"executor\":3149,\"planner\":null,\"reviewer\":null}}"
+    },
+    {
+      "name": "(3)/(6) the chat budget moved by exactly the served calls (1) and the coding budget did not move",
+      "ok": true,
+      "detail": "chat 1 -> 2; coding 3 -> 3"
+    },
+    {
+      "name": "(3) chat reply screenshot captured",
+      "ok": true,
+      "detail": "439047 bytes"
+    },
+    {
+      "name": "(4) the transcript survives the reload — same entries, same order (sessionStorage)",
+      "ok": true,
+      "detail": "pre=7 post=7"
+    },
+    {
+      "name": "(4) the holds survive the reload — same holds, same seats, still pending",
+      "ok": true,
+      "detail": "pre=3 post=3"
+    },
+    {
+      "name": "(4) the reload itself fired nothing (registry + budgets unchanged)",
+      "ok": true,
+      "detail": "registry=0/0 coding=3/3 chat=2/2"
+    },
+    {
+      "name": "(4) post-reload screenshot captured",
+      "ok": true,
+      "detail": "437720 bytes"
+    },
+    {
+      "name": "(6) gate run submitted from the Floor form",
+      "ok": true,
+      "detail": "ffb2dd65-a4a0-4352-ae09-a06ac1f03706"
+    },
+    {
+      "name": "(6) the gate run settles done on the bridge",
+      "ok": true,
+      "detail": "verdict=APPROVED stamps=3"
+    },
+    {
+      "name": "(6) the settled run's verdict lands in the conductor transcript, equal to the bridge record",
+      "ok": true,
+      "detail": "entry verdict=APPROVED xfam=false calls=3"
+    },
+    {
+      "name": "(6) the same-family review is labeled in the transcript verdict (single-family rig)",
+      "ok": true,
+      "detail": "record crossFamily=false"
+    },
+    {
+      "name": "(6) the verdict renders as a transcript row carrying the run id + verdict + family label",
+      "ok": true,
+      "detail": "{\"run\":\"ffb2dd65-a4a0-4352-ae09-a06ac1f03706\",\"verdict\":\"APPROVED\",\"xfam\":\"no\"}"
+    },
+    {
+      "name": "(6) budget math across the gate: coding moved by exactly the served run stamps (all takes), chat by exactly the one served chat call — no phantom calls",
+      "ok": true,
+      "detail": "coding 3 -> 6 (served 3); chat 1 -> 2 (served 1)"
+    },
+    {
+      "name": "(6) the page pill equals the bridge's coding ledger at the end",
+      "ok": true,
+      "detail": "pill=6 api=6"
+    },
+    {
+      "name": "(+) phone: no element overflows the viewport width (conductor included)",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "name": "(+) phone: the conductor bar fits the viewport and the session transcript is intact",
+      "ok": true,
+      "detail": "{\"present\":true,\"entries\":8,\"holds\":3,\"formBox\":{\"left\":7,\"right\":405,\"width\":398},\"inputBox\":{\"left\":16,\"right\":344,\"width\":328}}"
+    },
+    {
+      "name": "(+) phone conductor screenshot captured",
+      "ok": true,
+      "detail": "709466 bytes"
+    },
+    {
+      "name": "(7) zero console errors across the whole session (pair, holds, flag, chat, reload, run, phone)",
+      "ok": true,
+      "detail": "transport=0; unexplained=none; nonLog=none"
+    }
+  ],
+  "consoleErrors": [],
+  "screenshots": [
+    {
+      "file": "after-conductor-hold.png",
+      "note": "conductor: named call-out to Scout became a hold; transcript + holds list show it"
+    },
+    {
+      "file": "after-unknown-flag.png",
+      "note": "conductor: 'Zebedee, do the thing' flagged inline — no crewmate by that name, nothing fired"
+    },
+    {
+      "file": "after-chat-reply.png",
+      "note": "conductor: question answered in the transcript with the real chat stamp; Musky's nameplate pulses"
+    },
+    {
+      "file": "after-after-reload.png",
+      "note": "after reload: transcript + 3 holds restored from sessionStorage, nothing fired"
+    },
+    {
+      "file": "after-phone-conductor.png",
+      "note": "phone 412x915: conductor bar + transcript in the stacked sidebar, no overflow"
+    }
+  ],
+  "rig": {
+    "llama": "gemma-local on :18080",
+    "quietWarmUpRun": {
+      "id": "b48edfb4-9ddb-43ce-bea8-024119173d39",
+      "attempt": 1,
+      "verdict": "CHANGES",
+      "secs": 100
+    },
+    "bridge": "registry build on :17717",
+    "pageHiddenVerified": true,
+    "gateRun": "ffb2dd65-a4a0-4352-ae09-a06ac1f03706",
+    "gateRunTakes": [
+      {
+        "id": "ffb2dd65-a4a0-4352-ae09-a06ac1f03706",
+        "state": "done",
+        "stamps": 3,
+        "error": null
+      }
+    ]
+  },
+  "label": "after",
+  "measurements": {
+    "snapshot": {
+      "coding": 3,
+      "chat": 1,
+      "registry": 0,
+      "pill": 3
+    },
+    "pulse": {
+      "first": {
+        "executor": 3807,
+        "planner": null,
+        "reviewer": null
+      },
+      "second": {
+        "executor": 3149,
+        "planner": null,
+        "reviewer": null
+      }
+    },
+    "preReload": {
+      "entries": 7,
+      "holds": 3
+    },
+    "phone": {
+      "audit": {
+        "innerWidth": 415,
+        "innerHeight": 922,
+        "wideElements": []
+      },
+      "conductor": {
+        "present": true,
+        "entries": 8,
+        "holds": 3,
+        "formBox": {
+          "left": 7,
+          "right": 405,
+          "width": 398
+        },
+        "inputBox": {
+          "left": 16,
+          "right": 344,
+          "width": 328
+        }
+      }
+    }
+  },
+  "capturedChats": [
+    {
+      "status": 200,
+      "request": {
+        "message": "What does the pwd command print?",
+        "surface": "chat",
+        "crew": "rig"
+      },
+      "response": {
+        "ok": true,
+        "sessionId": "a615ca98-6aba-4be1-9e32-5df2b9c72c47",
+        "message": "What does the pwd command print?",
+        "surface": "chat",
+        "text": "The pwd command prints the root directory.\n",
+        "review": null,
+        "verdict": null,
+        "crew": "rig",
+        "stamps": [
+          {
+            "role": "executor",
+            "agent": "Musky",
+            "lane": "local-gemma",
+            "provider": "openai-compatible",
+            "model": "gemma-local",
+            "family": "gemma",
+            "tier": "local",
+            "latencyMs": 7699,
+            "failover": false,
+            "attempts": [
+              {
+                "lane": "local-gemma",
+                "status": "served"
+              }
+            ]
+          }
+        ],
+        "stampLines": [
+          "executor: agent=Musky lane=local-gemma provider=openai-compatible model=gemma-local family=gemma tier=local latency=7699ms"
+        ],
+        "compactStamps": [
+          "[executor agent=Musky · lane=local-gemma · model=gemma-local · 7699ms]"
+        ]
+      }
+    }
+  ],
+  "transportNoise": [],
+  "verdict": "PHASE 2 STAGE 2 GATE: PASS"
+}
