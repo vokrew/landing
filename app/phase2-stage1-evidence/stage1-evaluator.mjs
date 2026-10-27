@@ -536,10 +536,16 @@ try {
   await cdp.send("Page.navigate", { url: PAGE_URL });
   await waitFor(() => cdp.eval(`!!(window.__floorDebug && window.VokrewFloor)`), 25000, "floor.js + adapter load");
   await waitFor(() => cdp.eval(`window.__floorDebug.state().agents === 0`), 15000, "locked room seats nobody");
-  const door = await cdp.eval(`(() => {
-    const cs = document.getElementById('connectScreen');
-    return { overlayVisible: !cs.classList.contains('hidden'), chip: document.getElementById('floorModeChip').textContent };
-  })()`);
+  /* The chip flips CONNECTING -> OFFLINE on the adapter's first
+     applyOnce; wait for that settled state (run 1 of this evaluator
+     read the chip mid-flip — a harness race, not a product state). */
+  const door = await waitFor(async () => {
+    const d = await cdp.eval(`(() => {
+      const cs = document.getElementById('connectScreen');
+      return { overlayVisible: !cs.classList.contains('hidden'), chip: document.getElementById('floorModeChip').textContent };
+    })()`);
+    return d.chip === "OFFLINE" ? d : null;
+  }, 15000, "locked room chip settles to OFFLINE").catch(() => ({ overlayVisible: false, chip: "never settled" }));
   assert("(0) connect door up over the locked room", door.overlayVisible && door.chip === "OFFLINE", JSON.stringify(door));
 
   await cdp.eval(`(() => {
@@ -773,6 +779,26 @@ try {
      unchanged.) */
   await cdp.eval(`(() => { const b = document.querySelector('#focus .panelhead .close'); if (b) b.click(); })()`);
   await waitPanelClosed().catch(() => null);
+  /* Diagnostic (run 1 truncated here): what sits at the executor's
+     click point in the settled layout? If the auto-expanded run
+     card covers it, dismiss the card (its own Close button — the
+     room is clickable again) before clicking the agent. */
+  const diag = await cdp.eval(`(() => {
+    const e = window.__floorDebug.ents['rig:executor'];
+    const c = document.querySelector('#cv');
+    const r = c.getBoundingClientRect();
+    const p = worldToScreen(e.x, e.y - 8);
+    const x = Math.round(r.left + p.x), y = Math.round(r.top + p.y);
+    const at = document.elementFromPoint(x, y);
+    return { x, y, atPoint: at ? (at.id || at.className || at.tagName) : null,
+             cardHidden: document.getElementById('floorRunCard').classList.contains('hidden') };
+  })()`);
+  results.measurements.executorClickDiag = diag;
+  note("(3) executor click-point diagnostic in the settled layout", JSON.stringify(diag));
+  if (diag.atPoint && !String(diag.atPoint).includes("cv")) {
+    await cdp.eval(`(() => { const b = document.getElementById('floorCardClose'); if (b) b.click(); })()`);
+    await sleep(500);
+  }
   await clickAgent("rig:executor");
   const pMusky = await waitPanelOpen("Musky");
   const expMusky = await expectedHistory("rig", "executor");
