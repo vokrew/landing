@@ -1,0 +1,36 @@
+OK    shell: page lands on the empty floor — no overlay forced (connect card hidden, no door-open)
+OK    shell: body is in shell-mode; banner + setup tab visible and labeled — This is your floor. It starts empty. Every desk in this room is a seat your crew will fill
+OK    shell: room state is honestly empty (0 agents / 0 tasks / 0 runs, not connected) — {"connected":false,"agents":0,"tasks":0,"runs":0,"liveRuns":0,"simClock":2.3000000000000016,"budget":null}
+OK    shell: chip reads OFFLINE; status pill 'not connected'; rig foot 'bridge offline' — chip=OFFLINE status=not connected rig=bridge offline
+OK    shell: roster + quest log show honest empty states; budget pill is '—', never a number — roster="No crew yet." tasks="No runs yet." budget="—"
+OK    shell: run form, conductor form and quest tracker are hidden (nothing can run without a crew)
+OK    shell: floor status line reads 'offline' — "offline"
+OK    shell: no horizontal overflow on desktop — {"sw":1440,"iw":1440}
+OK    shell: the room actually renders (canvas readable, many distinct colors — not a blank void) — canvas=1166x725 distinct>41
+OK    shell desktop screenshot captured — 591098 bytes
+OK    shell: room explorable without setup — view switch to the Foundry answers — zone=THE FOUNDRY
+OK    shell: setup tab expands the pairing card (aria-expanded tracks, door-open set)
+OK    shell setup-expanded screenshot captured — 201662 bytes
+OK    shell: close collapses back to the shell — still unpaired, nothing lost
+OK    shell (desktop): zero console errors (transport noise tallied + named) — nonLog=0 noise=0 unexplained=none
+OK    phone shell: lands on the empty floor, banner + setup tab visible, card collapsed
+OK    phone shell: honest empty states (No crew yet / No runs yet / budget '—')
+OK    phone shell: zero horizontal overflow at 412px — {"sw":412,"iw":412}
+OK    phone shell screenshot captured — 847540 bytes
+OK    shell (phone): zero console errors (transport noise tallied + named) — nonLog=0 noise=0 unexplained=none
+OK    regression rig: lane warm-up completed directly against llama-server
+OK    regression: bridge up but page unpaired — still the shell (banner up, card collapsed)
+OK    regression: setup tab expanded the pairing card
+OK    regression: paired through the expanded tab's own form
+OK    regression: pairing exits shell mode — banner gone, run + conductor forms back
+OK    regression paired-idle screenshot captured — 680747 bytes
+OK    regression: conductor call-out became exactly one hold; badge + noticeboard agree — badge="1" sidebar=1 noticeboard=1
+OK    regression: approve clicked on the hold card
+OK    regression: approved run registered on the bridge — 8b0e09fd-804b-47f8-8f3d-d0040ac86048
+OK    regression: approved run settled done/APPROVED on the bridge — state=done verdict=APPROVED duration=69s
+OK    regression: reviewer reached the executor doorstep during the run (state-log corroborated) — 11 entries
+OK    regression: verdict landed in the conductor transcript, tied to the run id — 16:45:43VERDICTRUN-8B0E — verdict APPROVED · same family review · ⚡ 3 calls
+OK    regression settled screenshot captured — 542593 bytes
+OK    regression: zero console errors (transport noise tallied + named) — nonLog=0 noise=0 unexplained=none
+
+SHELL CAPTURE: COMPLETE — 34/34 assertions

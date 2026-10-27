@@ -18,11 +18,17 @@
 </header>
 
 <main>
-  <!-- ============ CONNECT — the door (Stage 3) ============
-       Rendered as a fixed overlay: the locked Floor room stays visible
-       behind it (dimmed) until pairing succeeds. -->
-  <section id="connectScreen" class="screen">
+  <!-- ============ CONNECT — the setup card ============
+       The pairing flow itself, unchanged since Stage 3 (same fields,
+       same POST /pair contract). Its PRESENTATION changed with the
+       empty-floor shell (KC, 2026-10-27): it no longer drops over
+       the room on load. It stays collapsed behind the shell's
+       "Set up your floor" tab and expands only when the visitor
+       opens it — or when app.js raises it with a message the user
+       must act on (invalid pairing, bridge died mid-session). -->
+  <section id="connectScreen" class="screen hidden">
     <div class="card connect-card">
+      <button class="connect-close" id="connectClose" type="button" aria-label="Close setup and go back to the floor">✕</button>
       <h1>Connect to your crew</h1>
       <p class="lede">This page is a remote control — <strong>it does not run any AI itself.</strong>
         Your crew runs on <strong>your own machine</strong>, and this page pairs to it.</p>
@@ -71,9 +77,12 @@ node src/cli.js serve</pre>
   </section>
 
   <!-- ============ APP SHELL ============
-       Stage 3: the shell always renders. The Floor is the home screen;
-       unpaired, the connect screen above becomes a door over the locked
-       room (spec §3 "the door"). -->
+       The shell always renders. The Floor is the home screen.
+       Unpaired, the Floor is the EMPTY-FLOOR SHELL (KC, 2026-10-27):
+       the real room with no crew and no data, labeled by the shell
+       banner — the setup card stays collapsed until the visitor
+       opens it. (Stage 3's forced door over the room is retired;
+       the locked-room state underneath never changed.) -->
   <section id="appShell" class="screen">
     <nav class="tabs" role="tablist">
       <button class="tab active" data-screen="floor" type="button">Floor</button>
@@ -118,6 +127,24 @@ node src/cli.js serve</pre>
     <!-- Floor (Phase 1 — the crew room; Stage 2: live bridge data via
          floor-adapter.js; Stage 3: the default post-pair screen) -->
     <div id="screen-floor" class="tab-screen">
+      <!-- EMPTY-FLOOR SHELL banner (KC, 2026-10-27): visible only in
+           body.shell-mode (unpaired — app.js owns the class). It
+           labels the empty room for what it is and carries the
+           setup tab: a collapsed, clickable card-opener. Expanding
+           it opens the connect card above; the pairing mechanics
+           inside that card are untouched. The run form and the
+           conductor form are hidden in shell mode (nothing can run
+           until a crew exists) — see app.css. -->
+      <div id="shellBanner">
+        <div class="shell-banner-text">
+          <h2>This is your floor. It starts empty.</h2>
+          <p>Every desk in this room is a seat your crew will fill — a planner, an executor,
+            a reviewer — once the Vokrew bridge is running on your own machine and paired.
+            Nothing here is simulated: no fake crew, no fake numbers — just the room itself, waiting.
+            Pan it, zoom it, look around as long as you like.</p>
+        </div>
+        <button class="btn primary" id="setupTab" type="button" aria-expanded="false" aria-controls="connectScreen">Set up your floor →</button>
+      </div>
       <form id="floorRunForm">
         <input id="floorRunTask" type="text" placeholder="Give the crew a task — they plan, build, and review it live in the room…" autocomplete="off" />
         <label class="floor-crew-pick">Crew

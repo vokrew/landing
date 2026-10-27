@@ -1,0 +1,366 @@
+{
+  "assertions": [
+    {
+      "name": "shell: page lands on the empty floor — no overlay forced (connect card hidden, no door-open)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "shell: body is in shell-mode; banner + setup tab visible and labeled",
+      "ok": true,
+      "detail": "This is your floor. It starts empty. Every desk in this room is a seat your crew will fill"
+    },
+    {
+      "name": "shell: room state is honestly empty (0 agents / 0 tasks / 0 runs, not connected)",
+      "ok": true,
+      "detail": "{\"connected\":false,\"agents\":0,\"tasks\":0,\"runs\":0,\"liveRuns\":0,\"simClock\":2.3000000000000016,\"budget\":null}"
+    },
+    {
+      "name": "shell: chip reads OFFLINE; status pill 'not connected'; rig foot 'bridge offline'",
+      "ok": true,
+      "detail": "chip=OFFLINE status=not connected rig=bridge offline"
+    },
+    {
+      "name": "shell: roster + quest log show honest empty states; budget pill is '—', never a number",
+      "ok": true,
+      "detail": "roster=\"No crew yet.\" tasks=\"No runs yet.\" budget=\"—\""
+    },
+    {
+      "name": "shell: run form, conductor form and quest tracker are hidden (nothing can run without a crew)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "shell: floor status line reads 'offline'",
+      "ok": true,
+      "detail": "\"offline\""
+    },
+    {
+      "name": "shell: no horizontal overflow on desktop",
+      "ok": true,
+      "detail": "{\"sw\":1440,\"iw\":1440}"
+    },
+    {
+      "name": "shell: the room actually renders (canvas readable, many distinct colors — not a blank void)",
+      "ok": true,
+      "detail": "canvas=1166x725 distinct>41"
+    },
+    {
+      "name": "shell desktop screenshot captured",
+      "ok": true,
+      "detail": "591098 bytes"
+    },
+    {
+      "name": "shell: room explorable without setup — view switch to the Foundry answers",
+      "ok": true,
+      "detail": "zone=THE FOUNDRY"
+    },
+    {
+      "name": "shell: setup tab expands the pairing card (aria-expanded tracks, door-open set)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "shell setup-expanded screenshot captured",
+      "ok": true,
+      "detail": "201662 bytes"
+    },
+    {
+      "name": "shell: close collapses back to the shell — still unpaired, nothing lost",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "shell (desktop): zero console errors (transport noise tallied + named)",
+      "ok": true,
+      "detail": "nonLog=0 noise=0 unexplained=none"
+    },
+    {
+      "name": "phone shell: lands on the empty floor, banner + setup tab visible, card collapsed",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "phone shell: honest empty states (No crew yet / No runs yet / budget '—')",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "phone shell: zero horizontal overflow at 412px",
+      "ok": true,
+      "detail": "{\"sw\":412,\"iw\":412}"
+    },
+    {
+      "name": "phone shell screenshot captured",
+      "ok": true,
+      "detail": "847540 bytes"
+    },
+    {
+      "name": "shell (phone): zero console errors (transport noise tallied + named)",
+      "ok": true,
+      "detail": "nonLog=0 noise=0 unexplained=none"
+    },
+    {
+      "name": "regression rig: lane warm-up completed directly against llama-server",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "regression: bridge up but page unpaired — still the shell (banner up, card collapsed)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "regression: setup tab expanded the pairing card",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "regression: paired through the expanded tab's own form",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "regression: pairing exits shell mode — banner gone, run + conductor forms back",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "regression paired-idle screenshot captured",
+      "ok": true,
+      "detail": "680747 bytes"
+    },
+    {
+      "name": "regression: conductor call-out became exactly one hold; badge + noticeboard agree",
+      "ok": true,
+      "detail": "badge=\"1\" sidebar=1 noticeboard=1"
+    },
+    {
+      "name": "regression: approve clicked on the hold card",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "regression: approved run registered on the bridge",
+      "ok": true,
+      "detail": "8b0e09fd-804b-47f8-8f3d-d0040ac86048"
+    },
+    {
+      "name": "regression: approved run settled done/APPROVED on the bridge",
+      "ok": true,
+      "detail": "state=done verdict=APPROVED duration=69s"
+    },
+    {
+      "name": "regression: reviewer reached the executor doorstep during the run (state-log corroborated)",
+      "ok": true,
+      "detail": "11 entries"
+    },
+    {
+      "name": "regression: verdict landed in the conductor transcript, tied to the run id",
+      "ok": true,
+      "detail": "16:45:43VERDICTRUN-8B0E — verdict APPROVED · same family review · ⚡ 3 calls"
+    },
+    {
+      "name": "regression settled screenshot captured",
+      "ok": true,
+      "detail": "542593 bytes"
+    },
+    {
+      "name": "regression: zero console errors (transport noise tallied + named)",
+      "ok": true,
+      "detail": "nonLog=0 noise=0 unexplained=none"
+    }
+  ],
+  "screenshots": [
+    {
+      "file": "shell-desktop.png",
+      "note": "SHELL (desktop, unpaired, no bridge): the empty floor, banner + setup tab, honest empty sidebar"
+    },
+    {
+      "file": "shell-setup-expanded.png",
+      "note": "SHELL: setup tab expanded — the unchanged pairing card over the empty floor"
+    },
+    {
+      "file": "shell-phone.png",
+      "note": "SHELL (phone 412x915, unpaired): the empty floor with its banner"
+    },
+    {
+      "file": "shell-paired-idle.png",
+      "note": "REGRESSION: paired via the expanded tab — rig crew seated, shell gone, room live"
+    },
+    {
+      "file": "shell-settled.png",
+      "note": "REGRESSION: run settled APPROVED after pairing via the expanded tab"
+    }
+  ],
+  "shell": {
+    "desktop": {
+      "shellMode": true,
+      "doorOpen": false,
+      "connectHidden": true,
+      "bannerVisible": true,
+      "bannerText": "This is your floor. It starts empty. Every desk in this room is a seat your crew will fill — a planner, an executor, a reviewer — once the Vokrew bridge is running on your own machine and paired. Nothing here is simulated: no fake crew, no fake numbers — just the room itself, waiting. Pan it, zoom it, look around as long as you like. Set up your floor →",
+      "setupTabVisible": true,
+      "setupTabAria": "false",
+      "runFormVisible": false,
+      "conductorFormVisible": false,
+      "questTrackerVisible": false,
+      "chip": "OFFLINE",
+      "statusText": "not connected",
+      "rosterText": "No crew yet.",
+      "tasklistText": "No runs yet.",
+      "budgetStatus": "—",
+      "floorStatus": "offline",
+      "rigFoot": "bridge offline",
+      "zoneName": "THE FLOOR",
+      "state": {
+        "connected": false,
+        "agents": 0,
+        "tasks": 0,
+        "runs": 0,
+        "liveRuns": 0,
+        "simClock": 2.3000000000000016,
+        "budget": null
+      },
+      "overflow": {
+        "sw": 1440,
+        "iw": 1440
+      }
+    },
+    "canvas": {
+      "w": 1166,
+      "h": 725,
+      "distinctSampled": 41,
+      "readable": true
+    },
+    "desktopErrors": {
+      "total": 0,
+      "nonLog": 0,
+      "noise": 0,
+      "unexplained": []
+    },
+    "phone": {
+      "shellMode": true,
+      "doorOpen": false,
+      "connectHidden": true,
+      "bannerVisible": true,
+      "bannerText": "This is your floor. It starts empty. Every desk in this room is a seat your crew will fill — a planner, an executor, a reviewer — once the Vokrew bridge is running on your own machine and paired. Nothing here is simulated: no fake crew, no fake numbers — just the room itself, waiting. Pan it, zoom it, look around as long as you like. Set up your floor →",
+      "setupTabVisible": true,
+      "setupTabAria": "false",
+      "runFormVisible": false,
+      "conductorFormVisible": false,
+      "questTrackerVisible": false,
+      "chip": "OFFLINE",
+      "statusText": "not connected",
+      "rosterText": "No crew yet.",
+      "tasklistText": "No runs yet.",
+      "budgetStatus": "—",
+      "floorStatus": "offline",
+      "rigFoot": "bridge offline",
+      "zoneName": "THE FLOOR",
+      "state": {
+        "connected": false,
+        "agents": 0,
+        "tasks": 0,
+        "runs": 0,
+        "liveRuns": 0,
+        "simClock": 2.666666666666667,
+        "budget": null
+      },
+      "overflow": {
+        "sw": 412,
+        "iw": 412
+      }
+    },
+    "phoneErrors": {
+      "total": 0,
+      "nonLog": 0,
+      "noise": 0,
+      "unexplained": []
+    }
+  },
+  "regression": {
+    "prePair": {
+      "shellMode": true,
+      "doorOpen": false,
+      "connectHidden": true,
+      "bannerVisible": true,
+      "bannerText": "This is your floor. It starts empty. Every desk in this room is a seat your crew will fill — a planner, an executor, a reviewer — once the Vokrew bridge is running on your own machine and paired. Nothing here is simulated: no fake crew, no fake numbers — just the room itself, waiting. Pan it, zoom it, look around as long as you like. Set up your floor →",
+      "setupTabVisible": true,
+      "setupTabAria": "false",
+      "runFormVisible": false,
+      "conductorFormVisible": false,
+      "questTrackerVisible": false,
+      "chip": "OFFLINE",
+      "statusText": "not connected",
+      "rosterText": "No crew yet.",
+      "tasklistText": "No runs yet.",
+      "budgetStatus": "—",
+      "floorStatus": "offline",
+      "rigFoot": "bridge offline",
+      "zoneName": "THE FLOOR",
+      "state": {
+        "connected": false,
+        "agents": 0,
+        "tasks": 0,
+        "runs": 0,
+        "liveRuns": 0,
+        "simClock": 0.6666666666666666,
+        "budget": null
+      },
+      "overflow": {
+        "sw": 1440,
+        "iw": 1440
+      }
+    },
+    "postPair": {
+      "shellMode": false,
+      "doorOpen": false,
+      "connectHidden": true,
+      "bannerVisible": false,
+      "bannerText": "This is your floor. It starts empty. Every desk in this room is a seat your crew will fill — a planner, an executor, a reviewer — once the Vokrew bridge is running on your own machine and paired. Nothing here is simulated: no fake crew, no fake numbers — just the room itself, waiting. Pan it, zoom it, look around as long as you like. Set up your floor →",
+      "setupTabVisible": false,
+      "setupTabAria": "false",
+      "runFormVisible": true,
+      "conductorFormVisible": true,
+      "questTrackerVisible": true,
+      "chip": "OFFLINE",
+      "statusText": "connected",
+      "rosterText": "No crew yet.",
+      "tasklistText": "No runs yet.",
+      "budgetStatus": "—",
+      "floorStatus": "offline",
+      "rigFoot": "bridge offline",
+      "zoneName": "THE FLOOR",
+      "state": {
+        "connected": false,
+        "agents": 0,
+        "tasks": 0,
+        "runs": 0,
+        "liveRuns": 0,
+        "simClock": 1.5000000000000013,
+        "budget": null
+      },
+      "overflow": {
+        "sw": 1440,
+        "iw": 1440
+      }
+    },
+    "runId": "8b0e09fd-804b-47f8-8f3d-d0040ac86048",
+    "finalRecord": {
+      "state": "done",
+      "verdict": "APPROVED",
+      "crossFamily": false,
+      "error": null,
+      "stamps": 3
+    },
+    "doorstepLogEntries": 11,
+    "errors": {
+      "total": 0,
+      "nonLog": 0,
+      "noise": 0,
+      "unexplained": []
+    }
+  },
+  "verdict": "SHELL CAPTURE: COMPLETE — 34/34 assertions"
+}

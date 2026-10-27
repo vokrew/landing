@@ -72,23 +72,45 @@ function setStatus(mode, text) {
   $("statusText").textContent = text;
 }
 
-/* Stage 3: the shell always renders; the connect screen is a door over
-   it. "Showing connect" raises the door over the Floor screen, which
-   the adapter holds in its locked state (OFFLINE, nobody seated) until
-   a bridge answers — the room is never faked and never hidden. */
+/* EMPTY-FLOOR SHELL (KC, 2026-10-27): the shell always renders, and
+   unpaired it renders as the empty floor — the real room in the
+   adapter's locked state (OFFLINE, nobody seated, no data), labeled
+   by the shell banner. The setup card is a collapsed tab in that
+   banner: it expands when the visitor opens it, or when a message
+   says the user must act (invalid pairing, bridge died mid-session).
+   The Stage 3 forced door — overlay up on every unpaired load — is
+   retired; the room was never faked then and is not faked now, it is
+   simply no longer covered. */
+function setSetupOpen(open) {
+  $("connectScreen").classList.toggle("hidden", !open);
+  document.body.classList.toggle("door-open", open);
+  const tab = $("setupTab");
+  if (tab) tab.setAttribute("aria-expanded", open ? "true" : "false");
+}
+
+function syncShellMode() {
+  // Shell mode = the page holds no pairing token. Drives the banner
+  // and hides the run / conductor forms (nothing can run until a
+  // crew exists) — presentation only; adapter state is untouched.
+  document.body.classList.toggle("shell-mode", !state.token);
+}
+
 function showConnect(message) {
   state.sessionId = null;
-  $("connectScreen").classList.remove("hidden");
-  document.body.classList.add("door-open");
   $("disconnectBtn").classList.add("hidden");
-  activateTab("floor"); // the locked room sits behind the door
+  activateTab("floor"); // the locked room is the home screen either way
   if (state.token) setStatus("bad", "bridge unreachable");
   else setStatus("", "not connected");
   const err = $("pairError");
   if (message) {
     err.textContent = message;
     err.classList.remove("hidden");
+    setSetupOpen(true); // a message means the user needs to act — show it
+  } else {
+    err.classList.add("hidden");
+    setSetupOpen(false); // no message: the empty-floor shell, unforced
   }
+  syncShellMode();
 }
 
 async function enterApp() {
@@ -108,8 +130,8 @@ async function enterApp() {
     return false;
   }
   $("pairError").classList.add("hidden");
-  $("connectScreen").classList.add("hidden");
-  document.body.classList.remove("door-open");
+  setSetupOpen(false);
+  syncShellMode(); // token held: the shell fills with the real crew
   $("disconnectBtn").classList.remove("hidden");
   setStatus("ok", "connected");
   activateTab("floor"); // Stage 3: the Floor is the default post-pair screen
@@ -194,6 +216,17 @@ $("pairForm").addEventListener("submit", async (ev) => {
 });
 
 $("disconnectBtn").addEventListener("click", () => disconnect());
+
+/* The shell's setup tab expands the pairing card; the card's close
+   control collapses it back to the shell. Invited, never forced —
+   closing loses nothing: unpaired, the empty floor waits; paired
+   with a down bridge, the room behind shows its OFFLINE state. */
+$("setupTab").addEventListener("click", () => {
+  setSetupOpen(true);
+  const code = $("pairCode");
+  if (code) code.focus();
+});
+$("connectClose").addEventListener("click", () => setSetupOpen(false));
 
 /* ---------------- tabs ---------------- */
 
@@ -410,23 +443,27 @@ $("bridgeUrl").value = state.bridge;
 if (state.token) {
   enterApp();
 } else {
-  // Unpaired: raise the door over the locked room (Stage 3). The shell
-  // and the empty, OFFLINE Floor render behind the pairing card.
+  // Unpaired: the empty-floor shell. The room renders empty and
+  // OFFLINE behind the shell banner; the setup card stays collapsed
+  // until the visitor opens it (showConnect with no message).
   showConnect();
 }
 
-// Health watch: if the bridge dies mid-session, raise the door with the
-// unreachable message (spec rule). If it comes back and we still hold a
-// token, re-enter quietly. "In the app" = the door is down.
+// Health watch: if the bridge dies mid-session, raise the setup card
+// with the unreachable message (spec rule). If it comes back and we
+// still hold a token, re-enter quietly. "In the app" = the card is
+// down. Every branch is token-guarded: an unpaired shell visitor has
+// no session to lose, and a silent health probe must never force
+// the card open over the empty floor they are exploring.
 setInterval(async () => {
   const inApp = $("connectScreen").classList.contains("hidden");
   const ok = await checkHealth();
-  if (inApp && !ok) {
+  if (inApp && !ok && state.token) {
     showConnect(UNREACHABLE_MSG);
     setStatus("bad", "bridge unreachable");
   } else if (!inApp && ok && state.token) {
     enterApp();
-  } else if (inApp && ok) {
+  } else if (inApp && ok && state.token) {
     setStatus("ok", "connected");
   }
 }, 20000);
