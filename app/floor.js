@@ -2254,10 +2254,24 @@ function drawAgent(a, e, now) {
   const tagY = baseY - (seated ? 58 : 62) - bob;
   ctx.font = "700 9px system-ui"; ctx.textAlign = "center";
   const tw = Math.max(34, ctx.measureText(a.name).width + 12);
+  /* VOKREW EDIT (Phase 2 Stage 2): the conductor reply pulse. While
+     this agent's chat reply is the latest in the conductor
+     transcript, the adapter keeps e.pulseUntil in the future (the
+     same entity-field convention as e.bubble) and the name tag
+     breathes gold. Driven only by a real chat response's stamp —
+     nothing sets it speculatively. */
+  const pulsing = !!(e.pulseUntil && Date.now() < e.pulseUntil);
+  if (pulsing) {
+    ctx.save();
+    ctx.strokeStyle = "rgba(240,195,122," + (0.35 + 0.3 * Math.sin(now / 170)).toFixed(3) + ")";
+    ctx.lineWidth = 5;
+    rr(ctx, e.x - tw/2 - 2, tagY - 2, tw + 4, 17, 8); ctx.stroke();
+    ctx.restore();
+  }
   ctx.fillStyle = "rgba(8,13,20,.82)";
   rr(ctx, e.x - tw/2, tagY, tw, 13, 6); ctx.fill();
-  ctx.strokeStyle = isBoss ? "rgba(240,195,122,.85)" : a.status === "running" ? "rgba(67,214,139,.55)" : "rgba(90,120,150,.35)";
-  ctx.lineWidth = isBoss ? 1.6 : 1;
+  ctx.strokeStyle = pulsing ? "rgba(240,195,122,.95)" : isBoss ? "rgba(240,195,122,.85)" : a.status === "running" ? "rgba(67,214,139,.55)" : "rgba(90,120,150,.35)";
+  ctx.lineWidth = pulsing || isBoss ? 1.6 : 1;
   rr(ctx, e.x - tw/2, tagY, tw, 13, 6); ctx.stroke();
   ctx.fillStyle = isBoss ? "#ffdf9e" : "#f0f6fb";
   ctx.fillText(a.name, e.x, tagY + 9.5);
