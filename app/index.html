@@ -78,7 +78,6 @@ node src/cli.js serve</pre>
     <nav class="tabs" role="tablist">
       <button class="tab active" data-screen="floor" type="button">Floor</button>
       <button class="tab" data-screen="chat" type="button">Chat</button>
-      <button class="tab" data-screen="run" type="button">Run</button>
       <button class="tab" data-screen="budget" type="button">Budget</button>
       <button class="tab" data-screen="crew" type="button">Crew</button>
     </nav>
@@ -94,31 +93,10 @@ node src/cli.js serve</pre>
       <p class="hint">Verify sends the answer to a reviewer from a different model family. Tip: prefix a message with <code>!check </code> to verify just that one.</p>
     </div>
 
-    <!-- Run -->
-    <div id="screen-run" class="tab-screen hidden">
-      <form id="runForm">
-        <label>Task
-          <textarea id="runTask" rows="4" placeholder="What should the crew plan, build, and review?"></textarea>
-        </label>
-        <div class="row">
-          <label>Crew
-            <select id="runCrew"></select>
-          </label>
-          <label>Workspace <span class="opt">(optional)</span>
-            <input id="runWorkspace" type="text" placeholder="/path/to/project" spellcheck="false" autocomplete="off" />
-          </label>
-        </div>
-        <p class="error hidden" id="runError"></p>
-        <button class="btn primary" id="runBtn" type="submit">Run the crew</button>
-      </form>
-      <div id="runResult" class="hidden">
-        <div class="verdict" id="runVerdict"></div>
-        <div class="stage-block"><h3>Plan</h3><pre id="runPlan"></pre></div>
-        <div class="stage-block"><h3>Work</h3><pre id="runWork"></pre></div>
-        <div class="stage-block"><h3>Review</h3><pre id="runReview"></pre></div>
-        <div class="stage-block"><h3>Stamps</h3><pre class="stamps" id="runStamps"></pre></div>
-      </div>
-    </div>
+    <!-- Run tab folded into the Floor (Phase 2 Stage 0): the Floor's
+         own run form + settled run card carry the full stage text —
+         proven byte-equal to the bridge record by the Stage 0
+         evaluator before this tab was removed. -->
 
     <!-- Budget -->
     <div id="screen-budget" class="tab-screen hidden">

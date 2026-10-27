@@ -21,7 +21,6 @@ const state = {
   bridge: (localStorage.getItem(LS_BRIDGE) || DEFAULT_BRIDGE).replace(/\/+$/, ""),
   token: localStorage.getItem(LS_TOKEN) || null,
   sessionId: null,
-  crewsLoaded: false,
 };
 
 function esc(s) {
@@ -114,7 +113,6 @@ async function enterApp() {
   $("disconnectBtn").classList.remove("hidden");
   setStatus("ok", "connected");
   activateTab("floor"); // Stage 3: the Floor is the default post-pair screen
-  loadRunCrews();
   return true;
 }
 
@@ -204,7 +202,7 @@ function activateTab(name) {
   // (see the floor-mode rules in app.css / floor.css).
   document.body.classList.toggle("floor-on", name === "floor");
   document.querySelectorAll(".tab").forEach((t) => t.classList.toggle("active", t.dataset.screen === name));
-  ["chat", "run", "budget", "crew", "floor"].forEach((s) => {
+  ["chat", "budget", "crew", "floor"].forEach((s) => {
     $("screen-" + s).classList.toggle("hidden", s !== name);
   });
   if (name === "budget") refreshBudget();
@@ -313,74 +311,12 @@ $("chatForm").addEventListener("submit", async (ev) => {
   }
 });
 
-/* ---------------- run ---------------- */
-
-async function loadRunCrews() {
-  if (state.crewsLoaded) return;
-  try {
-    const data = await guardedCall("/crews");
-    const sel = $("runCrew");
-    sel.innerHTML = "";
-    (data.crews || []).forEach((crew) => {
-      const opt = document.createElement("option");
-      opt.value = crew.name;
-      opt.textContent = crew.name;
-      sel.appendChild(opt);
-    });
-    if ((data.crews || []).some((c) => c.name === "default")) sel.value = "default";
-    state.crewsLoaded = true;
-  } catch { /* guardedCall already surfaced the problem */ }
-}
-
-$("runForm").addEventListener("submit", async (ev) => {
-  ev.preventDefault();
-  const err = $("runError");
-  err.classList.add("hidden");
-  const task = $("runTask").value.trim();
-  if (!task) {
-    err.textContent = "Give the crew a task first.";
-    err.classList.remove("hidden");
-    return;
-  }
-  const body = { task, crew: $("runCrew").value || "default" };
-  const ws = $("runWorkspace").value.trim();
-  if (ws) body.workspace = ws;
-  const btn = $("runBtn");
-  btn.disabled = true;
-  btn.textContent = "Running…";
-  try {
-    // ?wait=1 is the blocking compat path (Stage 0 registry): it must
-    // out-wait the whole chain, so it overrides bridgeFetch's 30s
-    // default — a slow local lane would otherwise abort mid-run.
-    const data = await guardedCall("/run?wait=1", { method: "POST", body, timeoutMs: 600000 });
-    const verdictEl = $("runVerdict");
-    if (data.verdict === "CHANGES") {
-      verdictEl.className = "verdict changes";
-      verdictEl.textContent = "!! Reviewer verdict: CHANGES requested — read the review !!";
-    } else {
-      verdictEl.className = "verdict";
-      verdictEl.textContent = `Reviewer verdict: ${data.verdict || "—"}`;
-    }
-    $("runPlan").textContent = data.plan || "";
-    $("runWork").textContent = data.work || "";
-    $("runReview").textContent = data.review || "";
-    const footer = [];
-    if (data.crew && data.crew !== "default") footer.push(`crew=${data.crew}`);
-    if (data.workspace) footer.push(`workspace=${data.workspace}`);
-    footer.push(`cross-family=${data.crossFamily ? "yes" : "no"}`);
-    $("runStamps").textContent = [...(data.stampLines || []), footer.join(" ")].join("\n");
-    $("runResult").classList.remove("hidden");
-    $("runResult").scrollIntoView({ block: "start", behavior: "smooth" });
-  } catch (e) {
-    if (e.message !== "unreachable" && e.message !== "unauthorized") {
-      err.textContent = `The run failed: ${e.message}`;
-      err.classList.remove("hidden");
-    }
-  } finally {
-    btn.disabled = false;
-    btn.textContent = "Run the crew";
-  }
-});
+/* ---------------- run ----------------
+   Folded into the Floor (Phase 2 Stage 0): the Run tab is gone. Runs
+   are submitted from the Floor's own form and their full stage text
+   (plan / work / review + stamps) renders in the Floor run card —
+   the Stage 0 evaluator proved the settled card byte-equal to the
+   bridge record before this fold landed. */
 
 /* ---------------- budget ---------------- */
 
