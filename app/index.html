@@ -1,279 +1,389 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Vokrew — App</title>
-<meta name="description" content="Drive your own local Vokrew crew from the browser. The page is the remote control; your machine is the engine." />
-<link rel="stylesheet" href="app.css" />
-<link rel="stylesheet" href="floor.css" />
+<title>Vokrew — the floor</title>
+<meta name="description" content="One prompt. A crew of AIs. Checked before it ships. Pair your local bridge and watch the crew work." />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23111723'/%3E%3Cpath d='M16 6l8 10-8 10-8-10z' fill='%23ffa05c'/%3E%3C/svg%3E" />
+<link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
-<header class="topbar">
-  <div class="wordmark"><span class="dot"></span>VOKREW<small>app</small></div>
-  <div class="topbar-right">
-    <span class="status-pill" id="statusPill"><span class="pulse" id="statusDot"></span><span id="statusText">not connected</span></span>
-    <button class="btn ghost hidden" id="disconnectBtn" type="button">Disconnect</button>
-  </div>
-</header>
+<div class="app">
 
-<main>
-  <!-- ============ CONNECT — the setup card ============
-       The pairing flow itself, unchanged since Stage 3 (same fields,
-       same POST /pair contract). Its PRESENTATION changed with the
-       empty-floor shell (KC, 2026-10-27): it no longer drops over
-       the room on load. It stays collapsed behind the shell's
-       "Set up your floor" tab and expands only when the visitor
-       opens it — or when app.js raises it with a message the user
-       must act on (invalid pairing, bridge died mid-session). -->
-  <section id="connectScreen" class="screen hidden">
-    <div class="card connect-card">
-      <button class="connect-close" id="connectClose" type="button" aria-label="Close setup and go back to the floor">✕</button>
-      <h1>Connect to your crew</h1>
-      <p class="lede">This page is a remote control — <strong>it does not run any AI itself.</strong>
-        Your crew runs on <strong>your own machine</strong>, and this page pairs to it.</p>
-
-      <div class="how" id="how">
-        <h2>How this works</h2>
-        <ol>
-          <li><strong>Run Vokrew on your own computer first.</strong> Vokrew is a small
-            program (the “bridge”) that talks to the AI lanes you already have — like
-            Ollama running locally, or your own free/API lanes. Nothing runs on a
-            Vokrew server. With Node 18+ installed, start it in a terminal:
-            <pre class="cmd">git clone https://github.com/vokrew/vokrew.git
-cd vokrew
-node src/cli.js serve</pre>
-            <span class="mut">A one-line install is coming soon.</span></li>
-          <li><strong>Copy the code it prints.</strong> The bridge prints a one-time
-            6-digit pairing code, good for 10 minutes. There is no master code to
-            guess — the code only exists once your bridge is running.</li>
-          <li><strong>Open this page on that same device and pair.</strong> Type the
-            code below and tap Pair. This page connects only to the bridge on the
-            same device (<span class="mono">127.0.0.1:7717</span>) — nowhere else.</li>
-          <li><strong>Then chat and run tasks.</strong> Your prompts go from this
-            browser straight to your own bridge and your own AI. Your crew, your
-            machine — your data stays with you.</li>
-        </ol>
-        <p class="reach-note"><strong>Seeing “Can't reach your crew”?</strong> That just
-          means no bridge is answering on this device yet — most often this page was
-          opened on a phone with nothing running on it. Start the bridge first, on
-          the device you want to use, then come back and pair.</p>
-      </div>
-
-      <form id="pairForm">
-        <label>Bridge URL
-          <input id="bridgeUrl" type="text" value="http://127.0.0.1:7717" spellcheck="false" autocomplete="off" />
-        </label>
-        <label>Pairing code
-          <input id="pairCode" type="text" inputmode="numeric" maxlength="6" placeholder="6 digits" spellcheck="false" autocomplete="off" />
-        </label>
-        <p class="error hidden" id="pairError"></p>
-        <button class="btn primary" id="pairBtn" type="submit">Pair</button>
-      </form>
-      <div class="demo-note">
-        <span class="tag">Hosted demo</span> coming soon — the live way in today is the bridge above, on your own machine.
-      </div>
+  <header class="topbar">
+    <div class="brand">
+      <span class="mark" aria-hidden="true">◈</span>
+      <span class="wordmark">VOKREW</span>
+      <span class="tagline">one prompt · a crew of AIs · checked</span>
     </div>
-  </section>
 
-  <!-- ============ APP SHELL ============
-       The shell always renders. The Floor is the home screen.
-       Unpaired, the Floor is the EMPTY-FLOOR SHELL (KC, 2026-10-27):
-       the real room with no crew and no data, labeled by the shell
-       banner — the setup card stays collapsed until the visitor
-       opens it. (Stage 3's forced door over the room is retired;
-       the locked-room state underneath never changed.) -->
-  <section id="appShell" class="screen">
-    <nav class="tabs" role="tablist">
-      <button class="tab active" data-screen="floor" type="button">Floor</button>
-      <button class="tab" data-screen="chat" type="button">Chat</button>
-      <button class="tab" data-screen="budget" type="button">Budget</button>
-      <button class="tab" data-screen="crew" type="button">Crew</button>
+    <nav class="tabs" id="tabs" aria-label="Views">
+      <button class="tab active" data-tab="floor" type="button">Floor</button>
+      <button class="tab" data-tab="chat" type="button">Chat</button>
+      <button class="tab" data-tab="run" type="button">Run</button>
+      <button class="tab" data-tab="budget" type="button">Budget</button>
+      <button class="tab" data-tab="crew" type="button">Crew</button>
     </nav>
 
-    <!-- Chat -->
-    <div id="screen-chat" class="tab-screen hidden">
-      <div class="thread" id="chatThread"></div>
-      <form id="chatForm" class="composer">
-        <input id="chatInput" type="text" placeholder="Ask your crew…" autocomplete="off" />
-        <label class="verify-toggle"><input id="verifyToggle" type="checkbox" /> verify</label>
-        <button class="btn primary" id="chatSend" type="submit">Send</button>
-      </form>
-      <p class="hint">Verify sends the answer to a reviewer from a different model family. Tip: prefix a message with <code>!check </code> to verify just that one.</p>
+    <div class="topbar-right">
+      <span class="pill budget" id="budgetPill" title="Calls served today, from GET /budget">⚡ CALLS TODAY — / —</span>
+      <span class="pill status" id="bridgeStatus" data-state="offline">
+        <span class="dot" aria-hidden="true"></span><span id="bridgeStatusText">OFFLINE</span>
+      </span>
+      <button class="icon-btn" id="connectBtn" type="button" title="Connect a bridge">connect</button>
     </div>
+  </header>
 
-    <!-- Run tab folded into the Floor (Phase 2 Stage 0): the Floor's
-         own run form + settled run card carry the full stage text —
-         proven byte-equal to the bridge record by the Stage 0
-         evaluator before this tab was removed. -->
+  <main class="views">
 
-    <!-- Budget -->
-    <div id="screen-budget" class="tab-screen hidden">
-      <div class="budget-grid">
-        <div class="card"><h3>Coding</h3><div id="budgetCoding"></div></div>
-        <div class="card"><h3>Chat</h3><div id="budgetChat"></div></div>
-      </div>
-      <p class="hint">Two budgets, kept separate on purpose — chat can never silently eat the coding budget. <button class="btn ghost small" id="budgetRefresh" type="button">Refresh</button></p>
-    </div>
-
-    <!-- Crew -->
-    <div id="screen-crew" class="tab-screen hidden">
-      <h3 class="section-title">Crews</h3>
-      <div id="crewList"></div>
-      <h3 class="section-title">Lanes</h3>
-      <div id="laneList"></div>
-    </div>
-
-    <!-- Floor (Phase 1 — the crew room; Stage 2: live bridge data via
-         floor-adapter.js; Stage 3: the default post-pair screen) -->
-    <div id="screen-floor" class="tab-screen">
-      <!-- EMPTY-FLOOR SHELL banner (KC, 2026-10-27): visible only in
-           body.shell-mode (unpaired — app.js owns the class). It
-           labels the empty room for what it is and carries the
-           setup tab: a collapsed, clickable card-opener. Expanding
-           it opens the connect card above; the pairing mechanics
-           inside that card are untouched. The run form and the
-           conductor form are hidden in shell mode (nothing can run
-           until a crew exists) — see app.css. -->
-      <div id="shellBanner">
-        <div class="shell-banner-text">
-          <h2>This is your floor. It starts empty.</h2>
-          <p>Every desk in this room is a seat your crew will fill — a planner, an executor,
-            a reviewer — once the Vokrew bridge is running on your own machine and paired.
-            Nothing here is simulated: no fake crew, no fake numbers — just the room itself, waiting.
-            Pan it, zoom it, look around as long as you like.</p>
-        </div>
-        <button class="btn primary" id="setupTab" type="button" aria-expanded="false" aria-controls="connectScreen">Set up your floor →</button>
-      </div>
-      <form id="floorRunForm">
-        <input id="floorRunTask" type="text" placeholder="Give the crew a task — they plan, build, and review it live in the room…" autocomplete="off" />
-        <label class="floor-crew-pick">Crew
-          <select id="floorRunCrew"></select>
-        </label>
-        <button class="btn primary" id="floorRunBtn" type="submit">Run the crew</button>
-        <span id="floorRunStatus" role="status"></span>
-      </form>
-      <div id="floorRoot">
-        <div id="top">
-          <div class="brand"><div class="mark">▦</div><div><div class="name">THE FLOOR</div><div class="tagline">VOKREW CREW ROOM</div></div><div class="phase" id="floorModeChip">CONNECTING</div></div>
-          <div class="topstat hideSm"><span class="dot" id="connDot"></span><span id="floorStatus">connecting</span></div>
-          <div class="topstat hideSm" id="runStat">RUNS <b id="runCount">0</b></div>
-          <div class="topstat" id="budgetWrap"><span class="resicon">⚡</span>CALLS TODAY <b id="budgetStatus">—</b></div>
-          <!-- Phase 2 Stage 3: the top bar carries at most the real
-               pending-hold count (a badge fed by the adapter's hold
-               state — never stamps, never progress). -->
-          <div class="topstat" id="holdStat"><span class="resicon">📌</span><span class="tb-label">HOLDS</span> <b id="holdBadge">0</b></div>
-          <div class="spacer"></div>
-          <div class="clock" id="clock">--:--:--</div>
+    <!-- ───────────────────────────── FLOOR ───────────────────────────── -->
+    <section class="view active" id="view-floor" data-view="floor">
+      <div class="floor-toolbar">
+        <div class="floor-title">
+          <p class="eyebrow">LIVE OPERATIONS</p>
+          <h1>The Floor</h1>
+          <p class="sub" id="floorSub">No bridge paired — the room is dark.</p>
         </div>
 
-        <aside id="side">
-          <div class="sidehead">
-            <div class="kicker">▣ PARTY ROSTER</div>
-            <div class="title" id="crewTitle">Crew <span id="crewCount" style="color:var(--amber);font-size:11px"></span></div>
-            <div class="sub" id="crewSub">local + free cloud</div>
-          </div>
-          <div id="roster"></div>
-          <div class="sideblock"><div class="lbl">⚑ QUEST LOG</div><div class="cnt" id="taskCount">0 open</div></div>
-          <div id="tasklist"></div>
-          <!-- Phase 2 Stage 2: the text conductor — one input bar in
-               the Floor screen. Task instructions become holds (they
-               do NOT fire on their own) and questions are answered
-               over POST /chat (surface=chat). Phase 2 Stage 3: holds
-               are actionable here and on the office noticeboard —
-               approve fires the run, edit rewrites the task in
-               place, dismiss clears it; a run the reviewer did not
-               approve offers retry-as-hold. The transcript + holds
-               persist for the page session in sessionStorage (run
-               records stay bridge-bound). All rendering lives in
-               floor-adapter.js (renderConductor); every entry traces
-               to a typed instruction, a real chat response stamp, or
-               a real run record's verdict. -->
-          <div class="sideblock"><div class="lbl">🎙 CONDUCTOR</div><div class="cnt" id="holdCount">0 held</div></div>
-          <div id="conductorLog" aria-live="polite"></div>
-          <div id="holdList"></div>
-          <form id="conductorForm">
-            <input id="conductorInput" type="text" placeholder="Conduct your crew — a task, or a question…" autocomplete="off" />
-            <button class="btn primary small" id="conductorSend" type="submit">Send</button>
+        <div class="floor-tools">
+          <label class="crew-pick">
+            <span>Crew</span>
+            <select id="crewSelect" aria-label="Active crew"></select>
+          </label>
+          <form class="conduct" id="conductForm" autocomplete="off">
+            <input id="conductInput" type="text" placeholder="Conduct your crew — one instruction, all three answer…" aria-label="Instruction for the crew" disabled />
+            <button class="btn primary" id="conductBtn" type="submit" disabled>Send</button>
           </form>
-          <p class="conductor-hint">Name a crewmate to call them out (“Scout, …”). Tasks are held until you approve them — approve, edit, or dismiss a hold below or on the office noticeboard; questions are answered in chat.</p>
-          <div class="sidefoot">
-            <div>RIG: <b id="rigFoot">checking…</b></div>
-            <div id="floorFoot">live bridge · stage 3</div>
-          </div>
-        </aside>
+        </div>
+      </div>
 
-        <div id="stage">
-          <canvas id="cv"></canvas>
-          <div id="hudfx"></div>
-          <div id="hudcorners"><i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i></div>
-          <div id="zonetag"><span>SECTOR</span><b id="zoneName">THE FLOOR</b></div>
-          <div id="questtracker" class="hudpanel"></div>
-          <div id="minimapWrap" class="hudpanel">
-            <div class="mmhead"><span>SECTOR MAP</span><span id="mmCoords">0 · 0</span></div>
-            <canvas id="mini" width="220" height="172"></canvas>
-            <div class="mmlegend"><i class="you"></i>crew <i class="here"></i>view</div>
+      <div class="floor-grid">
+        <div class="room-wrap" id="roomWrap">
+          <canvas id="floorCanvas" width="1296" height="792" aria-label="The floor: a top-down village green with your crew at their home spots"></canvas>
+
+          <div class="room-overlay live" id="liveBanner" hidden>
+            <span class="live-dot" aria-hidden="true"></span>
+            <span id="liveText">working</span>
+            <span class="live-spend" id="liveSpend"></span>
           </div>
-          <!-- Phase 2 Stage 3: the office noticeboard — held
-               instructions rendered as cards in the room (the same
-               holds, the same actions as the sidebar list; rendered
-               by floor-adapter.js, visible only while holds are
-               pending). A hold is an instruction, not a run: no
-               stamps, no verdict, no progress live here. -->
-          <div id="noticeboard" class="hudpanel hidden">
-            <div class="nbhead"><span>📌 NOTICEBOARD</span><span id="nbCount">0 held</span></div>
-            <div id="nbList"></div>
-          </div>
-          <div id="viewbar">
-            <button data-view="overview" class="on">Overview</button>
-            <button data-view="foundry">Foundry</button>
-            <button data-view="skyloft">Skyloft</button>
-            <button data-view="workshop">Workshop</button>
-            <button data-view="yard">Yard</button>
-          </div>
-          <div id="hint">drag to pan · scroll to zoom · click a character</div>
-          <!-- Phase 2 Stage 0 (G-1): the run card lives INSIDE the room,
-               docked as a slim status strip over the stage's bottom edge.
-               During a run it shows phase + calls served and nothing
-               more; the full card is a panel that grows up from the
-               strip on click or on settle. The room is never pushed
-               down or covered by it (Phase 1 LOOK-GATE G-1). -->
-          <div id="floorRunCard" class="hidden">
-            <button id="floorCardStrip" type="button" aria-expanded="false">
-              <span id="floorStripText"></span>
-              <span id="floorStripCaret" aria-hidden="true">▸</span>
-            </button>
-            <div id="floorCardBody" class="hidden">
-              <button class="btn ghost small" id="floorCardClose" type="button">Close</button>
-              <div class="verdict" id="floorCardVerdict"></div>
-              <!-- Phase 2 Stage 3: a settled run the reviewer did
-                   not approve (or that failed) offers retry-as-hold;
-                   the adapter shows this only for such a run and
-                   only until the offer is taken. -->
-              <button class="btn amber small hidden" id="floorCardRetry" type="button">↩ Retry as hold</button>
-              <!-- AAA LOOK PASS (KC): Plan/Work/Review render lane
-                   markdown as formatted text (G-3) — panes are .md
-                   divs filled by floor-adapter.js setMd(); Stamps
-                   stay a raw <pre> ledger. -->
-              <div class="stage-block"><h3>Plan</h3><div class="md" id="floorCardPlan"></div></div>
-              <div class="stage-block"><h3>Work</h3><div class="md" id="floorCardWork"></div></div>
-              <div class="stage-block"><h3>Review</h3><div class="md" id="floorCardReview"></div></div>
-              <div class="stage-block"><h3>Stamps</h3><pre class="stamps" id="floorCardStamps"></pre></div>
+
+          <div class="room-overlay locked" id="roomLocked">
+            <div class="lock-inner">
+              <span class="lock-icon" aria-hidden="true">⌁</span>
+              <strong>ROOM LOCKED · OFFLINE</strong>
+              <p id="lockText">Pair a bridge to seat your crew. Nothing is shown that the bridge did not report.</p>
+              <button class="btn primary" id="lockConnect" type="button">Connect a bridge</button>
             </div>
           </div>
+
+          <div class="minimap-wrap" aria-hidden="true">
+            <canvas id="minimap" width="176" height="108"></canvas>
+            <span class="minimap-label">village map</span>
+          </div>
+
+          <div class="focus-panel" id="focusPanel" hidden>
+            <button class="focus-close" id="focusClose" type="button" aria-label="Close focus panel">×</button>
+            <div class="focus-head">
+              <span class="palette-dot" id="focusDot"></span>
+              <div>
+                <strong id="focusName">—</strong>
+                <span class="focus-role" id="focusRole">—</span>
+              </div>
+            </div>
+            <dl class="focus-grid">
+              <dt>stage</dt><dd id="focusStage">—</dd>
+              <dt>lane</dt><dd id="focusLane">—</dd>
+              <dt>model</dt><dd id="focusModel">—</dd>
+              <dt>calls today</dt><dd id="focusCalls">—</dd>
+              <dt>stamps</dt><dd id="focusStampCount">—</dd>
+            </dl>
+            <div class="focus-history" id="focusHistory"></div>
+          </div>
         </div>
 
-        <div id="focus" class="panel"></div>
-        <div id="toast"></div>
+        <aside class="rails">
+          <section class="rail" aria-labelledby="rosterTitle">
+            <header class="rail-head">
+              <h2 id="rosterTitle">Party</h2>
+              <span class="rail-meta" id="rosterMeta">—</span>
+            </header>
+            <div class="roster" id="roster"></div>
+          </section>
+
+          <section class="rail" aria-labelledby="questTitle">
+            <header class="rail-head">
+              <h2 id="questTitle">Quest log</h2>
+              <span class="rail-meta" id="questMeta">0 runs</span>
+            </header>
+            <div class="quest" id="questLog"></div>
+            <p class="rail-note" id="questNote"></p>
+          </section>
+
+          <section class="rail" id="conductPanel" aria-labelledby="conductTitle" hidden>
+            <header class="rail-head">
+              <h2 id="conductTitle">Conduct transcript</h2>
+              <span class="rail-meta" id="conductMeta">—</span>
+            </header>
+            <div class="conduct-parts" id="conductParts"></div>
+          </section>
+        </aside>
       </div>
+
+      <footer class="floor-foot">
+        <div class="legend" aria-hidden="true">
+          <span><i class="legend-dot idle"></i>at desk</span>
+          <span><i class="legend-dot working"></i>working</span>
+          <span><i class="legend-dot reviewing"></i>reviewing</span>
+          <span><i class="legend-dot walking"></i>walking</span>
+        </div>
+        <p>Phases, stamps and verdicts are read from your bridge — the room never guesses.</p>
+      </footer>
+    </section>
+
+    <!-- ───────────────────────────── CHAT ───────────────────────────── -->
+    <section class="view" id="view-chat" data-view="chat">
+      <div class="panel-page">
+        <header class="page-head">
+          <div>
+            <p class="eyebrow">CONVERSATION · CHAT SURFACE</p>
+            <h1>Chat</h1>
+            <p class="sub">The executor answers. Flip review on and the reviewer checks it — every turn stamped.</p>
+          </div>
+          <div class="page-badges">
+            <span class="pill subtle"><span class="glyph" aria-hidden="true">⌁</span> separate ledger</span>
+          </div>
+        </header>
+
+        <div class="page-split chat-split">
+          <div class="chat-box surface-card">
+            <div class="chat-log" id="chatLog" aria-live="polite">
+              <div class="chat-empty">
+                <span class="empty-mark" aria-hidden="true">◈</span>
+                <strong>Ask the crew anything.</strong>
+                <p>The executor answers from your bridge. Turn review on and the reviewer checks the turn before it lands.</p>
+                <div class="prompt-chips" aria-label="Suggested prompts">
+                  <button class="prompt-chip" type="button" data-prompt="What can you do in one short answer?">What can you do?</button>
+                  <button class="prompt-chip" type="button" data-prompt="Summarize the last run in one sentence.">Summarize the last run</button>
+                  <button class="prompt-chip" type="button" data-prompt="Draft a three-step plan for a small fix.">Draft a plan</button>
+                </div>
+              </div>
+            </div>
+            <form class="chat-compose" id="chatForm" autocomplete="off">
+              <textarea id="chatInput" rows="1" placeholder="Ask your crew…" aria-label="Chat message"></textarea>
+              <button class="btn primary" id="chatSend" type="submit">Send</button>
+            </form>
+            <p class="hint" id="chatHint">Chat calls are counted on the chat surface — separate from coding runs.</p>
+          </div>
+
+          <aside class="side-rail">
+            <section class="side-card">
+              <header class="side-head">
+                <h2>Review</h2>
+                <span class="side-meta">on demand</span>
+              </header>
+              <label class="switch switch-card">
+                <span>review every turn</span>
+                <input type="checkbox" id="chatVerify" />
+              </label>
+              <p class="side-copy">With review on, the reviewer checks the executor's answer and the verdict lands with the reply.</p>
+            </section>
+
+            <section class="side-card">
+              <header class="side-head">
+                <h2>Surface</h2>
+                <span class="side-meta" id="chatSurfaceMeta">chat</span>
+              </header>
+              <dl class="side-stats">
+                <div><dt>calls today</dt><dd id="chatCalls">—</dd></div>
+                <div><dt>seated crew</dt><dd id="chatCrew">—</dd></div>
+                <div><dt>session</dt><dd id="chatSessionId">new</dd></div>
+              </dl>
+            </section>
+
+            <section class="side-card">
+              <header class="side-head"><h2>How a turn lands</h2></header>
+              <ol class="side-steps">
+                <li><span>01</span><p>The executor answers from the bridge.</p></li>
+                <li><span>02</span><p>The reviewer checks it, when review is on.</p></li>
+                <li><span>03</span><p>Verdict and stamps arrive with the reply.</p></li>
+              </ol>
+            </section>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───────────────────────────── RUN ───────────────────────────── -->
+    <section class="view" id="view-run" data-view="run">
+      <div class="panel-page">
+        <header class="page-head">
+          <div>
+            <p class="eyebrow">CHAIN · ONE TASK, THREE ROLES</p>
+            <h1>Run a task</h1>
+            <p class="sub">Planner frames it, executor does it, reviewer checks it. Stamps come from the bridge.</p>
+          </div>
+          <div class="page-badges">
+            <span class="pill subtle"><span class="glyph" aria-hidden="true">⟐</span> 3 roles · 1 verdict</span>
+          </div>
+        </header>
+
+        <div class="page-split run-split">
+          <form class="run-form surface-card" id="runForm" autocomplete="off">
+            <label class="field grow">
+              <span>Task</span>
+              <textarea id="runTask" rows="4" placeholder="e.g. add a retry with backoff to the fetch helper"></textarea>
+            </label>
+            <div class="prompt-chips run-prompts" aria-label="Suggested tasks">
+              <button class="prompt-chip" type="button" data-task="Add a retry with backoff to the fetch helper.">Retry with backoff</button>
+              <button class="prompt-chip" type="button" data-task="Write a one-paragraph README for this project.">Write a README</button>
+              <button class="prompt-chip" type="button" data-task="Find one edge case in the current plan and fix it.">Find an edge case</button>
+            </div>
+            <div class="field-row">
+              <label class="field">
+                <span>Surface</span>
+                <select id="runSurface">
+                  <option value="coding">coding</option>
+                  <option value="chat">chat</option>
+                </select>
+              </label>
+              <label class="field">
+                <span>Workspace <em>optional</em></span>
+                <input id="runWorkspace" type="text" placeholder="/path/to/project" />
+              </label>
+              <button class="btn primary" id="runBtn" type="submit">Run chain</button>
+            </div>
+            <p class="hint" id="runHint">No run in flight.</p>
+          </form>
+
+          <aside class="side-rail">
+            <section class="side-card chain-card">
+              <header class="side-head">
+                <h2>The chain</h2>
+                <span class="side-meta" id="chainMeta">3 roles</span>
+              </header>
+              <div class="chain-roles" id="chainRoles"></div>
+              <p class="side-copy">One served call per stage. Failed and capped attempts never advance the room.</p>
+            </section>
+
+            <section class="side-card">
+              <header class="side-head">
+                <h2>Counted in calls</h2>
+                <span class="side-meta">not tokens</span>
+              </header>
+              <p class="side-copy">The header pill is the bridge's own ledger. A run adds one call for every stage that actually served.</p>
+            </section>
+          </aside>
+        </div>
+
+        <div class="run-live" id="runLive" hidden>
+          <div class="phase-track" id="phaseTrack">
+            <span class="phase" data-phase="planner">plan</span>
+            <span class="phase" data-phase="executor">work</span>
+            <span class="phase" data-phase="reviewer">review</span>
+          </div>
+          <p class="hint" id="runPhaseText"></p>
+        </div>
+
+        <article class="run-card inline" id="runResult" hidden></article>
+      </div>
+    </section>
+
+    <!-- ───────────────────────────── BUDGET ───────────────────────────── -->
+    <section class="view" id="view-budget" data-view="budget">
+      <div class="panel-page">
+        <header class="page-head">
+          <div>
+            <p class="eyebrow">LEDGER · CALLS, NOT TOKENS</p>
+            <h1>Budget</h1>
+            <p class="sub">Budgets are counted in calls per lane per day — never tokens.</p>
+          </div>
+          <div class="page-badges">
+            <span class="pill subtle" id="budgetDay">day —</span>
+            <button class="btn" id="budgetRefresh" type="button">Refresh</button>
+          </div>
+        </header>
+        <div class="budget-summary" id="budgetSummary"></div>
+        <div class="surface-card ledger-card">
+          <header class="ledger-head">
+            <div>
+              <h2>Lane ledger</h2>
+              <p class="side-copy">Every served call, read from the bridge. Caps are never invented.</p>
+            </div>
+            <span class="chip" id="budgetSurface">coding</span>
+          </header>
+          <div class="table-wrap">
+            <table class="budget-table">
+              <thead><tr><th>lane</th><th>used today</th><th>cap</th><th>remaining</th></tr></thead>
+              <tbody id="budgetRows"></tbody>
+            </table>
+          </div>
+        </div>
+        <p class="rail-note" id="budgetNote"></p>
+      </div>
+    </section>
+
+    <!-- ───────────────────────────── CREW ───────────────────────────── -->
+    <section class="view" id="view-crew" data-view="crew">
+      <div class="panel-page">
+        <header class="page-head">
+          <div>
+            <p class="eyebrow">ROSTER · BRIDGE CREWS</p>
+            <h1>Crew</h1>
+            <p class="sub">Crews live on your bridge. The room seats whichever crew is active.</p>
+          </div>
+          <div class="page-badges">
+            <label class="crew-pick">
+              <span>Active crew</span>
+              <select id="crewSelectPage" aria-label="Active crew"></select>
+            </label>
+          </div>
+        </header>
+        <div class="crew-grid" id="crewGrid"></div>
+        <p class="rail-note" id="crewNote"></p>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- ───────────────────────────── PAIRING ───────────────────────────── -->
+<div class="modal" id="pairModal" hidden>
+  <div class="modal-card narrow" role="dialog" aria-modal="true" aria-labelledby="pairTitle">
+    <header class="modal-head">
+      <h2 id="pairTitle">Pair your bridge</h2>
+      <button class="modal-close" id="pairClose" type="button" aria-label="Close">×</button>
+    </header>
+    <p class="modal-sub">Run <code>vokrew serve</code> on your machine. It prints a pairing code — paste it here. The code is single-use and expires in 10 minutes.</p>
+    <form class="pair-form" id="pairForm" autocomplete="off">
+      <label class="field">
+        <span>Bridge URL</span>
+        <input id="pairUrl" type="text" value="http://127.0.0.1:7717" spellcheck="false" />
+      </label>
+      <label class="field">
+        <span>Pairing code</span>
+        <input id="pairCode" type="text" inputmode="numeric" placeholder="6 digits" maxlength="12" spellcheck="false" />
+      </label>
+      <p class="error" id="pairError" hidden></p>
+      <button class="btn primary wide" id="pairBtn" type="submit">Pair</button>
+    </form>
+    <div class="pair-foot">
+      <span id="pairFootState">not paired</span>
+      <button class="linkish" id="forgetBtn" type="button" hidden>forget pairing</button>
     </div>
-  </section>
-</main>
+  </div>
+</div>
 
-<footer class="foot">
-  <span>VOKREW</span> · your voice, your crew · this page talks only to your bridge — no analytics, no trackers.
-</footer>
+<!-- ───────────────────────────── RUN CARD ───────────────────────────── -->
+<div class="modal" id="runModal" hidden>
+  <div class="modal-card wide" role="dialog" aria-modal="true" aria-labelledby="runModalTitle">
+    <header class="modal-head">
+      <h2 id="runModalTitle">Run</h2>
+      <button class="modal-close" id="runClose" type="button" aria-label="Close">×</button>
+    </header>
+    <div id="runCardBody"></div>
+  </div>
+</div>
 
-<script src="app.js"></script>
+<script type="module" src="./app.js"></script>
 </body>
 </html>
