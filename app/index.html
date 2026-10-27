@@ -224,9 +224,13 @@ node src/cli.js serve</pre>
                    the adapter shows this only for such a run and
                    only until the offer is taken. -->
               <button class="btn amber small hidden" id="floorCardRetry" type="button">↩ Retry as hold</button>
-              <div class="stage-block"><h3>Plan</h3><pre id="floorCardPlan"></pre></div>
-              <div class="stage-block"><h3>Work</h3><pre id="floorCardWork"></pre></div>
-              <div class="stage-block"><h3>Review</h3><pre id="floorCardReview"></pre></div>
+              <!-- AAA LOOK PASS (KC): Plan/Work/Review render lane
+                   markdown as formatted text (G-3) — panes are .md
+                   divs filled by floor-adapter.js setMd(); Stamps
+                   stay a raw <pre> ledger. -->
+              <div class="stage-block"><h3>Plan</h3><div class="md" id="floorCardPlan"></div></div>
+              <div class="stage-block"><h3>Work</h3><div class="md" id="floorCardWork"></div></div>
+              <div class="stage-block"><h3>Review</h3><div class="md" id="floorCardReview"></div></div>
               <div class="stage-block"><h3>Stamps</h3><pre class="stamps" id="floorCardStamps"></pre></div>
             </div>
           </div>

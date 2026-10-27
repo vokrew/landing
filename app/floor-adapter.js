@@ -660,6 +660,68 @@
     return "working";
   }
 
+  /* ---------------- AAA LOOK PASS (KC): markdown in the run card ----------------
+     Phase 2 gap G-3: lane output is markdown, and the card showed it
+     raw (**bold**, ``` fences as literal characters). The three stage
+     panes now render formatted text through this small page-side
+     renderer. Escape-first: lane text is HTML-escaped BEFORE any
+     transform, so model output can never inject markup into the
+     page. Stamps stay raw text — they are the ledger, not prose. */
+  function mdInline(s) {
+    return s
+      .replace(/`([^`\n]+)`/g, "<code>$1</code>")
+      .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+      .replace(/__([^_]+)__/g, "<strong>$1</strong>")
+      .replace(/(^|[^*\w])\*([^*\n]+)\*/g, "$1<em>$2</em>");
+  }
+  function mdToHtml(src) {
+    const esc = String(src == null ? "" : src)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    const lines = esc.split("\n");
+    const out = [];
+    let list = null, code = null, para = [];
+    const flushPara = () => { if (para.length) { out.push("<p>" + mdInline(para.join(" ")) + "</p>"); para = []; } };
+    const flushList = () => {
+      if (list) {
+        out.push((list.ordered ? "<ol>" : "<ul>") +
+          list.items.map((i) => "<li>" + mdInline(i) + "</li>").join("") +
+          (list.ordered ? "</ol>" : "</ul>"));
+        list = null;
+      }
+    };
+    for (const rawLine of lines) {
+      const line = rawLine.replace(/\s+$/, "");
+      if (code !== null) {
+        if (/^```/.test(line)) { out.push("<pre class=\"mdcode\">" + code.join("\n") + "</pre>"); code = null; }
+        else code.push(line);
+        continue;
+      }
+      if (/^```/.test(line)) { flushPara(); flushList(); code = []; continue; }
+      const h = /^(#{1,4})\s+(.*)$/.exec(line);
+      if (h) { flushPara(); flushList(); const lvl = Math.min(6, h[1].length + 3); out.push("<h" + lvl + ">" + mdInline(h[2]) + "</h" + lvl + ">"); continue; }
+      if (/^\s*(-{3,}|\*{3,}|_{3,})\s*$/.test(line)) { flushPara(); flushList(); out.push("<hr>"); continue; }
+      const ul = /^\s*[-*+]\s+(.*)$/.exec(line);
+      const ol = /^\s*\d+[.)]\s+(.*)$/.exec(line);
+      if (ul || ol) {
+        flushPara();
+        const ordered = !!ol;
+        if (!list || list.ordered !== ordered) { flushList(); list = { ordered, items: [] }; }
+        list.items.push((ul || ol)[1]);
+        continue;
+      }
+      if (/^&gt;\s?/.test(line)) { flushPara(); flushList(); out.push("<blockquote>" + mdInline(line.replace(/^&gt;\s?/, "")) + "</blockquote>"); continue; }
+      if (!line.trim()) { flushPara(); flushList(); continue; }
+      para.push(line.trim());
+    }
+    if (code !== null) out.push("<pre class=\"mdcode\">" + code.join("\n") + "</pre>");
+    flushPara(); flushList();
+    return out.join("");
+  }
+  function setMd(id, text) {
+    const el = $(id);
+    if (el) el.innerHTML = mdToHtml(text || "");
+  }
+
   function renderCard() {
     const card = $("floorRunCard");
     if (!card) return;
@@ -697,18 +759,18 @@
     if (S.lostIds.has(S.selectedId)) {
       verdictEl.className = "verdict changes";
       verdictEl.textContent = "run lost — bridge restarted";
-      $("floorCardPlan").textContent = "The bridge keeps its run registry in memory. The run was real, but its record is gone.";
-      $("floorCardWork").textContent = "";
-      $("floorCardReview").textContent = "";
+      setMd("floorCardPlan", "The bridge keeps its run registry in memory. The run was real, but its record is gone.");
+      setMd("floorCardWork", "");
+      setMd("floorCardReview", "");
       $("floorCardStamps").textContent = "";
       return;
     }
     if (!rec) {
       verdictEl.className = "verdict";
       verdictEl.textContent = sum ? `Run ${sum.state}…` : "Loading run…";
-      $("floorCardPlan").textContent = sum ? String(sum.task || "") : "";
-      $("floorCardWork").textContent = "";
-      $("floorCardReview").textContent = "";
+      setMd("floorCardPlan", sum ? String(sum.task || "") : "");
+      setMd("floorCardWork", "");
+      setMd("floorCardReview", "");
       $("floorCardStamps").textContent = "";
       return;
     }
@@ -740,9 +802,9 @@
         retryBtn.removeAttribute("data-retry-run");
       }
     }
-    $("floorCardPlan").textContent = rec.plan || (rec.state === "running" ? "…" : "");
-    $("floorCardWork").textContent = rec.work || (rec.state === "running" ? "…" : "");
-    $("floorCardReview").textContent = rec.review || (rec.state === "running" ? "…" : "");
+    setMd("floorCardPlan", rec.plan || (rec.state === "running" ? "…" : ""));
+    setMd("floorCardWork", rec.work || (rec.state === "running" ? "…" : ""));
+    setMd("floorCardReview", rec.review || (rec.state === "running" ? "…" : ""));
     const lines = (rec.stamps || []).map((st) => recordStampLine(rec, st));
     const footer = [];
     if (rec.crew && rec.crew !== "default") footer.push(`crew=${rec.crew}`);
