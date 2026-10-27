@@ -79,35 +79,77 @@ function h(tag, attrs, ...kids) {
 
 // Inline spans. Deliberately small: bold, italic, inline code and http(s)
 // links. Everything else stays literal text, so a model cannot inject markup.
+//
+// The parser is a small recursive descent, not a single regex pass: code
+// spans are tokenized first at every level, so a code span nested inside
+// bold (`**Type `pwd`…**`) keeps its CODE element instead of leaking its
+// backticks into the <strong> as literal punctuation.
 function inlineMarkdown(text) {
   const frag = document.createDocumentFragment();
-  const src = String(text ?? "");
-  const pattern = /(\*\*[^*\n]+\*\*|`[^`\n]+`|\*[^*\n]+\*|\[[^\]\n]+\]\(https?:\/\/[^)\s]+\))/g;
-  let last = 0;
-  let m;
-  while ((m = pattern.exec(src))) {
-    if (m.index > last) frag.append(document.createTextNode(src.slice(last, m.index)));
-    const token = m[0];
-    if (token.startsWith("**")) {
-      frag.append(h("strong", { text: token.slice(2, -2) }));
-    } else if (token.startsWith("`")) {
-      frag.append(h("code", { text: token.slice(1, -1) }));
-    } else if (token.startsWith("[")) {
-      const link = /^\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)$/.exec(token);
+  appendInline(frag, String(text ?? ""));
+  return frag;
+}
+
+function appendInline(frag, src) {
+  let buf = "";
+  const flush = () => {
+    if (buf) { frag.append(document.createTextNode(buf)); buf = ""; }
+  };
+  let i = 0;
+  while (i < src.length) {
+    // inline code — contents stay literal, never re-parsed
+    if (src[i] === "`") {
+      const end = src.indexOf("`", i + 1);
+      const inner = end > i + 1 ? src.slice(i + 1, end) : null;
+      if (inner !== null && !inner.includes("\n")) {
+        flush();
+        frag.append(h("code", { text: inner }));
+        i = end + 1;
+        continue;
+      }
+    }
+    // bold — the inner text parses recursively, so code/italic nest inside
+    if (src.startsWith("**", i)) {
+      const end = src.indexOf("**", i + 2);
+      const inner = end > i + 2 ? src.slice(i + 2, end) : null;
+      if (inner !== null && !inner.includes("\n")) {
+        flush();
+        const strong = h("strong", {});
+        appendInline(strong, inner);
+        frag.append(strong);
+        i = end + 2;
+        continue;
+      }
+    }
+    // link
+    if (src[i] === "[") {
+      const link = /^\[([^\]\n]+)\]\((https?:\/\/[^)\s]+)\)/.exec(src.slice(i));
       if (link) {
+        flush();
         frag.append(h("a", {
           href: link[2], target: "_blank", rel: "noopener noreferrer", text: link[1],
         }));
-      } else {
-        frag.append(document.createTextNode(token));
+        i += link[0].length;
+        continue;
       }
-    } else {
-      frag.append(h("em", { text: token.slice(1, -1) }));
     }
-    last = m.index + token.length;
+    // italic
+    if (src[i] === "*" && src[i + 1] !== "*") {
+      const end = src.indexOf("*", i + 1);
+      const inner = end > i + 1 ? src.slice(i + 1, end) : null;
+      if (inner !== null && !inner.includes("\n") && !inner.includes("*")) {
+        flush();
+        const em = h("em", {});
+        appendInline(em, inner);
+        frag.append(em);
+        i = end + 1;
+        continue;
+      }
+    }
+    buf += src[i];
+    i += 1;
   }
-  if (last < src.length) frag.append(document.createTextNode(src.slice(last)));
-  return frag;
+  flush();
 }
 
 // Block-level markdown: headings, fenced code, lists, quotes, rules and
@@ -611,6 +653,7 @@ function setOffline(reason) {
   $("runBtn").disabled = true;
   $("chatSend").disabled = true;
   $("chatHint").textContent = "Bridge offline — nothing is sent until it reconnects.";
+  renderRunHint();
   $("budgetPill").textContent = "⚡ CALLS TODAY — / —";
   renderRoster();
   renderChatSide();
@@ -1152,6 +1195,24 @@ function setBusy(busy) {
   $("chatSend").disabled = busy || !app.online;
   for (const id of ["crewSelect", "crewSelectPage"]) $(id).disabled = busy || !app.online;
   setStatus(busy ? "busy" : app.online ? "live" : "offline", busy ? "RUNNING" : app.online ? "LIVE" : "OFFLINE");
+  renderRunHint();
+}
+
+// The line under the Run form derives from the same run state as the header
+// pill and the chain rail — app.running / app.phase / app.served, all set by
+// setBusy + handlePhase. It must never claim "no run in flight" while the
+// pill says RUNNING.
+function renderRunHint() {
+  const el = $("runHint");
+  if (!el) return;
+  if (app.running) {
+    const stage = app.phase === "settling" ? "settling" : `${app.phase || "planner"} stage`;
+    el.textContent = `Run in flight — ${stage} · ${app.served || 0}/3 stages reported by the bridge.`;
+  } else if (!app.online) {
+    el.textContent = "No run in flight — pair a bridge to send a task.";
+  } else {
+    el.textContent = "No run in flight.";
+  }
 }
 
 function showLive(text, spend = "") {
@@ -1218,6 +1279,7 @@ function handlePhase(p, { conduct = false, surface = "coding" } = {}) {
   if (!app.running) return;
   app.phase = p.stage;
   app.served = p.served;
+  renderRunHint();
   if (p.budget && surface === "coding") {
     app.budget = p.budget;
     renderBudgetPill();

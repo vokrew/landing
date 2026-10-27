@@ -1,0 +1,29 @@
+{
+  "mode": "before",
+  "pageDir": "/home/hatch/workspace/deepseek-review/web-aaa",
+  "checks": [
+    {
+      "name": "page boots offline against rig bridge",
+      "ok": true,
+      "detail": "{\"paired\":false,\"online\":false}"
+    },
+    {
+      "name": "paired via UI",
+      "ok": true,
+      "detail": "{\"paired\":true,\"online\":true,\"crew\":\"default\"}"
+    },
+    {
+      "name": "zero console errors (before, idle)",
+      "ok": true,
+      "detail": "none"
+    }
+  ],
+  "notes": [
+    "pairing code captured (single-use, rig-isolated)",
+    "paired-idle room luminance samples: 0.2053, 0.2053"
+  ],
+  "luminanceIdle": [
+    0.2053,
+    0.2053
+  ]
+}

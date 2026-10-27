@@ -1,0 +1,179 @@
+{
+  "mode": "after",
+  "pageDir": "/home/hatch/workspace/multi-brain-router-app/landing-repo/ds-app",
+  "checks": [
+    {
+      "name": "page boots offline against rig bridge",
+      "ok": true,
+      "detail": "{\"paired\":false,\"online\":false}"
+    },
+    {
+      "name": "paired via UI",
+      "ok": true,
+      "detail": "{\"paired\":true,\"online\":true,\"crew\":\"default\"}"
+    },
+    {
+      "name": "bridge token captured from page storage",
+      "ok": true,
+      "detail": "present"
+    },
+    {
+      "name": "typesetter: code span nested in bold renders as CODE, zero leaked backticks",
+      "ok": true,
+      "detail": "{\"nestedText\":\"Type pwd and press Enter. Then run ls -a to list. See docs.\",\"nestedBackticks\":0,\"nestedCode\":2,\"nestedCodeText\":[\"pwd\",\"ls -a\"],\"nestedStrong\":1,\"nestedStrongHasCode\":true,\"nestedLinks\":1,\"structOl\":1,\"structLi\":2,\"structStrong\":1,\"structEm\":1,\"structP\":1,\"literalBackticks\":0,\"literalCode\":1,\"literalStrong\":0}"
+    },
+    {
+      "name": "typesetter: structure unregressed (OL/LI/STRONG/EM/P)",
+      "ok": true,
+      "detail": "{\"ol\":1,\"li\":2,\"strong\":1,\"em\":1,\"p\":1}"
+    },
+    {
+      "name": "typesetter: literal code contents never re-parsed",
+      "ok": true,
+      "detail": "{\"code\":1,\"strong\":0}"
+    },
+    {
+      "name": "item1: mid-run hint agrees with RUNNING pill (never 'No run in flight')",
+      "ok": true,
+      "detail": "pill=RUNNING hint=\"Run in flight — planner stage · 0/3 stages reported by the bridge.\""
+    },
+    {
+      "name": "(e) settled verdict matches bridge record",
+      "ok": true,
+      "detail": "page=\"APPROVED\" bridge=APPROVED"
+    },
+    {
+      "name": "(e) stamps name the real lane + model on all three stages",
+      "ok": true,
+      "detail": "[\"planner · Scout · local-gemma · gemma-local · gemma · local · 26s\",\"executor · Musky · local-gemma · gemma-local · gemma · local · 14s\",\"reviewer · Judge · local-gemma · gemma-local · gemma · local · 18s\"]"
+    },
+    {
+      "name": "(g) same-family review labeled, no cross-family claim",
+      "ok": true,
+      "detail": "label=true crossClaim=false"
+    },
+    {
+      "name": "item2: settled card text contains ZERO backticks, code spans render as CODE",
+      "ok": true,
+      "detail": "backticks=0 code=3 formatted=true"
+    },
+    {
+      "name": "item1: after settle the hint returns to 'No run in flight.'",
+      "ok": true,
+      "detail": "\"No run in flight.\""
+    },
+    {
+      "name": "budget pill equals GET /budget coding total (calls, not tokens)",
+      "ok": true,
+      "detail": "bridge=3 pill=\"⚡ CALLS TODAY 3 / —\" pillNum=3"
+    },
+    {
+      "name": "phone run 2 goes live",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "item1 (phone): mid-run hint agrees",
+      "ok": true,
+      "detail": "\"Run in flight — planner stage · 0/3 stages reported by the bridge.\""
+    },
+    {
+      "name": "phone: zero horizontal overflow at 412px",
+      "ok": true,
+      "detail": "{\"sw\":412,\"iw\":412,\"bw\":412}"
+    },
+    {
+      "name": "(i) mid-run reload reattaches and settles — never 'run lost'",
+      "ok": true,
+      "detail": "modal=\"APPROVED\" journal={\"state\":\"done\",\"verdict\":\"APPROVED\",\"lost\":false} bridge=APPROVED runLost=false"
+    },
+    {
+      "name": "item2 (phone run): settled card backticks zero",
+      "ok": true,
+      "detail": "backticks=0"
+    },
+    {
+      "name": "zero console errors across the whole session",
+      "ok": true,
+      "detail": "none"
+    }
+  ],
+  "notes": [
+    "pairing code captured (single-use, rig-isolated)",
+    "paired-idle room luminance samples: 0.4237, 0.4237",
+    "run live in page state at poll 0",
+    "run1 id (via bridge list): d74f8f9f-ea9d-4820-bdf3-22497cbeb222",
+    "run1 settled: state=done verdict=APPROVED planHasNestedCode=false",
+    "after mid-run reload: running=true phase=planner served=0"
+  ],
+  "luminanceIdle": [
+    0.4237,
+    0.4237
+  ],
+  "markdown": {
+    "nestedText": "Type pwd and press Enter. Then run ls -a to list. See docs.",
+    "nestedBackticks": 0,
+    "nestedCode": 2,
+    "nestedCodeText": [
+      "pwd",
+      "ls -a"
+    ],
+    "nestedStrong": 1,
+    "nestedStrongHasCode": true,
+    "nestedLinks": 1,
+    "structOl": 1,
+    "structLi": 2,
+    "structStrong": 1,
+    "structEm": 1,
+    "structP": 1,
+    "literalBackticks": 0,
+    "literalCode": 1,
+    "literalStrong": 0
+  },
+  "hintMidRun": "Run in flight — planner stage · 0/3 stages reported by the bridge.",
+  "run1": {
+    "id": "d74f8f9f-ea9d-4820-bdf3-22497cbeb222",
+    "state": "done",
+    "verdict": "APPROVED",
+    "stamps": 3,
+    "crossFamily": false
+  },
+  "run1PlanHasNestedMarkup": false,
+  "wart1": {
+    "backticks": 0,
+    "codeCount": 3,
+    "hasFormatted": true,
+    "verdict": "APPROVED",
+    "stamps": [
+      "planner · Scout · local-gemma · gemma-local · gemma · local · 26s",
+      "executor · Musky · local-gemma · gemma-local · gemma · local · 14s",
+      "reviewer · Judge · local-gemma · gemma-local · gemma · local · 18s"
+    ]
+  },
+  "budget": {
+    "codingTotal": 3,
+    "pillBudget": "⚡ CALLS TODAY 3 / —",
+    "pillNum": 3
+  },
+  "phoneOverflow": {
+    "sw": 412,
+    "iw": 412,
+    "bw": 412
+  },
+  "run2": {
+    "id": "a9785b5e-f126-4c02-ac72-51dced59d92a",
+    "state": "done",
+    "verdict": "APPROVED"
+  },
+  "journal2": {
+    "state": "done",
+    "verdict": "APPROVED",
+    "lost": false
+  },
+  "wart2": {
+    "verdict": "APPROVED",
+    "backticks": 0,
+    "runLost": false
+  },
+  "consoleErrors": []
+}

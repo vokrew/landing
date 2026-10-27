@@ -1,0 +1,135 @@
+[llama:err] 0.00.003.416 I srv  llama_server: initializing ...
+[page] Vokrew web face: http://localhost:7789/
+Serving /home/hatch/workspace/multi-brain-router-app/landing-repo/ds-app
+[llama:err] 0.00.189.906 I cmn  common_param: common_params_print_info: verbosity = 3 (adjust with the `-lv N` CLI arg)
+0.00.190.704 W srv  llama_server: security: no API key is set and CORS allows all origins (see https://github.com/ggml-org/llama.cpp/pull/25655)
+[llama:err] 0.00.201.974 I srv    load_model: loading model '/home/hatch/workspace/vokrew-local-test/gemma3-1b.gguf'
+[bridge] Vokrew bridge listening on http://127.0.0.1:17717 (localhost only — not reachable from the internet)
+[bridge] Pair from the web face: POST /pair { "code": "<code below>" } -> Bearer token for /run, /chat, /budget, /lanes, /crews
+[bridge] Pairing code: 540397  (single-use, expires in 10 minutes)
+[chrome:err] [5496:5538:1027/200059.590963:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory
+[5496:5538:1027/200059.591029:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[5496:5538:1027/200059.591051:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory
+[5496:5538:1027/200059.591066:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory
+[5496:5538:1027/200059.592625:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[chrome:err] [5496:5538:1027/200059.648024:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[chrome:err] [5496:5538:1027/200059.941528:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[chrome:err] 
+DevTools listening on ws://127.0.0.1:9341/devtools/browser/d2c2af0a-85ca-4713-8d25-3a9bdc824d87
+[chrome:err] [5496:5496:1027/200100.054921:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[chrome:err] [5496:5496:1027/200100.055429:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[5496:5538:1027/200100.055726:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[5496:5538:1027/200100.055740:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[5496:5496:1027/200100.055898:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[chrome:err] [5496:5496:1027/200100.083778:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[chrome:err] [5496:5496:1027/200100.759141:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[chrome:err] [5496:5538:1027/200100.760316:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory
+[chrome:err] [5496:5538:1027/200100.760594:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory
+[chrome:err] [5496:5496:1027/200100.764373:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[chrome:err] [5496:5538:1027/200100.769764:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[chrome:err] [5496:5496:1027/200101.047489:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.Properties.GetAll: object_path= /org/freedesktop/UPower/devices/DisplayDevice: unknown error type: 
+[chrome:err] [5496:5496:1027/200101.055971:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[chrome:err] [5496:5538:1027/200101.059303:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[chrome:err] [5496:5496:1027/200101.205978:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[chrome:err] [5496:5538:1027/200101.206830:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[chrome:err] [5496:5496:1027/200101.326625:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[llama:err] 0.02.918.460 W load: control-looking token:    212 '</s>' was not control-type; this is probably a bug in the model. its type will be overridden
+[chrome:err] [5496:5496:1027/200102.257098:ERROR:chrome/browser/component_updater/optimization_guide_on_device_model_installer.cc:597] Failed to update on-device model component with error 5
+[chrome:err] [5496:5496:1027/200102.505305:ERROR:chrome/browser/component_updater/soda_component_installer.cc:96] On demand update of the SODA component failed with error: 5
+[llama:err] 0.03.943.805 I cmn          init: llama threadpool init, n_threads = 2
+[chrome:err] [5496:5496:1027/200103.005799:ERROR:chrome/browser/component_updater/soda_language_pack_component_installer.cc:84] On demand update of the SODA language component failed with error: 5
+[llama:err] 0.04.283.951 I srv    load_model: initializing, n_slots = 4, n_ctx_slot = 4096, kv_unified = 'true'
+[llama:err] 0.04.323.627 I srv  llama_server: model loaded
+[llama:err] 0.04.328.965 I srv  llama_server: listening on http://127.0.0.1:18080
+[20:01:03] NOTE pairing code captured (single-use, rig-isolated)
+[20:01:06] PASS page boots offline against rig bridge — {"paired":false,"online":false}
+[bridge] Pairing code: 086820  (single-use, expires in 10 minutes)
+[20:01:09] PASS paired via UI — {"paired":true,"online":true,"crew":"default"}
+[20:01:09] PASS bridge token captured from page storage — present
+[20:01:10] NOTE paired-idle room luminance samples: 0.4237, 0.4237
+[20:01:12] shot 01-desktop-idle.png
+[20:01:12] PASS typesetter: code span nested in bold renders as CODE, zero leaked backticks — {"nestedText":"Type pwd and press Enter. Then run ls -a to list. See docs.","nestedBackticks":0,"nestedCode":2,"nestedCodeText":["pwd","ls -a"],"nestedStrong":1,"nestedStrongHasCode":true,"nestedLinks":1,"structOl":1,"structLi":2,"structStrong":1,"structEm":1,"structP":1,"literalBackticks":0,"literalCode":1,"literalStrong":0}
+[20:01:12] PASS typesetter: structure unregressed (OL/LI/STRONG/EM/P) — {"ol":1,"li":2,"strong":1,"em":1,"p":1}
+[20:01:12] PASS typesetter: literal code contents never re-parsed — {"code":1,"strong":0}
+[llama:err] 0.13.930.136 I slot get_availabl: id  0 | task -1 | selected slot by LRU, n_tokens = 0, t_last = -1
+[llama:err] 0.13.936.072 I slot launch_slot_: id  0 | task 0 | processing task, is_child = 0
+[20:01:13] NOTE run live in page state at poll 0
+[20:01:13] NOTE run1 id (via bridge list): d74f8f9f-ea9d-4820-bdf3-22497cbeb222
+[20:01:18] PASS item1: mid-run hint agrees with RUNNING pill (never 'No run in flight') — pill=RUNNING hint="Run in flight — planner stage · 0/3 stages reported by the bridge."
+[20:01:20] shot 02-desktop-midrun.png
+[llama:err] 0.29.210.342 [llama:err] I slot print_timing: id  0 | task 0 | n_gen =    100, tg =   8.02 t/s, tg_3s =   8.10 t/s
+[llama:err] 0.32.325.653 I slot print_timing: id  0 | task 0 | n_gen =    124, tg =   7.95 t/s, tg_3s =   7.70 t/s
+[llama:err] 0.35.372.560 I slot print_timing: id  0 | task 0 | n_gen =    140, tg =   7.51 t/s, tg_3s =   5.25 t/s
+[llama:err] 0.38.423.684 I slot print_timing: id  0 | task 0 | n_gen =    156, tg =   7.19 t/s, tg_3s =   5.24 t/s
+[llama:err] 0.40.097.727 I slot print_timing: id  0 | task 0 | prompt eval time =    2923.16 ms /    66 tokens (   44.29 ms per token,    22.58 tokens per second)
+0.40.097.788 I slot print_timing: id  0 | task 0 |        eval time =   23237.94 ms /   165 tokens (  141.69 ms per token,     7.06 tokens per second)
+0.40.097.809 I slot print_timing: id  0 | task 0 |       total time =   26161.10 ms /   231 tokens
+0.40.097.835 I slot print_timing: id  0 | task 0 |    graphs reused =        164
+0.40.097.851 I slot print_timing: id  0 | task 0 |   graph reallocs =          0    /     0        (same size) / (changed size)
+0.40.098.334 I slot      release: id  0 | task 0 | stop processing: n_tokens = 230, truncated = 0
+[llama:err] 0.40.120.064 I slot get_availabl: id  1 | task -1 | selected slot by LRU, n_tokens = 0, t_last = -1
+0.40.120.222 I slot launch_slot_: id  1 | task 168 | processing task, is_child = 0
+[llama:err] 0.50.493.784 I slot print_timing: id  1 | task 168 | prompt processing, n_tokens =    230, progress = 0.98, t =  10.36 s / 22.19 tokens per second
+[llama:err] 0.53.771.729 I slot print_timing: id  1 | task 168 | prompt eval time =   10613.39 ms /   234 tokens (   45.36 ms per token,    22.05 tokens per second)
+[llama:err] 0.53.772.135 I slot print_timing: id  1 | task 168 |        eval time =    3028.70 ms /    24 tokens (  131.68 ms per token,     7.59 tokens per second)
+[llama:err] 0.53.772.207 I slot print_timing: id  1 | task 168 |       total time =   13642.09 ms /   258 tokens
+[llama:err] 0.53.772.267 I slot print_timing: id  1 | task 168 |    graphs reused =        185
+[llama:err] 0.53.772.302 I slot print_timing: id  1 | task 168 |   graph reallocs =          0    /     0        (same size) / (changed size)
+[llama:err] 0.53.772.704 I slot      release: id  1 | task 168 | stop processing: n_tokens = 257, truncated = 0
+[llama:err] 0.53.804.410 I slot get_availabl: id  2 | task -1 | selected slot by LRU, n_tokens = 0, t_last = -1
+[llama:err] 0.53.804.738 I slot launch_slot_: id  2 | task 195 | processing task, is_child = 0
+[llama:err] 1.04.942.343 I slot print_timing: id  2 | task 195 | prompt processing, n_tokens =    265, progress = 0.99, t =  11.12 s / 23.82 tokens per second
+[llama:err] 1.12.156.076 I slot print_timing: id  2 | task 195 | prompt eval time =   11396.70 ms /   269 tokens (   42.37 ms per token,    23.60 tokens per second)
+[llama:err] 1.12.156.710 I slot print_timing: id  2 | task 195 |        eval time =    6940.46 ms /    47 tokens (  150.88 ms per token,     6.63 tokens per second)
+[llama:err] 1.12.156.788 I slot print_timing: id  2 | task 195 |       total time =   18337.16 ms /   316 tokens
+[llama:err] 1.12.156.830 I slot print_timing: id  2 | task 195 |    graphs reused =        230
+[llama:err] 1.12.156.864 [llama:err] I [llama:err] slot print_timing: id  2 | task 195 |   graph reallocs =          0    /     0        (same size) / (changed size)
+[llama:err] 1.12.157.385 [llama:err] I [llama:err] slot      release: id  2 | task 195 | stop processing: n_tokens = 315, truncated = 0
+[20:02:15] NOTE run1 settled: state=done verdict=APPROVED planHasNestedCode=false
+[20:02:17] shot 03-desktop-settled.png
+[20:02:17] PASS (e) settled verdict matches bridge record — page="APPROVED" bridge=APPROVED
+[20:02:17] PASS (e) stamps name the real lane + model on all three stages — ["planner · Scout · local-gemma · gemma-local · gemma · local · 26s","executor · Musky · local-gemma · gemma-local · gemma · local · 14s","reviewer · Judge · local-gemma · gemma-local · gemma · local · 18s"]
+[20:02:17] PASS (g) same-family review labeled, no cross-family claim — label=true crossClaim=false
+[20:02:17] PASS item2: settled card text contains ZERO backticks, code spans render as CODE — backticks=0 code=3 formatted=true
+[20:02:17] PASS item1: after settle the hint returns to 'No run in flight.' — "No run in flight."
+[20:02:17] PASS budget pill equals GET /budget coding total (calls, not tokens) — bridge=3 pill="⚡ CALLS TODAY 3 / —" pillNum=3
+[llama:err] 1.22.903.856 I slot get_availabl: id  2 | task -1 | selected slot by LCP similarity, f_sim_best = 0.106 (> 0.100 thold), f_keep = 0.022
+[llama:err] 1.22.918.799 I slot launch_slot_: id  2 | task 245 | processing task, is_child = 0
+[20:02:22] PASS phone run 2 goes live — 
+[20:02:26] PASS item1 (phone): mid-run hint agrees — "Run in flight — planner stage · 0/3 stages reported by the bridge."
+[20:02:26] PASS phone: zero horizontal overflow at 412px — {"sw":412,"iw":412,"bw":412}
+[20:02:28] shot 04-phone-midrun.png
+[20:02:34] NOTE after mid-run reload: running=true phase=planner served=0
+[llama:err] 1.39.387.713 I slot print_timing: id  2 | task 245 | n_gen =    100, tg =   7.31 t/s, tg_3s =   7.39 t/s
+[llama:err] 1.42.401.221 I slot print_timing: id  2 | task 245 | n_gen =    126, tg =   7.55 t/s, tg_3s =   8.63 t/s
+[llama:err] 1.44.738.240 I slot print_timing: id  2 | task 245 | prompt eval time =    2934.56 ms /    65 tokens (   45.15 ms per token,    22.15 tokens per second)
+1.44.738.250 I slot print_timing: id  2 | task 245 |        eval time =   18884.41 ms /   142 tokens (  133.93 ms per token,     7.47 tokens per second)
+1.44.738.251 I slot print_timing: id  2 | task 245 |       total time =   21818.98 ms /   207 tokens
+1.44.738.253 I slot print_timing: id  2 | task 245 |    graphs reused =        370
+1.44.738.254 I slot print_timing: id  2 | task 245 |   graph reallocs =          0    /     0        (same size) / (changed size)
+[llama:err] 1.44.739.104 I slot      release: id  2 | task 245 | stop processing: n_tokens = 207, truncated = 0
+[llama:err] 1.44.754.205 I slot get_availabl: id  3 | task -1 | selected slot by LRU, n_tokens = 0, t_last = -1
+1.44.754.353 I slot launch_slot_: id  3 | task 389 | processing task, is_child = 0
+[llama:err] 1.52.215.187 I slot print_timing: id  3 | task 389 | prompt processing, n_tokens =    207, progress = 0.98, t =   7.46 s / 27.75 tokens per second
+[llama:err] 2.01.618.495 I slot print_timing: id  3 | task 389 | prompt eval time =    7822.28 ms /   211 tokens (   37.07 ms per token,    26.97 tokens per second)
+[llama:err] 2.01.618.882 I slot print_timing: id  3 | task 389 |        eval time =    9040.97 ms /    68 tokens (  134.94 ms per token,     7.41 tokens per second)
+[llama:err] 2.01.618.959 I slot print_timing: id  3 | task 389 |       total time =   16863.24 ms /   279 tokens
+[llama:err] 2.01.619.000 I slot print_timing: id  3 | task 389 |    graphs reused =        435
+[llama:err] 2.01.619.050 [llama:err] I [llama:err] slot print_timing: id  3 | task 389 |   graph reallocs =          0    /     0        (same size) / (changed size)
+[llama:err] 2.01.619.497 [llama:err] I [llama:err] slot      release: id  3 | task 389 | stop processing: n_tokens = 278, truncated = 0
+[llama:err] 2.01.647.977 I slot get_availabl: id  0 | task -1 | selected slot by LRU, n_tokens = 0, t_last = 1716614323
+2.01.648.146 I slot launch_slot_: id  0 | task 460 | processing task, is_child = 0
+[llama:err] 2.12.710.580 I slot print_timing: id  0 | task 460 | prompt processing, n_tokens =    286, progress = 0.99, t =  11.05 s / 25.87 tokens per second
+[llama:err] 2.20.501.913 I slot print_timing: id  0 | task 460 | prompt eval time =   11450.54 ms /   290 tokens (   39.48 ms per token,    25.33 tokens per second)
+[llama:err] 2.20.502.297 I slot print_timing: id  0 | task 460 |        eval time =    7395.64 ms /    55 tokens (  136.96 ms per token,     7.30 tokens per second)
+2.20.502.317 I slot print_timing: id  0 | task 460 |       total time =   18846.17 ms /   345 tokens
+2.20.502.442 I slot print_timing: id  0 | task 460 |    graphs reused =        488
+2.20.502.456 I slot print_timing: id  0 | task 460 |   graph reallocs =          0    /     0        (same size) / (changed size)
+2.20.502.920 I slot      release: id  0 | task 460 | stop processing: n_tokens = 344, truncated = 0
+[20:03:24] shot 05-phone-settled.png
+[20:03:24] PASS (i) mid-run reload reattaches and settles — never 'run lost' — modal="APPROVED" journal={"state":"done","verdict":"APPROVED","lost":false} bridge=APPROVED runLost=false
+[20:03:24] PASS item2 (phone run): settled card backticks zero — backticks=0
+[20:03:24] PASS zero console errors across the whole session — none
+[bridge] Vokrew bridge stopped.
+[llama:err] 2.25.280.201 I srv    operator(): operator(): cleaning up before exit...
+[20:03:24] DONE mode=after checks=19 failed=0
