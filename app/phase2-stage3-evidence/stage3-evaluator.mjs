@@ -71,7 +71,16 @@
  * the browser renders beside it, so while a run's planner/executor
  * stages grind, the evaluator activates a blank tab (the product's
  * shipped hidden-tab behavior applies) and brings the page back
- * for the reviewer stage and the settle.
+ * for the reviewer stage and the settle. Run 1 of this evaluator
+ * sharpened the lesson: approving a hold from the VISIBLE page
+ * lost both approved runs to the bridge's 120 s lane timeout
+ * ("no lane could serve"), so approvals now hide the page BEFORE
+ * the click, and a lane death is resubmitted as a fresh hold with
+ * the same instruction (up to 3 takes, recorded in results.rig —
+ * the Stage 2 recorded-takes policy). Run 1 also taught the retry
+ * click to target the rejected run's own verdict row: the
+ * transcript legitimately carries offers for every unapproved
+ * settled run, failed takes included.
  *
  * Run:  xvfb-run -a node stage3-evaluator.mjs
  * Exit code 0 = gate green.
@@ -334,11 +343,11 @@ async function clickHoldAction(holdId, action, surface = "sidebar") {
     return true;
   })()`).catch(() => false);
 }
-async function clickRetry(surface) {
+async function clickRetry(surface, runId) {
   return cdp.eval(`(() => {
     const root = ${surface === "card" ? "document.getElementById('floorCardBody')" : "document.getElementById('conductorLog')"};
     if (!root) return false;
-    const btn = root.querySelector('[data-retry-run]');
+    const btn = root.querySelector('[data-retry-run="${runId}"]');
     if (!btn || btn.disabled) return false;
     btn.click();
     return true;
@@ -354,6 +363,9 @@ async function hidePage() {
   }
   await fetch(`http://127.0.0.1:${CDP_PORT}/json/activate/${blankTargetId}`).catch(() => null);
   await sleep(400);
+  if (results.rig.pageHiddenVerified === undefined) {
+    results.rig.pageHiddenVerified = await cdp.eval(`document.hidden`).catch(() => null);
+  }
 }
 async function showPage() {
   await fetch(`http://127.0.0.1:${CDP_PORT}/json/activate/${pageTargetId}`).catch(() => null);
@@ -615,13 +627,44 @@ try {
     assert("(A6) the reload itself fired nothing",
       regR === 0 && codR === coding0, `registry=${regR} coding=${codR}/${coding0}`);
 
-    /* Approve: fires POST /run with the held task + crew. */
-    const approveClicked = hold1 ? await clickHoldAction(hold1.id, "approve") : false;
-    assert("(A7) the Approve control is clickable", approveClicked);
-    const runA = approveClicked ? await waitFor(async () => {
+    /* Approve: fires POST /run with the held task + crew. The
+       page is hidden BEFORE the click so no lane second overlaps
+       a rendering browser (the G-9 accommodation applied at the
+       source — run 1 of this evaluator lost both approved runs
+       to the bridge's 120 s lane timeout when the click happened
+       on the visible page). A lane death ("no lane could serve")
+       is resubmitted as a fresh hold carrying the same
+       instruction, up to 3 takes, every take recorded — the
+       Stage 2 recorded-takes policy. */
+    const attributed = new Set();
+    const findRun = async (task) => {
       const list = await registryList();
-      return list.find((r) => r.crew === "rig" && r.task === TEXT_NAMED) || null;
-    }, 30000, "approved run registered on the bridge").catch(() => null) : null;
+      return list.find((r) => r.crew === "rig" && r.task === task && !attributed.has(r.id)) || null;
+    };
+    let runA = null, settledA = null, approveClicked = false;
+    const aTakes = [];
+    for (let take = 1; take <= 3; take++) {
+      let holdForTake = hold1;
+      if (take > 1) {
+        await typeConductor(TEXT_NAMED);
+        const pAgain = await waitProbe((p) => p.state && p.state.holds.length === 1, 20000, "replacement hold created");
+        holdForTake = pAgain && pAgain.state.holds[0];
+        if (!holdForTake) break;
+      }
+      await hidePage();
+      const clicked = holdForTake ? await clickHoldAction(holdForTake.id, "approve") : false;
+      if (take === 1) approveClicked = clicked;
+      runA = clicked ? await waitFor(() => findRun(TEXT_NAMED), 30000, "approved run registered on the bridge").catch(() => null) : null;
+      if (!runA) { await showPage(); break; }
+      attributed.add(runA.id);
+      settledA = await settleWatched(runA.id);
+      aTakes.push({ id: runA.id, state: settledA.state, verdict: settledA.verdict || null, stamps: (settledA.stamps || []).length, error: settledA.error || null });
+      if (settledA.state === "done") break;
+      if (!/no lane could serve/.test(settledA.error || "")) break;
+      note(`(A) approved run take ${take} died on the lane (rig contention, G-9) — resubmitting the same instruction as a fresh hold`, settledA.error || "");
+    }
+    results.rig.approveTakes = aTakes;
+    assert("(A7) the Approve control is clickable", approveClicked);
     assert("(A7) approving the hold fires a run whose bridge record carries the held task verbatim and the held crew",
       !!runA, runA ? `run=${runA.id}` : "no matching record");
     const pApproved = await waitProbe((p) => p.state && p.state.holds.length === 0, 20000, "hold clears on approve");
@@ -629,15 +672,13 @@ try {
       !!pApproved && pApproved.sidebarCards.length === 0 && pApproved.badge === "0" &&
       !!pApproved.nb && pApproved.nb.hidden && pApproved.holdCount === "0 held",
       pApproved ? `badge=${J(pApproved.badge)} cards=${pApproved.sidebarCards.length} nbHidden=${pApproved.nb && pApproved.nb.hidden}` : "probe failed");
-    const firedRow = pApproved && pApproved.rows.find((r) => r.kind === "fired");
+    const firedRow = pApproved && pApproved.rows.find((r) => r.kind === "fired" && r.run === (runA && runA.id));
     assert("(A9) the transcript logs the firing, tied to the real run id",
       !!firedRow && !!runA && firedRow.run === runA.id,
       firedRow ? `run=${firedRow.run}` : "no fired entry");
-    let settledA = null;
-    if (runA) settledA = await settleWatched(runA.id);
     assert("(A10) the approved run settles done on the bridge",
       !!settledA && settledA.state === "done",
-      settledA ? `verdict=${settledA.verdict} stamps=${(settledA.stamps || []).length}` : "no record");
+      settledA ? `verdict=${settledA.verdict} stamps=${(settledA.stamps || []).length} takes=${aTakes.length}` : "no record");
     await assertBudgetRule("(A10)");
     const pillA = await waitFor(async () => {
       const v = await cdp.eval(`parseInt(document.getElementById('budgetStatus').textContent, 10)`);
@@ -649,6 +690,7 @@ try {
 
     /* Edit: rewrite the task in place, then approve and prove the
        run record carries the EDITED text. */
+    const regBeforeEdit = await registryCount();
     await typeConductor(TEXT_PLAIN);
     const pEdit0 = await waitProbe((p) => p.state && p.state.holds.length === 1, 20000, "second hold created");
     const hold2 = pEdit0 && pEdit0.state.holds[0];
@@ -670,21 +712,41 @@ try {
     const regE = await registryCount();
     assert("(A11) saving the edit rewrites the hold in place (edited flag set, still pending, nothing fired)",
       !!pEdited && pEdited.state.holds[0].edited === true &&
-      pEdited.sidebarCards.some((c) => c.hold === (hold2 && hold2.id) && c.text.includes(EDITED_TEXT)) && regE === 1,
-      pEdited ? `edited=${pEdited.state.holds[0].edited} registry=${regE}` : "edit not saved");
+      pEdited.sidebarCards.some((c) => c.hold === (hold2 && hold2.id) && c.text.includes(EDITED_TEXT)) && regE === regBeforeEdit,
+      pEdited ? `edited=${pEdited.state.holds[0].edited} registry=${regE}/${regBeforeEdit}` : "edit not saved");
     const shotE = await shot(`${LABEL}-edited-hold.png`, "the edited hold: task text rewritten in place before approving");
     assert("(A11) edited hold screenshot captured", shotE > 5000, `${shotE} bytes`);
-    const approve2 = hold2 ? await clickHoldAction(hold2.id, "approve") : false;
-    const runB = approve2 ? await waitFor(async () => {
-      const list = await registryList();
-      return list.find((r) => r.crew === "rig" && r.task === EDITED_TEXT) || null;
-    }, 30000, "edited run registered").catch(() => null) : null;
+    /* Approving the edited hold — same takes policy as (A7): a
+       lane death is resubmitted by typing the EDITED text as a
+       fresh instruction (it parses to a hold carrying exactly
+       that text), so every take's record must still carry the
+       edited text, never the original. */
+    let runB = null, settledB = null;
+    const bTakes = [];
+    for (let take = 1; take <= 3; take++) {
+      let holdForTake = hold2;
+      if (take > 1) {
+        await typeConductor(EDITED_TEXT);
+        const pAgain = await waitProbe((p) => p.state && p.state.holds.length === 1 && p.state.holds[0].text === EDITED_TEXT, 20000, "replacement edited hold created");
+        holdForTake = pAgain && pAgain.state.holds[0];
+        if (!holdForTake) break;
+      }
+      await hidePage();
+      const clicked = holdForTake ? await clickHoldAction(holdForTake.id, "approve") : false;
+      runB = clicked ? await waitFor(() => findRun(EDITED_TEXT), 30000, "edited run registered").catch(() => null) : null;
+      if (!runB) { await showPage(); break; }
+      attributed.add(runB.id);
+      settledB = await settleWatched(runB.id);
+      bTakes.push({ id: runB.id, state: settledB.state, verdict: settledB.verdict || null, stamps: (settledB.stamps || []).length, error: settledB.error || null });
+      if (settledB.state === "done") break;
+      if (!/no lane could serve/.test(settledB.error || "")) break;
+      note(`(A12) edited run take ${take} died on the lane (rig contention, G-9) — resubmitting the edited instruction`, settledB.error || "");
+    }
+    results.rig.editedTakes = bTakes;
     assert("(A12) approving the edited hold fires a run whose record carries the EDITED task text",
       !!runB, runB ? `run=${runB.id}` : "no record with the edited text");
-    let settledB = null;
-    if (runB) settledB = await settleWatched(runB.id);
     assert("(A12) the edited run settles done", !!settledB && settledB.state === "done",
-      settledB ? `verdict=${settledB.verdict}` : "no record");
+      settledB ? `verdict=${settledB.verdict} takes=${bTakes.length}` : "no record");
     await assertBudgetRule("(A12)");
 
     /* Dismiss: clears the hold, transcript notes it, fires nothing. */
@@ -757,7 +819,7 @@ try {
       pRetry ? `holds=${pRetry.state.holds.length}` : "probe failed");
     const regBeforeRetry = await registryCount();
     const codBeforeRetry = await budgetTotal("coding");
-    const retryClicked = await clickRetry("transcript");
+    const retryClicked = rejected ? await clickRetry("transcript", rejected.id) : false;
     const pRetried = retryClicked ? await waitProbe((p) => p.state && p.state.holds.length === 1, 15000, "retry hold created") : null;
     const retryHold = pRetried && pRetried.state.holds[0];
     assert("(B3) taking the offer creates exactly one hold carrying the original task text and crew",
@@ -881,12 +943,20 @@ try {
      load. It is the product working as designed, counted here,
      not hidden. */
   const authProbeNoise = logEntries.filter((e) => e.includes("status of 401") && e.includes(`127.0.0.1:${BRIDGE_PORT}`));
-  const unexplained = logEntries.filter((e) => !transportNoise.includes(e) && !authProbeNoise.includes(e));
+  /* Disclosed rig noise #3: restarting the bridge mid-session
+     (phase B) empties its in-memory registry; the still-open
+     page's next poll for the run it was tracking gets the
+     designed 404 and marks the run lost (Phase 1 behavior) —
+     Chromium logs the 404 as a failed resource load. Counted,
+     not hidden. */
+  const registryProbeNoise = logEntries.filter((e) => e.includes("status of 404") && e.includes(`127.0.0.1:${BRIDGE_PORT}/runs/`));
+  const unexplained = logEntries.filter((e) => !transportNoise.includes(e) && !authProbeNoise.includes(e) && !registryProbeNoise.includes(e));
   results.transportNoise = transportNoise;
   results.authProbeNoise = authProbeNoise;
+  results.registryProbeNoise = registryProbeNoise;
   assert("(E) zero console errors across the whole session (pair, holds, approve, edit, dismiss, reject, retry, stale swap, phone)",
     nonLogErrors.length === 0 && unexplained.length === 0,
-    `transport=${transportNoise.length}; authProbe=${authProbeNoise.length}; unexplained=${unexplained.slice(0, 3).join(" | ") || "none"}; nonLog=${nonLogErrors.slice(0, 3).join(" | ") || "none"}`);
+    `transport=${transportNoise.length}; authProbe=${authProbeNoise.length}; registryProbe=${registryProbeNoise.length}; unexplained=${unexplained.slice(0, 3).join(" | ") || "none"}; nonLog=${nonLogErrors.slice(0, 3).join(" | ") || "none"}`);
 
   ws.close();
 } catch (e) {

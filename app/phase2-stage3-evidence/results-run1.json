@@ -1,0 +1,333 @@
+{
+  "assertions": [
+    {
+      "name": "(0) connect door up over the locked room",
+      "ok": true,
+      "detail": "{\"overlayVisible\":true,\"chip\":\"OFFLINE\"}"
+    },
+    {
+      "name": "(0) paired through the page form",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "(A0) snapshot: the page pill reads the same coding ledger as GET /budget, registry empty after the restart",
+      "ok": true,
+      "detail": "pill=3 api=3 chat=1 registry=0"
+    },
+    {
+      "name": "(A1) the named task still creates exactly one hold (Stage 2 behavior intact)",
+      "ok": true,
+      "detail": "id=h1"
+    },
+    {
+      "name": "(A1) the hold card offers Approve / Edit / Dismiss and is not stale",
+      "ok": true,
+      "detail": "actions=[\"approve\",\"edit\",\"dismiss\"] stale=0"
+    },
+    {
+      "name": "(A2) the office noticeboard is visible and renders the same hold as a card with the same actions",
+      "ok": true,
+      "detail": "hidden=false cards=1"
+    },
+    {
+      "name": "(A3) the top-bar badge shows the real pending count (1) and the sidebar count agrees",
+      "ok": true,
+      "detail": "badge=\"1\" sidebar=\"1 held\""
+    },
+    {
+      "name": "(A4) the hold card shows no stamps, no verdict, no fake progress (it is an instruction, not a run)",
+      "ok": true,
+      "detail": "HELD FOR SCOUT · PLANNER · CREW RIGScout, draft the release checklist and tag the open issuesApprove — run itEditDismiss"
+    },
+    {
+      "name": "(A5) creating the hold fired nothing (registry + coding ledger unchanged)",
+      "ok": true,
+      "detail": "registry=0 coding=3/3"
+    },
+    {
+      "name": "(A) hold card screenshot captured",
+      "ok": true,
+      "detail": "430775 bytes"
+    },
+    {
+      "name": "(A6) the hold survives a page reload — same id, same text, badge still 1",
+      "ok": true,
+      "detail": "id=h1"
+    },
+    {
+      "name": "(A6) the reload itself fired nothing",
+      "ok": true,
+      "detail": "registry=0 coding=3/3"
+    },
+    {
+      "name": "(A7) the Approve control is clickable",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "(A7) approving the hold fires a run whose bridge record carries the held task verbatim and the held crew",
+      "ok": true,
+      "detail": "run=24e5fec4-7222-4731-a28c-dec93ed149a4"
+    },
+    {
+      "name": "(A8) the hold clears on approve — state, both surfaces, badge 0, noticeboard hidden",
+      "ok": true,
+      "detail": "badge=\"0\" cards=0 nbHidden=true"
+    },
+    {
+      "name": "(A9) the transcript logs the firing, tied to the real run id",
+      "ok": true,
+      "detail": "run=24e5fec4-7222-4731-a28c-dec93ed149a4"
+    },
+    {
+      "name": "(A10) the approved run settles done on the bridge",
+      "ok": false,
+      "detail": "verdict=null stamps=0"
+    },
+    {
+      "name": "(A10) budget rule: the coding ledger moved by exactly the served stamps of every settled run, the chat ledger never moved",
+      "ok": true,
+      "detail": "coding=3 expected=3 (snapshot 3 + banked 0); chat=1/1"
+    },
+    {
+      "name": "(A10) the page pill equals the bridge's coding ledger after the run",
+      "ok": true,
+      "detail": "pill=3"
+    },
+    {
+      "name": "(A11) Edit opens the task text in place, prefilled with the held text",
+      "ok": true,
+      "detail": "textarea=\"Tidy the changelog and bump the version\""
+    },
+    {
+      "name": "(A11) saving the edit rewrites the hold in place (edited flag set, still pending, nothing fired)",
+      "ok": true,
+      "detail": "edited=true registry=1"
+    },
+    {
+      "name": "(A11) edited hold screenshot captured",
+      "ok": true,
+      "detail": "397346 bytes"
+    },
+    {
+      "name": "(A12) approving the edited hold fires a run whose record carries the EDITED task text",
+      "ok": true,
+      "detail": "run=b91a2b8f-bdc1-4936-9e11-a410f63ea425"
+    },
+    {
+      "name": "(A12) the edited run settles done",
+      "ok": false,
+      "detail": "verdict=null"
+    },
+    {
+      "name": "(A12) budget rule: the coding ledger moved by exactly the served stamps of every settled run, the chat ledger never moved",
+      "ok": true,
+      "detail": "coding=4 expected=4 (snapshot 3 + banked 0); chat=1/1"
+    },
+    {
+      "name": "(A13) Dismiss clears the hold (state + surfaces + badge 0) and the transcript notes the dismissal",
+      "ok": true,
+      "detail": "10:40:36NOTEdismissed the held instruction for Scout · planner · crew rigScout, sweep the risers and log the c"
+    },
+    {
+      "name": "(A13) dismissing fired nothing (registry unchanged)",
+      "ok": true,
+      "detail": "registry 2 -> 2"
+    },
+    {
+      "name": "(B) reject rig live",
+      "ok": true,
+      "note": true,
+      "detail": "same bridge home, reviewer standing instructions set to the CHANGES drill; token + ledger carried over"
+    },
+    {
+      "name": "(B1) a run on the reject rig settles with the reviewer's rejection verdict (CHANGES — this bridge's rejection; see header)",
+      "ok": true,
+      "detail": "[{\"id\":\"e148a382-8237-411d-9002-48eba6c1256b\",\"state\":\"done\",\"verdict\":\"CHANGES\",\"stamps\":3}]"
+    },
+    {
+      "name": "(B2) the rejected run offers retry-as-hold in the transcript verdict row, and the run card offers it too",
+      "ok": true,
+      "detail": "rowRetry=e148a382-8237-411d-9002-48eba6c1256b cardRetry=e148a382-8237-411d-9002-48eba6c1256b"
+    },
+    {
+      "name": "(B2) no retry hold exists before the offer is taken",
+      "ok": true,
+      "detail": "holds=0"
+    },
+    {
+      "name": "(B3) taking the offer creates exactly one hold carrying the original task text and crew",
+      "ok": false,
+      "detail": "fromRun=24e5fec4-7222-4731-a28c-dec93ed149a4 text=\"Scout, draft the release checklist and tag the open issues\""
+    },
+    {
+      "name": "(B3) retry hold screenshot captured",
+      "ok": true,
+      "detail": "414317 bytes"
+    },
+    {
+      "name": "(B4) creating the retry hold fired nothing (registry + ledger unchanged by the click)",
+      "ok": true,
+      "detail": "registry 1 -> 1; coding 7 -> 7"
+    },
+    {
+      "name": "(B5) the retry offer is one-shot — no retry control remains for that run once the hold exists",
+      "ok": false,
+      "detail": "cardRetry=e148a382-8237-411d-9002-48eba6c1256b"
+    },
+    {
+      "name": "(B6) dismissing the retry hold clears it, zeroes the badge, and the transcript notes the dismissal",
+      "ok": true,
+      "detail": "10:42:54NOTEdismissed the held instruction for whole crew (rig) — standard chainScout, draft the release check"
+    },
+    {
+      "name": "(B6) budget rule: the coding ledger moved by exactly the served stamps of every settled run, the chat ledger never moved",
+      "ok": true,
+      "detail": "coding=7 expected=7 (snapshot 3 + banked 1); chat=1/1"
+    },
+    {
+      "name": "(C1) the hold is created for crew rig and is not stale while the crew exists",
+      "ok": true,
+      "detail": "id=h15 crew=rig"
+    },
+    {
+      "name": "(C2) re-paired with the replacement bridge through the page form",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "(C2) with crew rig gone from GET /crews, the hold renders stale in the sidebar and on the noticeboard",
+      "ok": true,
+      "detail": "sidebar stale=1; noticeboard stale=1"
+    },
+    {
+      "name": "(C3) a stale hold can only be dismissed — no Approve, no Edit (absent or disabled)",
+      "ok": true,
+      "detail": "actions=[\"dismiss\"]"
+    },
+    {
+      "name": "(C4) nothing has fired on the replacement bridge (its registry and ledger are untouched)",
+      "ok": true,
+      "detail": "runs=0 coding=0"
+    },
+    {
+      "name": "(C) stale hold screenshot captured",
+      "ok": true,
+      "detail": "486700 bytes"
+    },
+    {
+      "name": "(C5) dismissing the stale hold clears it, zeroes the badge, and the transcript notes the dismissal",
+      "ok": true,
+      "detail": "10:43:02NOTEdismissed the held instruction for Scout · planner · crew rigScout, final sweep of the risers befo"
+    },
+    {
+      "name": "(D1) phone: no element overflows the viewport width with a hold pending (badge, cards, noticeboard included)",
+      "ok": false,
+      "detail": "[\"clock right=425\"]"
+    },
+    {
+      "name": "(D1) phone: the hold persists across the reload, its card is in the layout, and the office noticeboard shows it inside the viewport",
+      "ok": true,
+      "detail": "{\"audit\":{\"innerWidth\":415,\"innerHeight\":922,\"wideElements\":[\"clock right=425\"]},\"badge\":\"1\",\"nb\":{\"hidden\":false,\"box\":{\"left\":133,\"right\":395,\"width\":262}},\"entries\":13}"
+    },
+    {
+      "name": "(D) phone screenshot captured",
+      "ok": true,
+      "detail": "708689 bytes"
+    },
+    {
+      "name": "(E) zero console errors across the whole session (pair, holds, approve, edit, dismiss, reject, retry, stale swap, phone)",
+      "ok": false,
+      "detail": "transport=4; authProbe=1; unexplained=log: Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:17717/runs/b91a2b8f-bdc1-4936-9e11-a410f63ea425; nonLog=none"
+    }
+  ],
+  "consoleErrors": [
+    "log: Failed to load resource: net::ERR_FAILED @ http://127.0.0.1:17717/runs/24e5fec4-7222-4731-a28c-dec93ed149a4",
+    "log: Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:17717/runs/b91a2b8f-bdc1-4936-9e11-a410f63ea425",
+    "log: Failed to load resource: net::ERR_FAILED @ http://127.0.0.1:17717/crews",
+    "log: Failed to load resource: net::ERR_FAILED @ http://127.0.0.1:17717/lanes",
+    "log: Failed to load resource: net::ERR_FAILED @ http://127.0.0.1:17717/budget?surface=coding",
+    "log: Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://127.0.0.1:17717/crews"
+  ],
+  "screenshots": [
+    {
+      "file": "after-hold-card.png",
+      "note": "a held instruction as an actionable card: sidebar + office noticeboard + badge 1"
+    },
+    {
+      "file": "after-edited-hold.png",
+      "note": "the edited hold: task text rewritten in place before approving"
+    },
+    {
+      "file": "after-retry-hold.png",
+      "note": "the rejected run's retry hold: original task text, held for approval"
+    },
+    {
+      "file": "after-stale-hold.png",
+      "note": "the stale hold: crew rig no longer exists — dismiss only"
+    },
+    {
+      "file": "after-phone-holds.png",
+      "note": "phone 412x915: a pending hold — badge, noticeboard card, sidebar card, no overflow"
+    }
+  ],
+  "rig": {
+    "llama": "gemma-local on :18080",
+    "quietWarmUpRun": {
+      "attempt": 1,
+      "verdict": "APPROVED",
+      "secs": 95
+    },
+    "warmUpChat": true,
+    "bridge": "bridge on :17717, homes /tmp/vokrew-s3-eval-home + /tmp/vokrew-s3-eval-home-norig",
+    "rejectTakes": [
+      {
+        "id": "e148a382-8237-411d-9002-48eba6c1256b",
+        "state": "done",
+        "verdict": "CHANGES",
+        "stamps": 3
+      }
+    ],
+    "staleBridge": "fresh home, crews = [default] only"
+  },
+  "label": "after",
+  "measurements": {
+    "snapshot": {
+      "coding": 3,
+      "chat": 1,
+      "registry": 0,
+      "pill": 3
+    },
+    "bankedBeforeReject": 1,
+    "phone": {
+      "audit": {
+        "innerWidth": 415,
+        "innerHeight": 922,
+        "wideElements": [
+          "clock right=425"
+        ]
+      },
+      "badge": "1",
+      "nb": {
+        "hidden": false,
+        "box": {
+          "left": 133,
+          "right": 395,
+          "width": 262
+        }
+      },
+      "entries": 13
+    }
+  },
+  "transportNoise": [
+    "log: Failed to load resource: net::ERR_FAILED @ http://127.0.0.1:17717/runs/24e5fec4-7222-4731-a28c-dec93ed149a4",
+    "log: Failed to load resource: net::ERR_FAILED @ http://127.0.0.1:17717/crews",
+    "log: Failed to load resource: net::ERR_FAILED @ http://127.0.0.1:17717/lanes",
+    "log: Failed to load resource: net::ERR_FAILED @ http://127.0.0.1:17717/budget?surface=coding"
+  ],
+  "authProbeNoise": [
+    "log: Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://127.0.0.1:17717/crews"
+  ],
+  "verdict": "PHASE 2 STAGE 3 GATE: FAIL (6)"
+}
