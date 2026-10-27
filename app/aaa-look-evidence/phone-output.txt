@@ -1,0 +1,14 @@
+OK    phone: lane warm-up completed directly against llama-server — 2048ms
+OK    phone: paired through the page's own form
+OK    phone room screenshot captured; zero horizontal overflow — 808438 bytes; wide=[]
+OK    phone: call-out became one hold; badge 1 — badge="1" sidebar=1 nb=1
+OK    phone hold-pending screenshot captured; zero horizontal overflow — 764834 bytes; wide=[]
+OK    phone: approve clicked on the hold card
+OK    phone run settled done/APPROVED — state=done verdict=APPROVED
+OK    phone: verdict row in the conductor transcript, tied to the run id — 16:26:29VERDICTRUN-E81C — verdict APPROVED · same family review · ⚡ 3 calls
+OK    phone conductor screenshot captured; zero horizontal overflow — 408916 bytes; wide=[]
+OK    phone: reviewer dossier shows the settled run in its history — verdict=APPROVED
+OK    phone dossier screenshot captured; panel inside the viewport; zero horizontal overflow — 382431 bytes; panel={"left":15,"right":397,"width":382} wide=[]
+OK    phone: zero console errors (same classification as desktop) — nonLog=0 noise=0 unexplained=none
+
+PHASE 2 STAGE 4 PHONE PASS: COMPLETE

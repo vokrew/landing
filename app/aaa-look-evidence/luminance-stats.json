@@ -1,0 +1,11 @@
+{
+  "before-idle": {
+    "mean": 23.81,
+    "stddev": 17.33
+  },
+  "after-idle": {
+    "mean": 20.17,
+    "stddev": 14.3
+  },
+  "note": "Stage-region luminance, measured: mean 23.81 -> 20.17 and stddev 17.33 -> 14.30. Read honestly: the ambient veil darkens the frame overall (mean down), and the global stddev also drops because the large evenly-lit zone fills darken toward the mean \u2014 the light pools are local (a few % of pixels), so they do not move a global stddev. The pools themselves are judged in the stills, not this number."
+}
