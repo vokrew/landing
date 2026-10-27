@@ -197,13 +197,55 @@ document.querySelectorAll(".tab").forEach((tab) => {
   tab.addEventListener("click", () => {
     document.querySelectorAll(".tab").forEach((t) => t.classList.toggle("active", t === tab));
     const name = tab.dataset.screen;
-    ["chat", "run", "budget", "crew"].forEach((s) => {
+    ["chat", "run", "budget", "crew", "floor"].forEach((s) => {
       $("screen-" + s).classList.toggle("hidden", s !== name);
     });
     if (name === "budget") refreshBudget();
     if (name === "crew") refreshCrew();
+    if (name === "floor") openFloor();
+    else closeFloor();
   });
 });
+
+/* ---------------- floor (Phase 1) ----------------
+   floor.js (the room: world, engine, drawing — a fork of floor-oc) is
+   lazy-loaded the first time the Floor tab opens, so the connect /
+   chat / run path never pays for it. STAGE 1 ONLY: the state source
+   is floor-fixture.js, which replays recorded Floor-shaped state
+   through the adapter boundary (VokrewFloor.applyState). Stage 2
+   swaps in floor-adapter.js against the real bridge and deletes the
+   fixture. */
+
+let floorLoaded = false;
+let floorLoading = null;
+
+function loadScript(src) {
+  return new Promise((resolve, reject) => {
+    const s = document.createElement("script");
+    s.src = src;
+    s.onload = resolve;
+    s.onerror = () => reject(new Error("failed to load " + src));
+    document.body.appendChild(s);
+  });
+}
+
+async function openFloor() {
+  if (!floorLoaded) {
+    if (!floorLoading) {
+      floorLoading = (async () => {
+        await loadScript("floor.js");
+        await loadScript("floor-fixture.js"); // STAGE 1 FIXTURE — deleted before Stage 2
+        floorLoaded = true;
+      })();
+    }
+    try { await floorLoading; } catch { floorLoading = null; return; }
+  }
+  if (window.VokrewFloor) window.VokrewFloor.setActive(true);
+}
+
+function closeFloor() {
+  if (floorLoaded && window.VokrewFloor) window.VokrewFloor.setActive(false);
+}
 
 /* ---------------- chat ---------------- */
 

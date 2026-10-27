@@ -6,6 +6,7 @@
 <title>Vokrew — App</title>
 <meta name="description" content="Drive your own local Vokrew crew from the browser. The page is the remote control; your machine is the engine." />
 <link rel="stylesheet" href="app.css" />
+<link rel="stylesheet" href="floor.css" />
 </head>
 <body>
 <header class="topbar">
@@ -74,6 +75,7 @@ node src/cli.js serve</pre>
       <button class="tab" data-screen="run" type="button">Run</button>
       <button class="tab" data-screen="budget" type="button">Budget</button>
       <button class="tab" data-screen="crew" type="button">Crew</button>
+      <button class="tab" data-screen="floor" type="button">Floor</button>
     </nav>
 
     <!-- Chat -->
@@ -128,6 +130,59 @@ node src/cli.js serve</pre>
       <div id="crewList"></div>
       <h3 class="section-title">Lanes</h3>
       <div id="laneList"></div>
+    </div>
+
+    <!-- Floor (Phase 1 — the crew room; Stage 1 is fixture-fed, see floor-fixture.js) -->
+    <div id="screen-floor" class="tab-screen hidden">
+      <div id="floorRoot">
+        <div id="top">
+          <div class="brand"><div class="mark">▦</div><div><div class="name">THE FLOOR</div><div class="tagline">VOKREW CREW ROOM</div></div><div class="phase" id="floorModeChip">FIXTURE</div></div>
+          <div class="topstat hideSm"><span class="dot" id="connDot"></span><span id="floorStatus">connecting</span></div>
+          <div class="topstat hideSm" id="runStat">RUNS <b id="runCount">0</b></div>
+          <div class="topstat" id="budgetWrap"><span class="resicon">⚡</span>BUDGET <b id="budgetStatus">0 / 1.0M</b></div>
+          <div class="spacer"></div>
+          <div class="clock" id="clock">--:--:--</div>
+        </div>
+
+        <aside id="side">
+          <div class="sidehead">
+            <div class="kicker">▣ PARTY ROSTER</div>
+            <div class="title">Fixture Crew <span id="crewCount" style="color:var(--amber);font-size:11px"></span></div>
+            <div class="sub" id="crewSub">local + free cloud</div>
+          </div>
+          <div id="roster"></div>
+          <div class="sideblock"><div class="lbl">⚑ QUEST LOG</div><div class="cnt" id="taskCount">0 open</div></div>
+          <div id="tasklist"></div>
+          <div class="sidefoot">
+            <div>RIG: <b id="rigFoot">checking…</b></div>
+            <div id="floorFoot">fixture state · stage 1 · no bridge</div>
+          </div>
+        </aside>
+
+        <div id="stage">
+          <canvas id="cv"></canvas>
+          <div id="hudfx"></div>
+          <div id="hudcorners"><i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i></div>
+          <div id="zonetag"><span>SECTOR</span><b id="zoneName">THE FLOOR</b></div>
+          <div id="questtracker" class="hudpanel"></div>
+          <div id="minimapWrap" class="hudpanel">
+            <div class="mmhead"><span>SECTOR MAP</span><span id="mmCoords">0 · 0</span></div>
+            <canvas id="mini" width="220" height="172"></canvas>
+            <div class="mmlegend"><i class="you"></i>crew <i class="here"></i>view</div>
+          </div>
+          <div id="viewbar">
+            <button data-view="overview" class="on">Overview</button>
+            <button data-view="foundry">Foundry</button>
+            <button data-view="skyloft">Skyloft</button>
+            <button data-view="workshop">Workshop</button>
+            <button data-view="yard">Yard</button>
+          </div>
+          <div id="hint">drag to pan · scroll to zoom · click a character</div>
+        </div>
+
+        <div id="focus" class="panel"></div>
+        <div id="toast"></div>
+      </div>
     </div>
   </section>
 </main>

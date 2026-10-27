@@ -1,0 +1,102 @@
+{
+  "assertions": [
+    {
+      "name": "app shell enters with stub bridge",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "existing tabs (chat/run/budget/crew) still switch",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "roster renders 3 agents",
+      "ok": true,
+      "detail": "count=3"
+    },
+    {
+      "name": "3 agents seated at desks",
+      "ok": true,
+      "detail": "[\"fixture:planner:desk:true\",\"fixture:executor:desk:true\",\"fixture:reviewer:desk:true\"]"
+    },
+    {
+      "name": "idle screenshot captured",
+      "ok": true,
+      "detail": "364893 bytes, liveRuns=0"
+    },
+    {
+      "name": "auditRoutes: every destination reachable, zero failures",
+      "ok": true,
+      "detail": "routes=186 destinations=62 failures=0"
+    },
+    {
+      "name": "all doorsteps present (19 cubicles + office)",
+      "ok": true,
+      "detail": "doorsteps=20"
+    },
+    {
+      "name": "fixture live-run appears in the room",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "planner works first",
+      "ok": true,
+      "detail": "first live agent=fixture:planner"
+    },
+    {
+      "name": "an agent visibly works (mode=work)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "fixture run completes; quest log shows done pill",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "mid-run screenshot captured",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "static layer non-blank in zone: foundry",
+      "ok": true,
+      "detail": "non-bg fraction=0.447"
+    },
+    {
+      "name": "static layer non-blank in zone: skyloft",
+      "ok": true,
+      "detail": "non-bg fraction=0.617"
+    },
+    {
+      "name": "static layer non-blank in zone: workshop",
+      "ok": true,
+      "detail": "non-bg fraction=0.555"
+    },
+    {
+      "name": "static layer non-blank in zone: yard",
+      "ok": true,
+      "detail": "non-bg fraction=0.696"
+    },
+    {
+      "name": "zero console errors for the whole session",
+      "ok": true,
+      "detail": ""
+    }
+  ],
+  "consoleErrors": [],
+  "screenshots": [
+    {
+      "file": "stage1-room-idle.png",
+      "liveRunsAtCapture": 0
+    },
+    {
+      "file": "stage1-room-run.png",
+      "phase": "executor live"
+    }
+  ],
+  "questDonePill": true,
+  "verdict": "STAGE 1 GATE: PASS"
+}
