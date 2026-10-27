@@ -159,6 +159,40 @@
 #floorRoot .holdrow {padding:6px 8px;border-radius:7px;border:1px dashed #6f5428;background:#171106;
     font-size:10.5px;line-height:1.45;color:#e8d9bd;overflow-wrap:anywhere}
 #floorRoot .holdrow .hseat {display:block;font-size:9px;font-weight:800;letter-spacing:.07em;color:#f0c47d}
+/* Phase 2 Stage 3: holds are actionable cards — the same card in
+   the sidebar list and on the office noticeboard in the room —
+   plus the top-bar badge and the retry-as-hold offers. A card
+   shows an instruction and its actions, never run data. */
+#floorRoot #holdBadge {color:var(--amber)}
+#floorRoot .holdrow .htext, #floorRoot .nbcard .htext {display:block}
+#floorRoot .hactions {display:flex;gap:5px;margin-top:6px;flex-wrap:wrap}
+#floorRoot .hbtn {border:1px solid #3d5a74;background:#122334;color:#cfe2f2;border-radius:6px;
+    padding:3px 9px;font-size:10px;font-weight:650;cursor:pointer}
+#floorRoot .hbtn:hover {border-color:#5b84a8;background:#183047}
+#floorRoot .hbtn.go {border-color:#8a6430;background:#2b1f10;color:#f3c28e}
+#floorRoot .hbtn.go:hover {background:#3a2a14}
+#floorRoot .holdedit {display:block;width:100%;margin-top:5px;background:#0a131e;border:1px solid #41607e;
+    border-radius:7px;color:#e8f1fa;font-size:11px;line-height:1.45;padding:6px 8px;resize:vertical}
+#floorRoot .holdrow.stale, #floorRoot .nbcard.stale {border-color:#44586e;border-style:solid;background:#10161d;color:#93a7bb}
+#floorRoot .holdrow.stale .hseat, #floorRoot .nbcard.stale .hseat {color:#8fa6bd}
+#floorRoot .hstale {display:block;margin-top:4px;font-size:9.5px;color:#e8a0a6;line-height:1.45}
+#floorRoot #noticeboard {position:absolute;z-index:22;top:18px;right:16px;width:302px;
+    max-height:calc(100% - 120px);overflow-y:auto;padding:10px 12px 11px;border-radius:9px}
+#floorRoot #noticeboard .nbhead {display:flex;justify-content:space-between;align-items:center;
+    font-size:9.5px;letter-spacing:.17em;color:var(--dim2);font-weight:700;margin-bottom:7px}
+#floorRoot #noticeboard .nbhead span:last-child {color:var(--amber);letter-spacing:.05em}
+#floorRoot #nbList {display:flex;flex-direction:column;gap:5px}
+#floorRoot .nbcard {padding:6px 8px;border-radius:7px;border:1px dashed #6f5428;background:rgba(23,17,6,.92);
+    font-size:10.5px;line-height:1.45;color:#e8d9bd;overflow-wrap:anywhere}
+#floorRoot .nbcard .hseat {display:block;font-size:9px;font-weight:800;letter-spacing:.07em;color:#f0c47d}
+#floorRoot .clog-fired {border-color:#33506c;background:#0e1a29}
+#floorRoot .clog-fired .ctag {color:#b9dcf1;border-color:#33506c}
+#floorRoot .clog-note2 {border-color:#30465e;background:#0d1622;color:#a9bfd4}
+#floorRoot .clog-note2 .ctag {color:#9fb3c8;border-color:#30465e}
+#floorRoot .cretry {display:inline-block;margin-left:8px;border:1px solid #8a6430;background:#2b1f10;
+    color:#f3c28e;border-radius:6px;padding:2px 8px;font-size:9.5px;font-weight:700;cursor:pointer;vertical-align:1px}
+#floorRoot .cretry:hover {background:#3a2a14}
+#floorCardRetry {margin:2px 0 10px}
 #floorRoot #conductorForm {display:flex;gap:6px;padding:6px 9px 2px;flex:0 0 auto}
 #floorRoot #conductorInput {flex:1;min-width:0;background:#0a131e;border:1px solid #263b52;border-radius:8px;
     color:#e8f1fa;font-size:11.5px;padding:7px 9px}
@@ -424,6 +458,7 @@
   #floorRoot .clock { font-size:11px; padding-left:6px; }
   #floorRoot .topstat { padding-left:6px; gap:4px; font-size:9.5px; }
   #floorRoot #questtracker { width:min(280px, calc(100% - 20px)); left:10px; top:10px; }
+  #floorRoot #noticeboard { width:min(262px, calc(100% - 20px)); right:10px; top:10px; max-height:calc(100% - 76px); }
   #floorRoot #viewbar { bottom:12px; right:8px; }
   #floorRoot #hint { left:8px; bottom:54px; }
   #floorRoot .panel { width:calc(100% - 16px); right:8px; top:58px; }

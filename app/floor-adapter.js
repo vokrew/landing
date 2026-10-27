@@ -145,6 +145,22 @@
  * are logged from the run records. Transcript + holds persist for
  * the page session in sessionStorage; run records themselves stay
  * bridge-bound (Phase 1 §7.6).
+ *
+ * PHASE 2 STAGE 3 additions — HOLDS BECOME ACTIONABLE (see the
+ * conductor section below): a hold renders as a card in the sidebar
+ * holds list AND on the office noticeboard in the room, with
+ * Approve (fires POST /run with the held task + crew, then the
+ * hold clears) / Edit (task text editable in place) / Dismiss
+ * (clears; the transcript notes the dismissal). The Floor top bar
+ * shows a badge with the real pending count and nothing more. A
+ * hold whose crew is absent from the latest GET /crews renders
+ * STALE and can only be dismissed. A run that settles failed, or
+ * done with a verdict other than APPROVED (on this bridge the
+ * reviewer's rejection is CHANGES — core.js parseVerdict has no
+ * REJECTED literal), offers "retry as hold": one click files a
+ * new hold carrying the original task text from the run record.
+ * Honesty stands: a hold shows no stamps, no verdict, no fake
+ * progress — it is an instruction, not a run.
  */
 (function () {
   const LS_BRIDGE = "vokrew.bridgeUrl";
@@ -676,6 +692,8 @@
     if (body) body.classList.toggle("hidden", !S.cardExpanded);
     if (!S.cardExpanded) return;
     const verdictEl = $("floorCardVerdict");
+    const retryBtn0 = $("floorCardRetry");
+    if (retryBtn0) { retryBtn0.classList.add("hidden"); retryBtn0.removeAttribute("data-retry-run"); }
     if (S.lostIds.has(S.selectedId)) {
       verdictEl.className = "verdict changes";
       verdictEl.textContent = "run lost — bridge restarted";
@@ -709,6 +727,19 @@
       verdictEl.className = "verdict";
       verdictEl.textContent = `Running — phase: ${rec.phase || "…"}`;
     }
+    // Stage 3: the same retry-as-hold offer as the transcript's
+    // verdict row, on the run card itself (one offer, two surfaces;
+    // taking either files the hold and both disappear).
+    const retryBtn = $("floorCardRetry");
+    if (retryBtn) {
+      if (retryOffered(rec) && !C.retriedRuns.includes(rec.id)) {
+        retryBtn.classList.remove("hidden");
+        retryBtn.setAttribute("data-retry-run", rec.id);
+      } else {
+        retryBtn.classList.add("hidden");
+        retryBtn.removeAttribute("data-retry-run");
+      }
+    }
     $("floorCardPlan").textContent = rec.plan || (rec.state === "running" ? "…" : "");
     $("floorCardWork").textContent = rec.work || (rec.state === "running" ? "…" : "");
     $("floorCardReview").textContent = rec.review || (rec.state === "running" ? "…" : "");
@@ -739,8 +770,27 @@
          the clock; floor.js draws the pulse).
        - Anything else is a task: it becomes a HOLD — a pending
          instruction in the holds list + transcript. A hold never
-         auto-fires and shows no stamps or verdict (Stage 3 adds
-         approve / edit / dismiss and the office rendering).
+         auto-fires and shows no stamps or verdict.
+
+     Stage 3 — holds are ACTIONABLE. Each hold renders as a card
+     in the sidebar list and on the office noticeboard (#noticeboard
+     in the room), with three actions:
+       Approve — fires POST /run with the held task + crew (the
+         same startRun path as the Floor form), the hold clears,
+         and the transcript logs the firing with the real run id.
+       Edit — the task text becomes editable in place; saving
+         rewrites the hold (marked edited) and approving then
+         fires the edited text.
+       Dismiss — the hold clears; the transcript notes it.
+     The Floor top bar's badge is the real pending count. A hold
+     whose crew is absent from the latest GET /crews (the crew is
+     gone bridge-side) renders STALE: no approve, no edit, dismiss
+     only. A run that settles failed — or done with a verdict
+     other than APPROVED (this bridge's rejection is CHANGES;
+     parseVerdict knows no REJECTED literal) — offers "retry as
+     hold" on its transcript verdict row and its run card: one
+     click files a new hold carrying the run record's original
+     task text, editable before approving like any hold.
 
      Transcript + holds persist for the page session in
      sessionStorage (a reload keeps the log; run records themselves
@@ -752,19 +802,22 @@
   const PULSE_WINDOW_MS = 45000; // a reply's nameplate pulse lifetime (rolling refresh)
 
   const C = {
-    entries: [],        // transcript entries: say | hold | flag | reply | verdict | error
-    holds: [],          // pending holds: { id, text, crew, seats: [{ role, name }], at }
+    entries: [],        // transcript entries: say | hold | flag | reply | verdict | fired | note | error
+    holds: [],          // pending holds: { id, text, crew, seats: [{ role, name }], at, edited?, fromRun? }
     chatSessionId: null,
     seq: 0,
     busy: false,        // a conductor chat call is in flight
     latestReply: null,  // { agentId, at } of the newest chat reply
     renderedSig: null,  // renderConductor's change guard
+    editingId: null,    // Stage 3: hold id whose card is in edit mode (page-session UI state)
+    retriedRuns: [],    // Stage 3: run ids whose retry-as-hold offer was already taken
   };
 
   function conductorSave() {
     try {
       sessionStorage.setItem(SS_CONDUCTOR, JSON.stringify({
         v: 1, entries: C.entries, holds: C.holds, chatSessionId: C.chatSessionId, seq: C.seq,
+        retriedRuns: C.retriedRuns,
       }));
     } catch { /* storage unavailable: the log lives in memory for this page only */ }
   }
@@ -779,6 +832,7 @@
       C.holds = Array.isArray(d.holds) ? d.holds : [];
       C.chatSessionId = d.chatSessionId || null;
       C.seq = d.seq || 0;
+      C.retriedRuns = Array.isArray(d.retriedRuns) ? d.retriedRuns : [];
       const last = [...C.entries].reverse().find((e) => e.kind === "reply" && e.stamp && e.stamp.role);
       if (last) C.latestReply = { agentId: (last.crew || "") + ":" + last.stamp.role, at: last.at };
     } catch { /* a corrupt log never blocks the room */ }
@@ -905,6 +959,134 @@
     if (ent) ent.pulseUntil = Date.now() + 4000;
   }
 
+  /* ---------------- Stage 3: hold actions ----------------
+     One run-start path for the Floor form and for hold approval:
+     POST /run, then the run is tracked exactly like a form run
+     (status line, docked card, verdict logging all follow from
+     the bridge record). Returns the run id, or null with the
+     bridge's own error text. */
+  async function startRun(task, crew) {
+    const res = await call("/run", { method: "POST", body: { task, crew }, timeoutMs: 10000 });
+    if (res.status === 202 && res.data && res.data.runId) {
+      S.trackedId = res.data.runId;
+      S.selectedId = res.data.runId;
+      S.cardOpen = true;
+      S.cardExpanded = false; // G-1: a fresh run starts as the docked strip
+      S.autoExpandedFor = null;
+      S.lostIds.delete(res.data.runId);
+      fastPoll();
+      scrollRunIntoView();
+      return { runId: res.data.runId };
+    }
+    return { error: (res.data && res.data.error) || "bridge returned " + res.status };
+  }
+
+  /* A hold is stale when the bridge's current crew list (the
+     latest GET /crews) no longer offers its crew. While the bridge
+     has never answered (or is unreachable), staleness is unknown —
+     not stale; approval is separately gated on being connected. */
+  function holdStale(h) {
+    if (!S.connected || !S.crews.length) return false;
+    return !S.crews.some((c) => c.name === h.crew);
+  }
+
+  function removeHold(id) {
+    C.holds = C.holds.filter((x) => x.id !== id);
+    if (C.editingId === id) C.editingId = null;
+  }
+
+  async function approveHold(id) {
+    const h = C.holds.find((x) => x.id === id);
+    if (!h || holdStale(h)) return;
+    if (!S.connected) {
+      conductorAdd({ kind: "error", text: "Not connected — the hold stays pending. Nothing was fired." });
+      return;
+    }
+    let out;
+    try {
+      out = await startRun(h.text, h.crew);
+    } catch {
+      out = { error: "the bridge did not respond" };
+    }
+    if (!out.runId) {
+      // The hold stays pending — a failed start is not a dismissal.
+      conductorAdd({ kind: "error", text: `The run failed to start: ${out.error}. The hold is still pending.` });
+      return;
+    }
+    removeHold(id);
+    conductorAdd({
+      kind: "fired", holdId: h.id, runId: out.runId, text: h.text, crew: h.crew,
+      seats: h.seats, identifier: "RUN-" + shortId(out.runId),
+    });
+    conductorSave();
+    renderConductor();
+  }
+
+  function dismissHold(id) {
+    const h = C.holds.find((x) => x.id === id);
+    if (!h) return;
+    removeHold(id);
+    conductorAdd({
+      kind: "note", holdId: h.id, text: h.text, crew: h.crew, seats: h.seats,
+      note: `dismissed the held instruction for ${holdTargetText(h)}`,
+    });
+    conductorSave();
+    renderConductor();
+  }
+
+  function beginEditHold(id) {
+    if (!C.holds.some((x) => x.id === id)) return;
+    C.editingId = id;
+    renderConductor();
+    const ta = document.querySelector(`[data-hold="${id}"] textarea`);
+    if (ta) { ta.focus(); ta.select(); }
+  }
+
+  function cancelEditHold() {
+    C.editingId = null;
+    renderConductor();
+  }
+
+  function saveEditHold(id, cardEl) {
+    const h = C.holds.find((x) => x.id === id);
+    if (!h) return;
+    const ta = cardEl && cardEl.querySelector("textarea");
+    const text = ta ? ta.value.trim() : "";
+    if (!text) return; // an instruction cannot be emptied into existence; stay in edit mode
+    h.text = text;
+    h.edited = true;
+    C.editingId = null;
+    conductorSave();
+    renderConductor();
+  }
+
+  /* Retry-as-hold eligibility, from the run record alone: the run
+     settled and the reviewer did not approve it (failed, or a
+     verdict other than APPROVED — CHANGES is this bridge's
+     rejection). */
+  function retryOffered(rec) {
+    if (!rec) return false;
+    if (rec.state === "failed") return true;
+    return rec.state === "done" && !!rec.verdict && rec.verdict !== "APPROVED";
+  }
+
+  function offerRetryHold(runId) {
+    if (!runId || C.retriedRuns.includes(runId)) return;
+    if (C.holds.some((h) => h.fromRun === runId)) { C.retriedRuns.push(runId); conductorSave(); renderConductor(); return; }
+    const rec = S.records.get(runId);
+    const entry = [...C.entries].reverse().find((e) => e.kind === "verdict" && e.runId === runId);
+    const task = rec && rec.task ? rec.task : entry && entry.task;
+    if (!task) return;
+    const crew = (rec && rec.crew) || (entry && entry.crew) || S.selectedCrew;
+    C.retriedRuns.push(runId);
+    const hold = { id: "h" + (++C.seq), text: task, crew, seats: [], at: Date.now(), fromRun: runId };
+    C.holds.push(hold);
+    conductorAdd({ kind: "hold", holdId: hold.id, text: hold.text, crew: hold.crew, seats: hold.seats, fromRun: runId });
+    conductorSave();
+    renderConductor();
+    renderCard();
+  }
+
   /* ---------------- conductor rendering ---------------- */
 
   function escHtml(s) {
@@ -965,10 +1147,24 @@
       const tail = e.state === "done"
         ? `verdict ${e.verdict || "—"}${fam} · ⚡ ${e.calls} calls`
         : `run failed — ${e.error || "unknown error"} · ⚡ ${e.calls} calls`;
+      // Stage 3: a run the reviewer did not approve (or that
+      // failed) offers retry-as-hold, until the offer is taken.
+      const offer = (e.state === "failed" || (e.state === "done" && e.verdict && e.verdict !== "APPROVED")) &&
+        !C.retriedRuns.includes(e.runId) && !C.holds.some((h) => h.fromRun === e.runId);
+      const retry = offer
+        ? `<button type="button" class="cretry" data-retry-run="${escHtml(e.runId)}">↩ Retry as hold</button>` : "";
       return `<div class="clog clog-verdict${e.state === "done" ? "" : " bad"}" data-kind="verdict" data-run="${escHtml(e.runId)}"` +
         ` data-state="${escHtml(e.state)}" data-verdict="${escHtml(e.state === "done" ? (e.verdict || "") : "")}"` +
         ` data-xfam="${e.crossFamily === null || e.crossFamily === undefined ? "" : e.crossFamily ? "yes" : "no"}">` +
-        `${time}<span class="ctag">VERDICT</span>${escHtml(e.identifier)} — ${escHtml(tail)}</div>`;
+        `${time}<span class="ctag">VERDICT</span>${escHtml(e.identifier)} — ${escHtml(tail)}${retry}</div>`;
+    }
+    if (e.kind === "fired") {
+      return `<div class="clog clog-fired" data-kind="fired" data-hold="${escHtml(e.holdId)}" data-run="${escHtml(e.runId)}" data-crew="${escHtml(e.crew)}">` +
+        `${time}<span class="ctag">FIRED</span>${escHtml(e.identifier)} — approved hold for ${escHtml(holdTargetText(e))}<br>${escHtml(e.text)}</div>`;
+    }
+    if (e.kind === "note") {
+      return `<div class="clog clog-note2" data-kind="note" data-hold="${escHtml(e.holdId)}" data-crew="${escHtml(e.crew)}">` +
+        `${time}<span class="ctag">NOTE</span>${escHtml(e.note || "")}<br>${escHtml(e.text)}</div>`;
     }
     if (e.kind === "error") {
       return `<div class="clog clog-error" data-kind="error">${time}<span class="ctag">ERROR</span>${escHtml(e.text)}</div>`;
@@ -976,26 +1172,78 @@
     return "";
   }
 
+  /* One hold, one card shape, two surfaces (sidebar list +
+     office noticeboard). A card shows the instruction and its
+     target — never stamps, a verdict, or progress. Stage 3 states:
+     pending (Approve / Edit / Dismiss), editing (textarea + Save /
+     Cancel), stale (crew gone from GET /crews — Dismiss only). */
+  function holdCardHtml(h, cls) {
+    const stale = holdStale(h);
+    const roles = h.seats.map((s) => s.role).join(",");
+    const head = `<span class="hseat">HELD FOR ${escHtml(holdTargetText(h)).toUpperCase()}${h.edited ? " · EDITED" : ""}${h.fromRun ? ` · RETRY OF RUN-${escHtml(shortId(h.fromRun))}` : ""}</span>`;
+    let inner;
+    if (C.editingId === h.id && !stale) {
+      inner = head +
+        `<textarea class="holdedit" rows="3" aria-label="Edit the held task">${escHtml(h.text)}</textarea>` +
+        `<span class="hactions"><button type="button" class="hbtn go" data-hold-action="save">Save</button>` +
+        `<button type="button" class="hbtn" data-hold-action="cancel">Cancel</button></span>`;
+    } else if (stale) {
+      inner = head +
+        `<span class="htext">${escHtml(h.text)}</span>` +
+        `<span class="hstale">crew “${escHtml(h.crew)}” no longer exists on the bridge — this hold can only be dismissed</span>` +
+        `<span class="hactions"><button type="button" class="hbtn" data-hold-action="dismiss">Dismiss</button></span>`;
+    } else {
+      inner = head +
+        `<span class="htext">${escHtml(h.text)}</span>` +
+        `<span class="hactions"><button type="button" class="hbtn go" data-hold-action="approve">Approve — run it</button>` +
+        `<button type="button" class="hbtn" data-hold-action="edit">Edit</button>` +
+        `<button type="button" class="hbtn" data-hold-action="dismiss">Dismiss</button></span>`;
+    }
+    return `<div class="${cls}${stale ? " stale" : ""}" data-hold="${escHtml(h.id)}" data-crew="${escHtml(h.crew)}"` +
+      ` data-seats="${escHtml(roles)}" data-stale="${stale ? "1" : "0"}">${inner}</div>`;
+  }
+
   function renderConductor() {
     const log = $("conductorLog");
     if (!log) return;
     const last = C.entries[C.entries.length - 1];
-    const sig = [C.entries.length, last ? last.id : "-", C.holds.length, C.busy ? 1 : 0, S.connected ? 1 : 0].join(":");
+    const crewsSig = S.crews.map((c) => c.name).join(",");
+    const sig = [C.entries.length, last ? last.id : "-", C.holds.map((h) => h.id + (h.edited ? "*" : "")).join(","),
+      C.editingId || "-", C.retriedRuns.length, C.busy ? 1 : 0, S.connected ? 1 : 0, crewsSig].join(":");
     if (sig === C.renderedSig) return;
     const wasNearBottom = log.scrollHeight - log.scrollTop - log.clientHeight < 40;
+    /* An edit in progress survives a re-render (a verdict landing
+       mid-edit, a crew refresh): the live textarea's text is the
+       draft until Save says otherwise. */
+    let draft = null;
+    if (C.editingId) {
+      const live = document.querySelector(`[data-hold="${C.editingId}"] textarea`);
+      if (live) draft = live.value;
+    }
     C.renderedSig = sig;
     log.innerHTML = C.entries.length
       ? C.entries.map(entryHtml).join("")
       : `<div class="clog clog-note">No conductor traffic yet — give the crew a task, or ask a question.</div>`;
     if (wasNearBottom) log.scrollTop = log.scrollHeight;
     const list = $("holdList");
-    if (list) {
-      list.innerHTML = C.holds.map((h) =>
-        `<div class="holdrow" data-hold="${escHtml(h.id)}" data-crew="${escHtml(h.crew)}" data-seats="${escHtml(h.seats.map((s) => s.role).join(","))}">` +
-        `<span class="hseat">HELD FOR ${escHtml(holdTargetText(h)).toUpperCase()}</span>${escHtml(h.text)}</div>`).join("");
+    if (list) list.innerHTML = C.holds.map((h) => holdCardHtml(h, "holdrow")).join("");
+    const nb = $("noticeboard");
+    if (nb) {
+      nb.classList.toggle("hidden", C.holds.length === 0);
+      const nbList = $("nbList");
+      if (nbList) nbList.innerHTML = C.holds.map((h) => holdCardHtml(h, "nbcard")).join("");
+      const nbCnt = $("nbCount");
+      if (nbCnt) nbCnt.textContent = `${C.holds.length} held`;
+    }
+    if (draft !== null && C.editingId) {
+      const ta = document.querySelector(`#holdList [data-hold="${C.editingId}"] textarea`) ||
+        document.querySelector(`#noticeboard [data-hold="${C.editingId}"] textarea`);
+      if (ta) ta.value = draft;
     }
     const cnt = $("holdCount");
     if (cnt) cnt.textContent = `${C.holds.length} held`;
+    const badge = $("holdBadge");
+    if (badge) badge.textContent = String(C.holds.length);
     const input = $("conductorInput");
     if (input) input.disabled = !S.connected || C.busy;
     const send = $("conductorSend");
@@ -1176,6 +1424,7 @@
         conductorAdd({
           kind: "verdict", runId: rec.id, identifier: "RUN-" + shortId(rec.id),
           crew: rec.crew || S.selectedCrew,
+          task: rec.task || null, // Stage 3: retry-as-hold carries the record's original task text
           state: rec.state, verdict: rec.state === "done" ? (rec.verdict || null) : null,
           error: rec.state === "failed" ? (rec.error || "unknown error") : null,
           crossFamily: rec.crossFamily === undefined ? null : rec.crossFamily,
@@ -1264,19 +1513,11 @@
         const btn = $("floorRunBtn");
         if (btn) { btn.disabled = true; btn.textContent = "Starting…"; }
         try {
-          const res = await call("/run", { method: "POST", body: { task, crew }, timeoutMs: 10000 });
-          if (res.status === 202 && res.data && res.data.runId) {
-            S.trackedId = res.data.runId;
-            S.selectedId = res.data.runId;
-            S.cardOpen = true;
-            S.cardExpanded = false; // G-1: a fresh run starts as the docked strip
-            S.autoExpandedFor = null;
-            S.lostIds.delete(res.data.runId);
+          const out = await startRun(task, crew);
+          if (out.runId) {
             input.value = "";
-            fastPoll();
-            scrollRunIntoView();
           } else {
-            if (status) status.textContent = `The run failed to start: ${(res.data && res.data.error) || "bridge returned " + res.status}`;
+            if (status) status.textContent = `The run failed to start: ${out.error}`;
             if (btn) { btn.disabled = false; btn.textContent = "Run the crew"; }
           }
         } catch {
@@ -1285,6 +1526,27 @@
         }
       });
     }
+    /* Stage 3: hold actions + retry-as-hold, delegated — the
+       cards and transcript rows are re-rendered by renderConductor
+       / renderCard, so the listeners live on the document and key
+       off data attributes. The buttons exist on two surfaces
+       (sidebar + noticeboard, transcript + run card); one handler
+       serves all of them. */
+    document.addEventListener("click", (ev) => {
+      const retryBtn = ev.target.closest ? ev.target.closest("[data-retry-run]") : null;
+      if (retryBtn) { offerRetryHold(retryBtn.getAttribute("data-retry-run")); return; }
+      const btn = ev.target.closest ? ev.target.closest("[data-hold-action]") : null;
+      if (!btn || btn.disabled) return;
+      const cardEl = btn.closest("[data-hold]");
+      if (!cardEl) return;
+      const id = cardEl.getAttribute("data-hold");
+      const action = btn.getAttribute("data-hold-action");
+      if (action === "approve") approveHold(id);
+      else if (action === "dismiss") dismissHold(id);
+      else if (action === "edit") beginEditHold(id);
+      else if (action === "cancel") cancelEditHold();
+      else if (action === "save") saveEditHold(id, cardEl);
+    });
     const picker = $("floorRunCrew");
     if (picker) {
       picker.addEventListener("change", () => {
@@ -1355,7 +1617,10 @@
   /* Debug surface for the Stage 2 evaluator (same pattern as
      __floorDebug): the conductor's session state, read-only. */
   window.__conductorDebug = {
-    state: () => JSON.parse(JSON.stringify({ entries: C.entries, holds: C.holds, busy: C.busy })),
+    state: () => JSON.parse(JSON.stringify({
+      entries: C.entries, holds: C.holds, busy: C.busy,
+      retriedRuns: C.retriedRuns, editingId: C.editingId,
+    })),
   };
 
   conductorLoad();

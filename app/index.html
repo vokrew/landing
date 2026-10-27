@@ -132,6 +132,10 @@ node src/cli.js serve</pre>
           <div class="topstat hideSm"><span class="dot" id="connDot"></span><span id="floorStatus">connecting</span></div>
           <div class="topstat hideSm" id="runStat">RUNS <b id="runCount">0</b></div>
           <div class="topstat" id="budgetWrap"><span class="resicon">⚡</span>CALLS TODAY <b id="budgetStatus">—</b></div>
+          <!-- Phase 2 Stage 3: the top bar carries at most the real
+               pending-hold count (a badge fed by the adapter's hold
+               state — never stamps, never progress). -->
+          <div class="topstat" id="holdStat"><span class="resicon">📌</span>HOLDS <b id="holdBadge">0</b></div>
           <div class="spacer"></div>
           <div class="clock" id="clock">--:--:--</div>
         </div>
@@ -147,13 +151,17 @@ node src/cli.js serve</pre>
           <div id="tasklist"></div>
           <!-- Phase 2 Stage 2: the text conductor — one input bar in
                the Floor screen. Task instructions become holds (they
-               do NOT fire; Stage 3 adds approve/edit/dismiss) and
-               questions are answered over POST /chat (surface=chat).
-               The transcript + holds persist for the page session in
-               sessionStorage (run records stay bridge-bound). All
-               rendering lives in floor-adapter.js (renderConductor);
-               every entry traces to a typed instruction, a real chat
-               response stamp, or a real run record's verdict. -->
+               do NOT fire on their own) and questions are answered
+               over POST /chat (surface=chat). Phase 2 Stage 3: holds
+               are actionable here and on the office noticeboard —
+               approve fires the run, edit rewrites the task in
+               place, dismiss clears it; a run the reviewer did not
+               approve offers retry-as-hold. The transcript + holds
+               persist for the page session in sessionStorage (run
+               records stay bridge-bound). All rendering lives in
+               floor-adapter.js (renderConductor); every entry traces
+               to a typed instruction, a real chat response stamp, or
+               a real run record's verdict. -->
           <div class="sideblock"><div class="lbl">🎙 CONDUCTOR</div><div class="cnt" id="holdCount">0 held</div></div>
           <div id="conductorLog" aria-live="polite"></div>
           <div id="holdList"></div>
@@ -161,7 +169,7 @@ node src/cli.js serve</pre>
             <input id="conductorInput" type="text" placeholder="Conduct your crew — a task, or a question…" autocomplete="off" />
             <button class="btn primary small" id="conductorSend" type="submit">Send</button>
           </form>
-          <p class="conductor-hint">Name a crewmate to call them out (“Scout, …”). Tasks are held, never auto-fired; questions are answered in chat.</p>
+          <p class="conductor-hint">Name a crewmate to call them out (“Scout, …”). Tasks are held until you approve them — approve, edit, or dismiss a hold below or on the office noticeboard; questions are answered in chat.</p>
           <div class="sidefoot">
             <div>RIG: <b id="rigFoot">checking…</b></div>
             <div id="floorFoot">live bridge · stage 3</div>
@@ -178,6 +186,16 @@ node src/cli.js serve</pre>
             <div class="mmhead"><span>SECTOR MAP</span><span id="mmCoords">0 · 0</span></div>
             <canvas id="mini" width="220" height="172"></canvas>
             <div class="mmlegend"><i class="you"></i>crew <i class="here"></i>view</div>
+          </div>
+          <!-- Phase 2 Stage 3: the office noticeboard — held
+               instructions rendered as cards in the room (the same
+               holds, the same actions as the sidebar list; rendered
+               by floor-adapter.js, visible only while holds are
+               pending). A hold is an instruction, not a run: no
+               stamps, no verdict, no progress live here. -->
+          <div id="noticeboard" class="hudpanel hidden">
+            <div class="nbhead"><span>📌 NOTICEBOARD</span><span id="nbCount">0 held</span></div>
+            <div id="nbList"></div>
           </div>
           <div id="viewbar">
             <button data-view="overview" class="on">Overview</button>
@@ -201,6 +219,11 @@ node src/cli.js serve</pre>
             <div id="floorCardBody" class="hidden">
               <button class="btn ghost small" id="floorCardClose" type="button">Close</button>
               <div class="verdict" id="floorCardVerdict"></div>
+              <!-- Phase 2 Stage 3: a settled run the reviewer did
+                   not approve (or that failed) offers retry-as-hold;
+                   the adapter shows this only for such a run and
+                   only until the offer is taken. -->
+              <button class="btn amber small hidden" id="floorCardRetry" type="button">↩ Retry as hold</button>
               <div class="stage-block"><h3>Plan</h3><pre id="floorCardPlan"></pre></div>
               <div class="stage-block"><h3>Work</h3><pre id="floorCardWork"></pre></div>
               <div class="stage-block"><h3>Review</h3><pre id="floorCardReview"></pre></div>
