@@ -1,0 +1,208 @@
+{
+  "take": 1,
+  "assertions": [
+    {
+      "name": "floor-oc reference: room loaded, 2 example agents, overview camera measured",
+      "ok": true,
+      "detail": "cam.s=0.35767 canvas=[1188,761] viewport=1440x813"
+    },
+    {
+      "name": "floor-oc idle screenshot captured",
+      "ok": true,
+      "detail": "494938 bytes"
+    },
+    {
+      "name": "floor-oc focus screenshot captured",
+      "ok": true,
+      "detail": "cam.s=0.8047574999723915"
+    },
+    {
+      "name": "lane warm-up completed directly against llama-server",
+      "ok": true,
+      "detail": "708ms"
+    },
+    {
+      "name": "vokrew: paired through the page's own form",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "vokrew: rig crew seated, overview scale measured (floor-oc parity band = within 5%)",
+      "ok": true,
+      "detail": "scale=0.34075 flooroc=0.35767 canvas=[1166,725] viewport=1440x813"
+    },
+    {
+      "name": "vokrew idle screenshot captured",
+      "ok": true,
+      "detail": "423146 bytes"
+    },
+    {
+      "name": "conductor call-out became exactly one hold; badge + noticeboard agree",
+      "ok": true,
+      "detail": "badge=\"1\" sidebar=1 noticeboard=1"
+    },
+    {
+      "name": "vokrew hold-pending screenshot captured",
+      "ok": true,
+      "detail": "479392 bytes"
+    },
+    {
+      "name": "approve clicked on the hold card",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "approved run registered on the bridge",
+      "ok": true,
+      "detail": "ab697442-4f3d-4e36-8b91-8de9cfb013bb"
+    },
+    {
+      "name": "approved run settled done/APPROVED on the bridge",
+      "ok": false,
+      "detail": "state=failed verdict=null duration=120s error=run failed: no lane could serve role \"planner\" (local-gemma:failed)"
+    },
+    {
+      "name": "capture harness completed without error",
+      "ok": false,
+      "detail": "TAKE FAILED: run settled failed — run failed: no lane could serve role \"planner\" (local-gemma:failed)"
+    }
+  ],
+  "consoleErrors": [],
+  "screenshots": [
+    {
+      "file": "flooroc-idle.png",
+      "note": "REFERENCE (floor-oc, own server, example data): idle room, agents at desks, house frame"
+    },
+    {
+      "file": "flooroc-focus-agent.png",
+      "note": "REFERENCE (floor-oc): focus view on the first agent — the reference analog of the Vokrew dossier shot"
+    },
+    {
+      "file": "vokrew-idle.png",
+      "note": "VOKREW FLOOR: idle room, rig crew (Scout/Musky/Judge) seated, house frame — pairs with flooroc-idle.png"
+    },
+    {
+      "file": "vokrew-hold-pending.png",
+      "note": "VOKREW FLOOR: hold pending — sidebar hold card + office noticeboard card + top-bar badge 1"
+    }
+  ],
+  "rig": {
+    "llama": "gemma-local on :18080",
+    "warmup": {
+      "ms": 708,
+      "ok": true,
+      "via": "direct llama-server completion (bridge untouched)"
+    },
+    "bridge": "registry build on :17717, VOKREW_HOME=/tmp/vokrew-p2s4-home"
+  },
+  "readability": {
+    "flooroc": {
+      "camS": 0.35767,
+      "camMode": "overview",
+      "innerWidth": 1440,
+      "innerHeight": 813,
+      "canvasBacking": [
+        1188,
+        761
+      ],
+      "canvasCss": [
+        1188,
+        761
+      ],
+      "agents": [
+        "Example CEO",
+        "Example Worker"
+      ],
+      "nameplateWorldPx": 9,
+      "characterWorldPx": 46,
+      "nameplateScreenPx": 3.22,
+      "characterScreenPx": 16.5
+    },
+    "floorocFocus": {
+      "camS": 0.8047574999723915,
+      "mode": "focus",
+      "nameplateScreenPx": 7.24,
+      "characterScreenPx": 37
+    },
+    "vokrew": {
+      "camS": 0.34075,
+      "innerWidth": 1440,
+      "innerHeight": 813,
+      "canvasBacking": [
+        1166,
+        725
+      ],
+      "canvasCss": [
+        1166,
+        725
+      ],
+      "names": [
+        "Scout",
+        "Musky",
+        "Judge"
+      ],
+      "effectiveScale": 0.34075,
+      "nameplateWorldPx": 9,
+      "characterWorldPx": 46,
+      "nameplateScreenPx": 3.07,
+      "characterScreenPx": 15.7
+    }
+  },
+  "flooroc": {
+    "server": "floor-oc server.js from four-hands-clone/tools/floor on :13201, data = data.example.json (2 placeholder agents, 1 unassigned task)",
+    "consoleErrors": [
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags"
+    ]
+  },
+  "video": {
+    "take": 1,
+    "screencastStartWallMs": 1793100086861,
+    "task": "Scout, draft the release checklist and tag the open issues",
+    "framesDir": "/tmp/phase2s4-frames-take1",
+    "hold": {
+      "id": "h1",
+      "badge": "1",
+      "sidebarCards": 1,
+      "nbCards": 1,
+      "nbHidden": false
+    },
+    "doorstepCell": {
+      "cx": 23,
+      "cy": 46
+    },
+    "runId": "ab697442-4f3d-4e36-8b91-8de9cfb013bb",
+    "finalRecord": {
+      "state": "failed",
+      "verdict": null,
+      "crossFamily": null,
+      "error": "run failed: no lane could serve role \"planner\" (local-gemma:failed)",
+      "stamps": []
+    },
+    "timeline": {
+      "runStartWallMs": 1793100115339,
+      "settledWallMs": 1793100235519,
+      "reviewerAtDoorstepWallMs": null,
+      "runDurationSec": 120
+    }
+  },
+  "phases": [
+    {
+      "phase": "planner",
+      "state": "running",
+      "atSec": 0,
+      "stamps": 0
+    },
+    {
+      "phase": null,
+      "state": "failed",
+      "atSec": 120,
+      "stamps": 0
+    }
+  ],
+  "gaps": {},
+  "takeFailed": "TAKE FAILED: run settled failed — run failed: no lane could serve role \"planner\" (local-gemma:failed)",
+  "verdict": "TAKE 1 FAILED — TAKE FAILED: run settled failed — run failed: no lane could serve role \"planner\" (local-gemma:failed)"
+}

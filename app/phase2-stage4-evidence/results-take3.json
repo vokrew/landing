@@ -1,0 +1,208 @@
+{
+  "take": 3,
+  "assertions": [
+    {
+      "name": "lane warm-up completed directly against llama-server",
+      "ok": true,
+      "detail": "916ms"
+    },
+    {
+      "name": "vokrew: paired through the page's own form",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "vokrew: rig crew seated, overview scale measured (floor-oc parity band = within 5%)",
+      "ok": true,
+      "detail": "scale=0.34075 flooroc=null canvas=[1166,725] viewport=1440x813"
+    },
+    {
+      "name": "vokrew idle screenshot captured",
+      "ok": true,
+      "detail": "423884 bytes"
+    },
+    {
+      "name": "conductor call-out became exactly one hold; badge + noticeboard agree",
+      "ok": true,
+      "detail": "badge=\"1\" sidebar=1 noticeboard=1"
+    },
+    {
+      "name": "vokrew hold-pending screenshot captured",
+      "ok": true,
+      "detail": "479298 bytes"
+    },
+    {
+      "name": "approve clicked on the hold card",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "approved run registered on the bridge",
+      "ok": true,
+      "detail": "3726903a-5f61-49cc-bf86-ffda65f63e69"
+    },
+    {
+      "name": "approved run settled done/APPROVED on the bridge",
+      "ok": false,
+      "detail": "state=failed verdict=null duration=216s error=run failed: no lane could serve role \"executor\" (local-gemma:failed)"
+    },
+    {
+      "name": "capture harness completed without error",
+      "ok": false,
+      "detail": "TAKE FAILED: run settled failed — run failed: no lane could serve role \"executor\" (local-gemma:failed)"
+    }
+  ],
+  "consoleErrors": [],
+  "screenshots": [
+    {
+      "file": "vokrew-idle.png",
+      "note": "VOKREW FLOOR: idle room, rig crew (Scout/Musky/Judge) seated, house frame — pairs with flooroc-idle.png"
+    },
+    {
+      "file": "vokrew-hold-pending.png",
+      "note": "VOKREW FLOOR: hold pending — sidebar hold card + office noticeboard card + top-bar badge 1"
+    }
+  ],
+  "rig": {
+    "llama": "gemma-local on :18080",
+    "warmup": {
+      "ms": 916,
+      "ok": true,
+      "via": "direct llama-server completion (bridge untouched)"
+    },
+    "bridge": "registry build on :17717, VOKREW_HOME=/tmp/vokrew-p2s4-home"
+  },
+  "readability": {
+    "vokrew": {
+      "camS": 0.34075,
+      "innerWidth": 1440,
+      "innerHeight": 813,
+      "canvasBacking": [
+        1166,
+        725
+      ],
+      "canvasCss": [
+        1166,
+        725
+      ],
+      "names": [
+        "Scout",
+        "Musky",
+        "Judge"
+      ],
+      "effectiveScale": 0.34075,
+      "nameplateWorldPx": 9,
+      "characterWorldPx": 46,
+      "nameplateScreenPx": 3.07,
+      "characterScreenPx": 15.7
+    }
+  },
+  "flooroc": {},
+  "video": {
+    "take": 3,
+    "screencastStartWallMs": 1793101024650,
+    "task": "Scout, draft the release checklist and tag the open issues",
+    "framesDir": "/tmp/phase2s4-frames-take3",
+    "hold": {
+      "id": "h1",
+      "badge": "1",
+      "sidebarCards": 1,
+      "nbCards": 1,
+      "nbHidden": false
+    },
+    "doorstepCell": {
+      "cx": 23,
+      "cy": 46
+    },
+    "runId": "3726903a-5f61-49cc-bf86-ffda65f63e69",
+    "finalRecord": {
+      "state": "failed",
+      "verdict": null,
+      "crossFamily": null,
+      "error": "run failed: no lane could serve role \"executor\" (local-gemma:failed)",
+      "stamps": [
+        {
+          "role": "planner",
+          "agent": "Scout",
+          "lane": "local-gemma",
+          "provider": "openai-compatible",
+          "model": "gemma-local",
+          "family": "gemma",
+          "tier": "local",
+          "latencyMs": 95432,
+          "failover": false,
+          "attempts": [
+            {
+              "lane": "local-gemma",
+              "status": "served"
+            }
+          ]
+        }
+      ]
+    },
+    "timeline": {
+      "runStartWallMs": 1793101037994,
+      "settledWallMs": 1793101254277,
+      "reviewerAtDoorstepWallMs": null,
+      "runDurationSec": 216
+    }
+  },
+  "phases": [
+    {
+      "phase": "planner",
+      "state": "running",
+      "atSec": 0,
+      "stamps": 0
+    },
+    {
+      "phase": "executor",
+      "state": "running",
+      "atSec": 95,
+      "stamps": 1
+    },
+    {
+      "phase": null,
+      "state": "failed",
+      "atSec": 215,
+      "stamps": 1
+    }
+  ],
+  "gaps": {
+    "strip": {
+      "present": true,
+      "cardHidden": false,
+      "stripPresent": true,
+      "stripVisible": true,
+      "stripBox": {
+        "top": 766,
+        "bottom": 800,
+        "left": 536,
+        "right": 1156,
+        "height": 34
+      },
+      "stripText": "RUN-3726 · Scout is planning · ⚡ 0 calls served ▸",
+      "bodyVisible": false,
+      "bodyBox": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 0,
+        "height": 0
+      },
+      "canvasBox": {
+        "top": 87,
+        "bottom": 812,
+        "left": 263,
+        "right": 1429,
+        "width": 1166,
+        "height": 725
+      },
+      "stripCanvasOverlap": 21080,
+      "stripAreaFrac": 2.49,
+      "bodyCanvasOverlap": 0,
+      "verdict": null
+    }
+  },
+  "takeFailed": "TAKE FAILED: run settled failed — run failed: no lane could serve role \"executor\" (local-gemma:failed)",
+  "verdict": "TAKE 3 FAILED — TAKE FAILED: run settled failed — run failed: no lane could serve role \"executor\" (local-gemma:failed)"
+}

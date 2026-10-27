@@ -1,0 +1,191 @@
+{
+  "assertions": [
+    {
+      "name": "phone: lane warm-up completed directly against llama-server",
+      "ok": true,
+      "detail": "896ms"
+    },
+    {
+      "name": "phone: paired through the page's own form",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "phone room screenshot captured; zero horizontal overflow",
+      "ok": true,
+      "detail": "630979 bytes; wide=[]"
+    },
+    {
+      "name": "phone: call-out became one hold; badge 1",
+      "ok": true,
+      "detail": "badge=\"1\" sidebar=1 nb=1"
+    },
+    {
+      "name": "phone hold-pending screenshot captured; zero horizontal overflow",
+      "ok": true,
+      "detail": "630948 bytes; wide=[]"
+    },
+    {
+      "name": "phone: approve clicked on the hold card",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "phone run settled done/APPROVED",
+      "ok": true,
+      "detail": "state=done verdict=APPROVED"
+    },
+    {
+      "name": "phone: verdict row in the conductor transcript, tied to the run id",
+      "ok": true,
+      "detail": "11:44:24VERDICTRUN-C0C5 — verdict APPROVED · same family review · ⚡ 3 calls"
+    },
+    {
+      "name": "phone conductor screenshot captured; zero horizontal overflow",
+      "ok": true,
+      "detail": "371856 bytes; wide=[]"
+    },
+    {
+      "name": "phone: reviewer dossier shows the settled run in its history",
+      "ok": true,
+      "detail": "verdict=APPROVED"
+    },
+    {
+      "name": "phone dossier screenshot captured; panel inside the viewport; zero horizontal overflow",
+      "ok": true,
+      "detail": "387470 bytes; panel={\"left\":15,\"right\":397,\"width\":382} wide=[]"
+    },
+    {
+      "name": "phone: zero console errors (same classification as desktop)",
+      "ok": true,
+      "detail": "nonLog=0 noise=0 unexplained=none"
+    }
+  ],
+  "consoleErrors": [],
+  "screenshots": [
+    {
+      "file": "phone-room.png",
+      "note": "PHONE 412x915 @DPR2.6: the room, rig crew seated, idle"
+    },
+    {
+      "file": "phone-hold-pending.png",
+      "note": "PHONE 412x915 @DPR2.6: hold pending — hold card + badge 1 (+ office noticeboard on the room)"
+    },
+    {
+      "file": "phone-conductor.png",
+      "note": "PHONE 412x915 @DPR2.6: conductor with transcript — instruction, hold, firing, verdict rows"
+    },
+    {
+      "file": "phone-dossier.png",
+      "note": "PHONE 412x915 @DPR2.6: Judge's dossier — identity + run history at phone size"
+    }
+  ],
+  "rig": {
+    "warmup": {
+      "ms": 896,
+      "ok": true,
+      "via": "direct llama-server completion (bridge untouched)"
+    }
+  },
+  "phone": {
+    "roomAudit": {
+      "innerWidth": 415,
+      "innerHeight": 922,
+      "wideElements": []
+    },
+    "holdAudit": {
+      "innerWidth": 415,
+      "innerHeight": 922,
+      "wideElements": []
+    },
+    "runId": "c0c50dd6-1ee5-4f28-b3b4-63807681e531",
+    "finalRecord": {
+      "state": "done",
+      "verdict": "APPROVED",
+      "crossFamily": false,
+      "error": null,
+      "stamps": 3
+    },
+    "settledRows": [
+      {
+        "kind": "hold",
+        "hold": "h1",
+        "run": null,
+        "verdict": null,
+        "text": "11:43:52HELDfor Scout · planner · crew rigScout, write a one-line bash command that prints the word hello, then explain it in one short sentence"
+      },
+      {
+        "kind": "fired",
+        "hold": "h1",
+        "run": "c0c50dd6-1ee5-4f28-b3b4-63807681e531",
+        "verdict": null,
+        "text": "11:43:54FIREDRUN-C0C5 — approved hold for Scout · planner · crew rigScout, write a one-line bash command that prints the word hello, then explain it in one short sentence"
+      },
+      {
+        "kind": "verdict",
+        "hold": null,
+        "run": "c0c50dd6-1ee5-4f28-b3b4-63807681e531",
+        "verdict": "APPROVED",
+        "text": "11:44:24VERDICTRUN-C0C5 — verdict APPROVED · same family review · ⚡ 3 calls"
+      }
+    ],
+    "conductorAudit": {
+      "innerWidth": 415,
+      "innerHeight": 922,
+      "wideElements": []
+    },
+    "dossier": {
+      "headName": "Judge",
+      "histCount": 1,
+      "hist": [
+        {
+          "run": "c0c50dd6-1ee5-4f28-b3b4-63807681e531",
+          "verdict": "APPROVED"
+        }
+      ],
+      "panelBox": {
+        "left": 15,
+        "right": 397,
+        "width": 382
+      }
+    },
+    "dossierAudit": {
+      "innerWidth": 415,
+      "innerHeight": 922,
+      "wideElements": []
+    }
+  },
+  "phases": [
+    {
+      "phase": "planner",
+      "state": "running",
+      "atSec": 0,
+      "stamps": 0
+    },
+    {
+      "phase": "executor",
+      "state": "running",
+      "atSec": 13,
+      "stamps": 1
+    },
+    {
+      "phase": "reviewer",
+      "state": "running",
+      "atSec": 22,
+      "stamps": 2
+    },
+    {
+      "phase": null,
+      "state": "done",
+      "atSec": 29,
+      "stamps": 3
+    }
+  ],
+  "consoleClassification": {
+    "total": 0,
+    "nonLog": 0,
+    "transportNoise": 0,
+    "unexplained": []
+  },
+  "verdict": "PHASE 2 STAGE 4 PHONE PASS: COMPLETE"
+}

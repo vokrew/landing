@@ -1,0 +1,149 @@
+{
+  "take": 2,
+  "assertions": [
+    {
+      "name": "lane warm-up completed directly against llama-server",
+      "ok": true,
+      "detail": "1958ms"
+    },
+    {
+      "name": "vokrew: paired through the page's own form",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "vokrew: rig crew seated, overview scale measured (floor-oc parity band = within 5%)",
+      "ok": true,
+      "detail": "scale=0.34075 flooroc=null canvas=[1166,725] viewport=1440x813"
+    },
+    {
+      "name": "vokrew idle screenshot captured",
+      "ok": true,
+      "detail": "423096 bytes"
+    },
+    {
+      "name": "conductor call-out became exactly one hold; badge + noticeboard agree",
+      "ok": true,
+      "detail": "badge=\"1\" sidebar=1 noticeboard=1"
+    },
+    {
+      "name": "vokrew hold-pending screenshot captured",
+      "ok": true,
+      "detail": "478918 bytes"
+    },
+    {
+      "name": "approve clicked on the hold card",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "approved run registered on the bridge",
+      "ok": true,
+      "detail": "1c2c296b-9ce5-4aa8-8d92-34bafa8e44ba"
+    },
+    {
+      "name": "approved run settled done/APPROVED on the bridge",
+      "ok": false,
+      "detail": "state=failed verdict=null duration=120s error=run failed: no lane could serve role \"planner\" (local-gemma:failed)"
+    },
+    {
+      "name": "capture harness completed without error",
+      "ok": false,
+      "detail": "TAKE FAILED: run settled failed — run failed: no lane could serve role \"planner\" (local-gemma:failed)"
+    }
+  ],
+  "consoleErrors": [],
+  "screenshots": [
+    {
+      "file": "vokrew-idle.png",
+      "note": "VOKREW FLOOR: idle room, rig crew (Scout/Musky/Judge) seated, house frame — pairs with flooroc-idle.png"
+    },
+    {
+      "file": "vokrew-hold-pending.png",
+      "note": "VOKREW FLOOR: hold pending — sidebar hold card + office noticeboard card + top-bar badge 1"
+    }
+  ],
+  "rig": {
+    "llama": "gemma-local on :18080",
+    "warmup": {
+      "ms": 1958,
+      "ok": true,
+      "via": "direct llama-server completion (bridge untouched)"
+    },
+    "bridge": "registry build on :17717, VOKREW_HOME=/tmp/vokrew-p2s4-home"
+  },
+  "readability": {
+    "vokrew": {
+      "camS": 0.34075,
+      "innerWidth": 1440,
+      "innerHeight": 813,
+      "canvasBacking": [
+        1166,
+        725
+      ],
+      "canvasCss": [
+        1166,
+        725
+      ],
+      "names": [
+        "Scout",
+        "Musky",
+        "Judge"
+      ],
+      "effectiveScale": 0.34075,
+      "nameplateWorldPx": 9,
+      "characterWorldPx": 46,
+      "nameplateScreenPx": 3.07,
+      "characterScreenPx": 15.7
+    }
+  },
+  "flooroc": {},
+  "video": {
+    "take": 2,
+    "screencastStartWallMs": 1793100809883,
+    "task": "Scout, draft the release checklist and tag the open issues",
+    "framesDir": "/tmp/phase2s4-frames-take2",
+    "hold": {
+      "id": "h1",
+      "badge": "1",
+      "sidebarCards": 1,
+      "nbCards": 1,
+      "nbHidden": false
+    },
+    "doorstepCell": {
+      "cx": 23,
+      "cy": 46
+    },
+    "runId": "1c2c296b-9ce5-4aa8-8d92-34bafa8e44ba",
+    "finalRecord": {
+      "state": "failed",
+      "verdict": null,
+      "crossFamily": null,
+      "error": "run failed: no lane could serve role \"planner\" (local-gemma:failed)",
+      "stamps": []
+    },
+    "timeline": {
+      "runStartWallMs": 1793100838317,
+      "settledWallMs": 1793100958229,
+      "reviewerAtDoorstepWallMs": null,
+      "runDurationSec": 120
+    }
+  },
+  "phases": [
+    {
+      "phase": "planner",
+      "state": "running",
+      "atSec": 0,
+      "stamps": 0
+    },
+    {
+      "phase": null,
+      "state": "failed",
+      "atSec": 120,
+      "stamps": 0
+    }
+  ],
+  "gaps": {},
+  "takeFailed": "TAKE FAILED: run settled failed — run failed: no lane could serve role \"planner\" (local-gemma:failed)",
+  "verdict": "TAKE 2 FAILED — TAKE FAILED: run settled failed — run failed: no lane could serve role \"planner\" (local-gemma:failed)"
+}
