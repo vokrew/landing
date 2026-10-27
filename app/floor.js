@@ -2982,7 +2982,7 @@ function renderRoster() {
   const el = $id("roster");
   if (!el) return;
   if (!agents.length) {
-    el.innerHTML = '<div class="muted" style="padding:8px">No agents yet.</div>';
+    el.innerHTML = '<div class="muted" style="padding:8px">No crew yet.</div>';
     return;
   }
   el.innerHTML = agents.map((a) => {

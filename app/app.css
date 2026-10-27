@@ -93,9 +93,11 @@ input:focus, textarea:focus, select:focus { outline: 2px solid var(--lime-deep);
 pre { white-space: pre-wrap; word-wrap: break-word; font-family: var(--mono); font-size: 13.5px; line-height: 1.6; }
 
 /* ---------- connect ---------- */
-/* Stage 3: the connect screen is a door over the locked room — a fixed
-   overlay with a translucent backdrop, so the (empty, OFFLINE) Floor
-   stays visible behind the pairing card until the bridge answers. */
+/* The connect card is a fixed overlay with a translucent backdrop.
+   Stage 3 raised it as a forced door on every unpaired load; the
+   empty-floor shell (KC, 2026-10-27) keeps it collapsed until the
+   visitor opens the setup tab — or a message raises it. The locked
+   (empty, OFFLINE) Floor stays visible behind it either way. */
 #connectScreen {
   position: fixed; inset: 0; z-index: 90; overflow-y: auto;
   background: rgba(4, 6, 9, 0.74);
@@ -103,7 +105,41 @@ pre { white-space: pre-wrap; word-wrap: break-word; font-family: var(--mono); fo
   padding: 24px 16px 48px;
 }
 body.door-open { overflow: hidden; }
-.connect-card { max-width: 560px; margin: 24px auto 0; box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55); }
+.connect-card { position: relative; max-width: 560px; margin: 24px auto 0; box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55); }
+.connect-close {
+  position: absolute; top: 12px; right: 12px;
+  width: 32px; height: 32px; border-radius: 8px; cursor: pointer;
+  background: transparent; border: 1px solid var(--line); color: var(--mut);
+  font-size: 14px; line-height: 1;
+}
+.connect-close:hover { color: var(--ink); border-color: var(--dim); }
+
+/* ---------- empty-floor shell (KC, 2026-10-27) ----------
+   Shell mode = the page holds no pairing token (app.js owns the
+   body class). The Floor renders as the empty shell: the banner
+   labels it and carries the setup tab; the run form, the conductor
+   form and its hint, and the quest-tracker HUD wait for a crew —
+   in the shell none of them could do anything honest. Paired, the
+   class is gone and every rule below simply stops applying. */
+#shellBanner { display: none; }
+body.shell-mode #shellBanner {
+  display: flex; align-items: center; gap: 16px 22px; flex-wrap: wrap;
+  background: linear-gradient(180deg, var(--panel-2), var(--panel));
+  border: 1px solid var(--lime-deep); border-radius: 14px;
+  padding: 16px 20px; margin: 0 0 12px;
+  box-shadow: 0 10px 34px rgba(0, 0, 0, 0.35);
+}
+.shell-banner-text { flex: 1 1 420px; min-width: 240px; }
+.shell-banner-text h2 { margin: 0 0 4px; font-size: 19px; font-weight: 900; letter-spacing: -0.01em; }
+.shell-banner-text p { margin: 0; color: var(--mut); font-size: 14px; line-height: 1.5; }
+#setupTab { flex: 0 0 auto; }
+body.shell-mode #floorRunForm,
+body.shell-mode #conductorForm,
+body.shell-mode .conductor-hint,
+body.shell-mode #questtracker { display: none !important; }
+@media (max-width: 640px) {
+  #setupTab { width: 100%; }
+}
 .connect-card h1 { margin: 0 0 10px; font-size: 30px; font-weight: 900; letter-spacing: -0.01em; }
 .lede { color: var(--mut); margin: 0 0 14px; }
 .lede strong { color: var(--ink); }
