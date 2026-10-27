@@ -148,14 +148,6 @@ node src/cli.js serve</pre>
         <button class="btn primary" id="floorRunBtn" type="submit">Run the crew</button>
         <span id="floorRunStatus" role="status"></span>
       </form>
-      <div id="floorRunCard" class="hidden">
-        <button class="btn ghost small" id="floorCardClose" type="button">Close</button>
-        <div class="verdict" id="floorCardVerdict"></div>
-        <div class="stage-block"><h3>Plan</h3><pre id="floorCardPlan"></pre></div>
-        <div class="stage-block"><h3>Work</h3><pre id="floorCardWork"></pre></div>
-        <div class="stage-block"><h3>Review</h3><pre id="floorCardReview"></pre></div>
-        <div class="stage-block"><h3>Stamps</h3><pre class="stamps" id="floorCardStamps"></pre></div>
-      </div>
       <div id="floorRoot">
         <div id="top">
           <div class="brand"><div class="mark">▦</div><div><div class="name">THE FLOOR</div><div class="tagline">VOKREW CREW ROOM</div></div><div class="phase" id="floorModeChip">CONNECTING</div></div>
@@ -200,6 +192,26 @@ node src/cli.js serve</pre>
             <button data-view="yard">Yard</button>
           </div>
           <div id="hint">drag to pan · scroll to zoom · click a character</div>
+          <!-- Phase 2 Stage 0 (G-1): the run card lives INSIDE the room,
+               docked as a slim status strip over the stage's bottom edge.
+               During a run it shows phase + calls served and nothing
+               more; the full card is a panel that grows up from the
+               strip on click or on settle. The room is never pushed
+               down or covered by it (Phase 1 LOOK-GATE G-1). -->
+          <div id="floorRunCard" class="hidden">
+            <button id="floorCardStrip" type="button" aria-expanded="false">
+              <span id="floorStripText"></span>
+              <span id="floorStripCaret" aria-hidden="true">▸</span>
+            </button>
+            <div id="floorCardBody" class="hidden">
+              <button class="btn ghost small" id="floorCardClose" type="button">Close</button>
+              <div class="verdict" id="floorCardVerdict"></div>
+              <div class="stage-block"><h3>Plan</h3><pre id="floorCardPlan"></pre></div>
+              <div class="stage-block"><h3>Work</h3><pre id="floorCardWork"></pre></div>
+              <div class="stage-block"><h3>Review</h3><pre id="floorCardReview"></pre></div>
+              <div class="stage-block"><h3>Stamps</h3><pre class="stamps" id="floorCardStamps"></pre></div>
+            </div>
+          </div>
         </div>
 
         <div id="focus" class="panel"></div>

@@ -149,6 +149,8 @@
     adopted: false,         // a pre-existing in-flight run was adopted this page lifetime
     selectedId: null,       // run shown in the run card
     cardOpen: false,
+    cardExpanded: false,    // Phase 2 Stage 0 (G-1): the card docks as a strip; the body shows only when expanded
+    autoExpandedFor: null,  // run id the settle auto-expand already fired for (a manual collapse sticks)
     seenStamps: new Set(),  // "<runId>:<role>" bubbles already raised
     doneNoted: new Set(),   // run ids whose completion bubble already fired
     lostIds: new Set(),     // run ids the bridge 404'd after we knew them
@@ -506,16 +508,53 @@
     }
   }
 
-  /* ---------------- the run card (mirrors the Run tab's rendering) ---------------- */
+  /* ---------------- the run card (mirrors the Run tab's rendering) ----------------
+     Phase 2 Stage 0 (G-1): the card docks inside the room as a slim
+     status strip (phase + calls served, from the same record) and the
+     full body — verdict / Plan / Work / Review / Stamps, rendered
+     exactly as before — shows only when the strip is clicked or the
+     run settles. The room stays visible and clickable throughout. */
+
+  function phaseLabel(rec) {
+    const n = S.agentNames;
+    if (rec.phase === "reviewer") return `${n.reviewer || "Reviewer"} is reviewing`;
+    if (rec.phase === "executor") return `${n.executor || "Executor"} is executing`;
+    if (rec.phase === "planner") return `${n.planner || "Planner"} is planning`;
+    return "working";
+  }
 
   function renderCard() {
     const card = $("floorRunCard");
     if (!card) return;
     if (!S.cardOpen || !S.selectedId) { card.classList.add("hidden"); return; }
     card.classList.remove("hidden");
-    const verdictEl = $("floorCardVerdict");
     const rec = S.records.get(S.selectedId);
     const sum = S.summaries.find((x) => x.id === S.selectedId);
+    const calls = rec ? (rec.stamps || []).length : 0;
+    let strip;
+    if (S.lostIds.has(S.selectedId)) {
+      strip = `RUN-${shortId(S.selectedId)} · run lost — bridge restarted`;
+    } else if (!rec) {
+      strip = `RUN-${shortId(S.selectedId)} · ${sum ? sum.state + "…" : "loading…"}`;
+    } else if (rec.state === "running") {
+      strip = `RUN-${shortId(rec.id)} · ${phaseLabel(rec)} · ⚡ ${calls} calls served`;
+    } else if (rec.state === "failed") {
+      strip = `RUN-${shortId(rec.id)} · failed — ${rec.error || "unknown error"} · ⚡ ${calls} calls`;
+    } else {
+      strip = `RUN-${shortId(rec.id)} · verdict ${rec.verdict || "—"}` +
+        (rec.crossFamily === false ? " · same family review" : rec.crossFamily === true ? " · cross-family review" : "") +
+        ` · ⚡ ${calls} calls`;
+    }
+    const stripText = $("floorStripText");
+    if (stripText) stripText.textContent = strip;
+    const stripBtn = $("floorCardStrip");
+    if (stripBtn) stripBtn.setAttribute("aria-expanded", S.cardExpanded ? "true" : "false");
+    const caret = $("floorStripCaret");
+    if (caret) caret.textContent = S.cardExpanded ? "▾" : "▸";
+    const body = $("floorCardBody");
+    if (body) body.classList.toggle("hidden", !S.cardExpanded);
+    if (!S.cardExpanded) return;
+    const verdictEl = $("floorCardVerdict");
     if (S.lostIds.has(S.selectedId)) {
       verdictEl.className = "verdict changes";
       verdictEl.textContent = "run lost — bridge restarted";
@@ -579,6 +618,16 @@
     stampPill();
     stampChrome();
     updateStatusLine(active);
+    // G-1: when the selected run settles (or is lost), the docked
+    // strip expands once on its own; a manual collapse after that
+    // sticks because autoExpandedFor remembers the run.
+    if (S.cardOpen && S.selectedId && S.autoExpandedFor !== S.selectedId) {
+      const sel = S.records.get(S.selectedId);
+      if ((sel && sel.state !== "running") || S.lostIds.has(S.selectedId)) {
+        S.cardExpanded = true;
+        S.autoExpandedFor = S.selectedId;
+      }
+    }
     renderCard();
   }
 
@@ -603,6 +652,8 @@
     S.adopted = false;
     S.selectedId = null;
     S.cardOpen = false;
+    S.cardExpanded = false;
+    S.autoExpandedFor = null;
     S.seenStamps = new Set();
     S.doneNoted = new Set();
     S.lostIds = new Set();
@@ -711,6 +762,8 @@
           S.trackedId = rec.id;
           S.selectedId = rec.id;
           S.cardOpen = true;
+          S.cardExpanded = false; // G-1: an adopted run docks as a strip while it runs
+          S.autoExpandedFor = null;
           (rec.stamps || []).forEach((st) => S.seenStamps.add(rec.id + ":" + st.role));
         }
       }
@@ -721,6 +774,18 @@
     } finally {
       S.fastBusy = false;
     }
+  }
+
+  /* G-2 companion: on submit, land the [run form][room] pair filling
+     the screen (in floor mode the form is a fixed-height row and the
+     room takes the rest of the viewport — see floor.css), so the run
+     is watched, not scrolled to. The Phase 1 harness did this scroll
+     by hand for its captures; the product does it itself now. */
+  function scrollRunIntoView() {
+    const form = $("floorRunForm");
+    if (!form) return;
+    const y = form.getBoundingClientRect().top + window.scrollY;
+    window.scrollTo({ top: Math.max(0, y), behavior: "smooth" });
   }
 
   /* ---------------- wiring: crew picker, run form, quest log, card ---------------- */
@@ -761,9 +826,12 @@
             S.trackedId = res.data.runId;
             S.selectedId = res.data.runId;
             S.cardOpen = true;
+            S.cardExpanded = false; // G-1: a fresh run starts as the docked strip
+            S.autoExpandedFor = null;
             S.lostIds.delete(res.data.runId);
             input.value = "";
             fastPoll();
+            scrollRunIntoView();
           } else {
             if (status) status.textContent = `The run failed to start: ${(res.data && res.data.error) || "bridge returned " + res.status}`;
             if (btn) { btn.disabled = false; btn.textContent = "Run the crew"; }
@@ -782,8 +850,12 @@
         applyOnce();
       });
     }
+    const stripBtn = $("floorCardStrip");
+    if (stripBtn) {
+      stripBtn.addEventListener("click", () => { S.cardExpanded = !S.cardExpanded; renderCard(); });
+    }
     const close = $("floorCardClose");
-    if (close) close.addEventListener("click", () => { S.cardOpen = false; renderCard(); });
+    if (close) close.addEventListener("click", () => { S.cardOpen = false; S.cardExpanded = false; renderCard(); });
     const list = $("tasklist");
     if (list) {
       // Delegated: floor.js re-renders the rows on every applyState, so
@@ -795,6 +867,7 @@
         if (!row || !row.dataset.id) return;
         S.selectedId = row.dataset.id;
         S.cardOpen = true;
+        S.cardExpanded = true; // a quest-log click is an invitation: open the full card
         if (!S.records.has(S.selectedId)) fastPoll();
         renderCard();
       });
