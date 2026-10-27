@@ -132,6 +132,19 @@
  *     bridge has nothing to tell us (its answers would be 401s), and
  *     polling the default URL from behind the door only spams the
  *     console with refused connections (evaluator run 1 again).
+ *
+ * PHASE 2 STAGE 2 additions — THE TEXT CONDUCTOR (see the conductor
+ * section below): one input bar in the Floor sidebar. A typed
+ * instruction is classified page-side: a call-out naming nobody in
+ * the seated crew is flagged in the transcript and fires NOTHING;
+ * a question goes to POST /chat (surface=chat) and its reply is
+ * logged with the response's own stamp, and the answering agent's
+ * nameplate pulses while that reply is the latest; a task becomes
+ * a HOLD — a pending instruction that never auto-fires (Stage 3
+ * adds approve/edit/dismiss). Run verdicts the page watches settle
+ * are logged from the run records. Transcript + holds persist for
+ * the page session in sessionStorage; run records themselves stay
+ * bridge-bound (Phase 1 §7.6).
  */
 (function () {
   const LS_BRIDGE = "vokrew.bridgeUrl";
@@ -162,6 +175,8 @@
     autoExpandedFor: null,  // run id the settle auto-expand already fired for (a manual collapse sticks)
     seenStamps: new Set(),  // "<runId>:<role>" bubbles already raised
     doneNoted: new Set(),   // run ids whose completion bubble already fired
+    seenRunning: new Set(), // run ids this page has watched in the running state (Stage 2 verdict log)
+    verdictNoted: new Set(),// run ids whose settle the conductor log has already accounted for
     lostIds: new Set(),     // run ids the bridge 404'd after we knew them
     visitFor: null,         // run id currently driving the review walk
     agentNames: {},         // role -> display name (status line / bubbles)
@@ -705,6 +720,288 @@
     $("floorCardStamps").textContent = [...lines, footer.join(" ")].join("\n");
   }
 
+  /* ---------------- Phase 2 Stage 2: the text conductor ----------------
+     One input bar ("Conduct your crew") in the Floor sidebar, a
+     transcript, and a holds list. Classification is page-side and
+     deliberately simple, so its behavior is predictable:
+
+       - Call-outs: a comma-separated segment whose first token is
+         a seated crewmate's name (or a role word) calls that seat
+         out. A segment-initial "@name", or a leading "Name," /
+         "Name:" vocative, naming nobody in the crew is an UNKNOWN
+         call-out: the instruction is flagged in the transcript and
+         fires nothing — no hold, no run, no chat call.
+       - A question (ends with "?", or opens with a question word)
+         goes to POST /chat on the chat surface, in the seated crew.
+         The reply is logged with the response's own stamp; the
+         answering agent's nameplate pulses while the reply is the
+         latest (the adapter keeps its entity's pulseUntil ahead of
+         the clock; floor.js draws the pulse).
+       - Anything else is a task: it becomes a HOLD — a pending
+         instruction in the holds list + transcript. A hold never
+         auto-fires and shows no stamps or verdict (Stage 3 adds
+         approve / edit / dismiss and the office rendering).
+
+     Transcript + holds persist for the page session in
+     sessionStorage (a reload keeps the log; run records themselves
+     stay bridge-bound). The verdict entries are appended by the
+     fast poll when a run this page watched settles — from the run
+     record, never invented. */
+
+  const SS_CONDUCTOR = "vokrew.conductor.v1";
+  const PULSE_WINDOW_MS = 45000; // a reply's nameplate pulse lifetime (rolling refresh)
+
+  const C = {
+    entries: [],        // transcript entries: say | hold | flag | reply | verdict | error
+    holds: [],          // pending holds: { id, text, crew, seats: [{ role, name }], at }
+    chatSessionId: null,
+    seq: 0,
+    busy: false,        // a conductor chat call is in flight
+    latestReply: null,  // { agentId, at } of the newest chat reply
+    renderedSig: null,  // renderConductor's change guard
+  };
+
+  function conductorSave() {
+    try {
+      sessionStorage.setItem(SS_CONDUCTOR, JSON.stringify({
+        v: 1, entries: C.entries, holds: C.holds, chatSessionId: C.chatSessionId, seq: C.seq,
+      }));
+    } catch { /* storage unavailable: the log lives in memory for this page only */ }
+  }
+
+  function conductorLoad() {
+    try {
+      const raw = sessionStorage.getItem(SS_CONDUCTOR);
+      if (!raw) return;
+      const d = JSON.parse(raw);
+      if (!d || d.v !== 1) return;
+      C.entries = Array.isArray(d.entries) ? d.entries : [];
+      C.holds = Array.isArray(d.holds) ? d.holds : [];
+      C.chatSessionId = d.chatSessionId || null;
+      C.seq = d.seq || 0;
+      const last = [...C.entries].reverse().find((e) => e.kind === "reply" && e.stamp && e.stamp.role);
+      if (last) C.latestReply = { agentId: (last.crew || "") + ":" + last.stamp.role, at: last.at };
+    } catch { /* a corrupt log never blocks the room */ }
+  }
+
+  function conductorAdd(entry) {
+    entry.id = "e" + (++C.seq);
+    if (!entry.at) entry.at = Date.now();
+    C.entries.push(entry);
+    if (C.entries.length > 200) C.entries = C.entries.slice(-200);
+    conductorSave();
+    renderConductor();
+    return entry;
+  }
+
+  /* Call-out parsing. Seats are matched by the slot's name, or by
+     the role word itself (a nameless crew's only honest label). */
+  function seatIndex() {
+    const crew = crewObj();
+    const idx = new Map();
+    ROLES.forEach((role) => {
+      const slot = (crew.roles && crew.roles[role]) || {};
+      const seat = { role, name: slot.name || null };
+      idx.set(role, seat);
+      if (slot.name) idx.set(slot.name.toLowerCase(), seat);
+    });
+    return idx;
+  }
+
+  function parseCallouts(text) {
+    const idx = seatIndex();
+    const seats = [], unknown = [];
+    const seenRoles = new Set();
+    String(text).split(",").forEach((seg, i) => {
+      const t = seg.trim();
+      if (!t) return;
+      const m = /^@?([A-Za-z][A-Za-z0-9_-]*)/.exec(t);
+      if (!m) return;
+      const token = m[1];
+      const seat = idx.get(token.toLowerCase());
+      if (seat) {
+        if (!seenRoles.has(seat.role)) { seenRoles.add(seat.role); seats.push({ role: seat.role, name: seat.name }); }
+        return;
+      }
+      // Unknown candidates are only read from unambiguous call-out
+      // positions: an @-prefixed segment start, or the message's
+      // leading vocative ("Name, …" / "Name: …"). A capitalized
+      // sentence opener anywhere else is prose, not a call-out.
+      const atPrefixed = t.startsWith("@");
+      const vocative = i === 0 && new RegExp("^@?" + token + "\\s*[:,]").test(String(text).trim());
+      if ((atPrefixed || vocative) && !unknown.includes(token)) unknown.push(token);
+    });
+    return { seats, unknown };
+  }
+
+  function isQuestion(text) {
+    const t = String(text).trim();
+    if (/\?\s*$/.test(t)) return true;
+    return /^(what|who|whom|whose|when|where|why|how|which|did|do|does|is|are|was|were|can|could|would|should|have|has)\b/i.test(t);
+  }
+
+  async function conductorSubmit(raw) {
+    const text = String(raw || "").trim();
+    if (!text || C.busy) return;
+    if (!S.connected || !S.selectedCrew) {
+      conductorAdd({ kind: "error", text: "Not connected — pair with your bridge first. Nothing was sent." });
+      return;
+    }
+    const { seats, unknown } = parseCallouts(text);
+    if (unknown.length) {
+      conductorAdd({ kind: "say", text, crew: S.selectedCrew });
+      conductorAdd({ kind: "flag", text, crew: S.selectedCrew, unknown });
+      return;
+    }
+    if (isQuestion(text)) {
+      conductorAdd({ kind: "say", text, crew: S.selectedCrew });
+      await conductorAsk(text);
+      return;
+    }
+    const hold = { id: "h" + (++C.seq), text, crew: S.selectedCrew, seats, at: Date.now() };
+    C.holds.push(hold);
+    conductorAdd({ kind: "hold", holdId: hold.id, text, crew: hold.crew, seats });
+  }
+
+  async function conductorAsk(text) {
+    C.busy = true;
+    renderConductor();
+    try {
+      const body = { message: text, surface: "chat", crew: S.selectedCrew };
+      if (C.chatSessionId) body.sessionId = C.chatSessionId;
+      const res = await call("/chat", { method: "POST", body, timeoutMs: 240000 });
+      if (res.status === 200 && res.data && res.data.ok) {
+        if (res.data.sessionId) { C.chatSessionId = res.data.sessionId; conductorSave(); }
+        const st = (res.data.stamps || [])[0] || null;
+        const stamp = st ? {
+          role: st.role, agent: st.agent || null, lane: st.lane, provider: st.provider,
+          model: st.model, family: st.family, tier: st.tier, latencyMs: st.latencyMs,
+          failover: !!st.failover, attempts: st.attempts || [],
+        } : null;
+        conductorAdd({ kind: "reply", text: res.data.text || "", crew: S.selectedCrew, stamp });
+        if (stamp && stamp.role) {
+          C.latestReply = { agentId: S.selectedCrew + ":" + stamp.role, at: Date.now() };
+          pulseLatestReply();
+        }
+      } else {
+        conductorAdd({ kind: "error", text: `The crew could not answer: ${(res.data && res.data.error) || "bridge returned " + res.status}` });
+      }
+    } catch {
+      conductorAdd({ kind: "error", text: "The crew could not answer: the bridge did not respond." });
+    } finally {
+      C.busy = false;
+      renderConductor();
+    }
+  }
+
+  /* While the newest reply is fresh, keep its agent's nameplate
+     pulse alive (floor.js draws it from e.pulseUntil, the bubble
+     convention). Refreshed from applyOnce on the poll cadence. */
+  function pulseLatestReply() {
+    const lr = C.latestReply;
+    if (!lr || Date.now() - lr.at > PULSE_WINDOW_MS) return;
+    const ents = entsMap();
+    const ent = ents && ents[lr.agentId];
+    if (ent) ent.pulseUntil = Date.now() + 4000;
+  }
+
+  /* ---------------- conductor rendering ---------------- */
+
+  function escHtml(s) {
+    return String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+
+  function timeText(at) {
+    return new Date(at).toLocaleTimeString("en-GB", { hour12: false });
+  }
+
+  function seatLabel(seat) {
+    return seat.name ? `${seat.name} · ${seat.role}` : seat.role;
+  }
+
+  function holdTargetText(h) {
+    if (!h.seats || !h.seats.length) return `whole crew (${h.crew}) — standard chain`;
+    return h.seats.map(seatLabel).join(", ") + ` · crew ${h.crew}`;
+  }
+
+  function stampText(stamp) {
+    const who = stamp.agent ? `${stamp.agent} (${stamp.role})` : stamp.role;
+    let s = `${who} · lane=${stamp.lane} · model=${stamp.model} · ${stamp.latencyMs}ms`;
+    const attempts = stamp.attempts || [];
+    const failed = attempts.filter((a) => a.status !== "served");
+    if (failed.length) {
+      s += ` · attempts: ${attempts.map((a) => `${a.lane} ${a.status}`).join("; ")}${stamp.failover ? " · failover" : ""}`;
+    }
+    return s;
+  }
+
+  function entryHtml(e) {
+    const time = `<span class="ctime">${escHtml(timeText(e.at))}</span>`;
+    const roles = (e.seats || []).map((s) => s.role).join(",");
+    if (e.kind === "say") {
+      return `<div class="clog clog-say" data-kind="say">${time}<span class="ctag">YOU</span>${escHtml(e.text)}</div>`;
+    }
+    if (e.kind === "hold") {
+      return `<div class="clog clog-hold" data-kind="hold" data-hold="${escHtml(e.holdId)}" data-crew="${escHtml(e.crew)}" data-seats="${escHtml(roles)}">` +
+        `${time}<span class="ctag">HELD</span>for ${escHtml(holdTargetText(e))}<br>${escHtml(e.text)}</div>`;
+    }
+    if (e.kind === "flag") {
+      return `<div class="clog clog-flag" data-kind="flag" data-unknown="${escHtml((e.unknown || []).join(","))}">` +
+        `${time}<span class="ctag">NOT SENT</span>no crewmate named ${escHtml((e.unknown || []).join(", "))} in crew ${escHtml(e.crew)} — nothing was fired.</div>`;
+    }
+    if (e.kind === "reply") {
+      const st = e.stamp;
+      const attrs = st ? ` data-role="${escHtml(st.role)}" data-agent="${escHtml(st.agent || "")}" data-lane="${escHtml(st.lane)}"` +
+        ` data-provider="${escHtml(st.provider)}" data-model="${escHtml(st.model)}" data-family="${escHtml(st.family)}"` +
+        ` data-tier="${escHtml(st.tier)}" data-latency="${escHtml(st.latencyMs)}" data-attempts="${(st.attempts || []).length}"` +
+        ` data-failover="${st.failover ? "1" : "0"}"` : "";
+      const who = st ? (st.agent || st.role) : "crew";
+      return `<div class="clog clog-reply" data-kind="reply"${attrs}>${time}<span class="ctag">${escHtml(String(who).toUpperCase())}</span>` +
+        `<span class="ctext">${escHtml(e.text)}</span>` +
+        (st ? `<span class="cstamp">${escHtml(stampText(st))}</span>` : "") + `</div>`;
+    }
+    if (e.kind === "verdict") {
+      const fam = e.crossFamily === false ? " · same family review" : e.crossFamily === true ? " · cross-family review" : "";
+      const tail = e.state === "done"
+        ? `verdict ${e.verdict || "—"}${fam} · ⚡ ${e.calls} calls`
+        : `run failed — ${e.error || "unknown error"} · ⚡ ${e.calls} calls`;
+      return `<div class="clog clog-verdict${e.state === "done" ? "" : " bad"}" data-kind="verdict" data-run="${escHtml(e.runId)}"` +
+        ` data-state="${escHtml(e.state)}" data-verdict="${escHtml(e.state === "done" ? (e.verdict || "") : "")}"` +
+        ` data-xfam="${e.crossFamily === null || e.crossFamily === undefined ? "" : e.crossFamily ? "yes" : "no"}">` +
+        `${time}<span class="ctag">VERDICT</span>${escHtml(e.identifier)} — ${escHtml(tail)}</div>`;
+    }
+    if (e.kind === "error") {
+      return `<div class="clog clog-error" data-kind="error">${time}<span class="ctag">ERROR</span>${escHtml(e.text)}</div>`;
+    }
+    return "";
+  }
+
+  function renderConductor() {
+    const log = $("conductorLog");
+    if (!log) return;
+    const last = C.entries[C.entries.length - 1];
+    const sig = [C.entries.length, last ? last.id : "-", C.holds.length, C.busy ? 1 : 0, S.connected ? 1 : 0].join(":");
+    if (sig === C.renderedSig) return;
+    const wasNearBottom = log.scrollHeight - log.scrollTop - log.clientHeight < 40;
+    C.renderedSig = sig;
+    log.innerHTML = C.entries.length
+      ? C.entries.map(entryHtml).join("")
+      : `<div class="clog clog-note">No conductor traffic yet — give the crew a task, or ask a question.</div>`;
+    if (wasNearBottom) log.scrollTop = log.scrollHeight;
+    const list = $("holdList");
+    if (list) {
+      list.innerHTML = C.holds.map((h) =>
+        `<div class="holdrow" data-hold="${escHtml(h.id)}" data-crew="${escHtml(h.crew)}" data-seats="${escHtml(h.seats.map((s) => s.role).join(","))}">` +
+        `<span class="hseat">HELD FOR ${escHtml(holdTargetText(h)).toUpperCase()}</span>${escHtml(h.text)}</div>`).join("");
+    }
+    const cnt = $("holdCount");
+    if (cnt) cnt.textContent = `${C.holds.length} held`;
+    const input = $("conductorInput");
+    if (input) input.disabled = !S.connected || C.busy;
+    const send = $("conductorSend");
+    if (send) { send.disabled = !S.connected || C.busy; send.textContent = C.busy ? "Asking…" : "Send"; }
+  }
+
   /* ---------------- apply ---------------- */
 
   function applyOnce() {
@@ -735,6 +1032,8 @@
       }
     }
     renderCard();
+    renderConductor();
+    pulseLatestReply();
   }
 
   function markOffline() {
@@ -762,6 +1061,8 @@
     S.autoExpandedFor = null;
     S.seenStamps = new Set();
     S.doneNoted = new Set();
+    S.seenRunning = new Set();
+    S.verdictNoted = new Set();
     S.lostIds = new Set();
     S.visitFor = null;
     S.agentNames = {};
@@ -856,6 +1157,30 @@
       const listed = new Set(S.summaries.map((x) => x.id));
       S.records.forEach((rec, id) => {
         if (!listed.has(id) && id !== S.trackedId && id !== S.selectedId) S.records.delete(id);
+      });
+      S.verdictNoted.forEach((id) => { if (!listed.has(id)) S.verdictNoted.delete(id); });
+      S.seenRunning.forEach((id) => { if (!listed.has(id)) S.seenRunning.delete(id); });
+      // Stage 2: the conductor transcript records run verdicts. A
+      // run this page watched running (or submitted / adopted, so
+      // it is the tracked run) appends exactly one verdict entry
+      // when it settles — built from the run record alone. Runs
+      // first seen already settled are history: noted silently
+      // here, visible in the dossiers, never spammed into the log.
+      S.summaries.forEach((sum) => { if (sum.state === "running") S.seenRunning.add(sum.id); });
+      S.summaries.forEach((sum) => {
+        if (sum.state === "running" || S.verdictNoted.has(sum.id)) return;
+        S.verdictNoted.add(sum.id);
+        if (!S.seenRunning.has(sum.id) && S.trackedId !== sum.id) return;
+        const rec = S.records.get(sum.id);
+        if (!rec || !inRoom(rec)) return;
+        conductorAdd({
+          kind: "verdict", runId: rec.id, identifier: "RUN-" + shortId(rec.id),
+          crew: rec.crew || S.selectedCrew,
+          state: rec.state, verdict: rec.state === "done" ? (rec.verdict || null) : null,
+          error: rec.state === "failed" ? (rec.error || "unknown error") : null,
+          crossFamily: rec.crossFamily === undefined ? null : rec.crossFamily,
+          calls: (rec.stamps || []).length,
+        });
       });
       // Stage 3 reattach: a run already in flight when this page
       // (re)loaded — submitted from another client, or from this page
@@ -968,6 +1293,17 @@
         applyOnce();
       });
     }
+    const cForm = $("conductorForm");
+    if (cForm) {
+      cForm.addEventListener("submit", (ev) => {
+        ev.preventDefault();
+        const input = $("conductorInput");
+        const text = (input.value || "").trim();
+        if (!text) return;
+        input.value = "";
+        conductorSubmit(text); // async; every outcome lands in the transcript
+      });
+    }
     const stripBtn = $("floorCardStrip");
     if (stripBtn) {
       stripBtn.addEventListener("click", () => { S.cardExpanded = !S.cardExpanded; renderCard(); });
@@ -1016,6 +1352,13 @@
     }
   }
 
+  /* Debug surface for the Stage 2 evaluator (same pattern as
+     __floorDebug): the conductor's session state, read-only. */
+  window.__conductorDebug = {
+    state: () => JSON.parse(JSON.stringify({ entries: C.entries, holds: C.holds, busy: C.busy })),
+  };
+
+  conductorLoad();
   wire();
   loop();
 })();
