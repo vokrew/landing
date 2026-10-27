@@ -32,7 +32,13 @@
 const cv = document.getElementById("cv");
 const ctx = cv.getContext("2d");
 const stage = document.getElementById("stage");
-let W = 800, H = 600, DPR = Math.min(2, window.devicePixelRatio || 1);
+let W = 800, H = 600, DPR = 1;
+/* VOKREW EDIT (Phase 2 Stage 0 — PHASE1-FLOOR-SPEC §7.3 mitigation):
+   on viewports under 720px wide the canvas backing store is capped
+   at DPR 1.5 (a 2560x2000 world at a phone's native 2.6 DPR is
+   memory and fill-rate the phone never gets back); wider viewports
+   keep floor-oc's cap of 2. dprCap() is defined at resizeCanvas. */
+DPR = dprCap();
 
 const WW = 2560, WH = 2000, CELL = 20, GW = WW / CELL, GH = Math.ceil(WH / CELL);
 const MOVE_PERIOD = 0.16;
@@ -1609,8 +1615,13 @@ function drawYard(g) {
 }
 function buildStaticWorld() {
   const c = document.createElement("canvas");
-  c.width = WW; c.height = WH;
+  /* VOKREW EDIT (Phase 2 Stage 0, spec §7.3): small screens build the
+     static layer at 0.75 scale (~44% of the pixels); drawFrame
+     stretches it back to world size. Wider viewports keep 1:1. */
+  const ss = window.innerWidth < 720 ? 0.75 : 1;
+  c.width = Math.round(WW * ss); c.height = Math.round(WH * ss);
   const g = c.getContext("2d");
+  if (ss !== 1) g.scale(ss, ss);
   g.fillStyle = "#05080c"; g.fillRect(0, 0, WW, WH);
   // Ground shadow plate
   const halo = g.createRadialGradient(WW/2, WH/2, 200, WW/2, WH/2, 1500);
@@ -1680,10 +1691,17 @@ function updateCamera(dt) {
   }
 }
 
+/* VOKREW EDIT (Phase 2 Stage 0, spec §7.3): see the note at the DPR
+   declaration — narrow viewports cap the backing store at 1.5. */
+function dprCap() {
+  const d = window.devicePixelRatio || 1;
+  return window.innerWidth < 720 ? Math.min(1.5, d) : Math.min(2, d);
+}
+
 function resizeCanvas() {
   const r = stage.getBoundingClientRect();
   W = Math.max(320, r.width); H = Math.max(240, r.height);
-  DPR = Math.min(2, window.devicePixelRatio || 1);
+  DPR = dprCap();
   cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
   if (!camReady) {
     cam.s = overviewScale(); cam.ts = cam.s;
@@ -2401,7 +2419,7 @@ function drawFrame(now) {
   ctx.translate(W/2, H/2);
   ctx.scale(cam.s, cam.s);
   ctx.translate(-cam.x, -cam.y);
-  if (staticWorld) ctx.drawImage(staticWorld, 0, 0);
+  if (staticWorld) ctx.drawImage(staticWorld, 0, 0, WW, WH);
   drawSkyLive(now);
   drawYardLive(now);
   drawWorkshopLive(now);
