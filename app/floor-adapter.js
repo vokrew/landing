@@ -94,10 +94,40 @@
  * model names come straight from the stamp). A 404 on a run this page
  * submitted or opened renders "run lost — bridge restarted" — the
  * registry is in-memory (spec §7.6); the room never spins forever.
+ *
+ * STAGE 3 (shell integration) additions:
+ *   - NO TOKEN = PRISTINE LOCKED ROOM. When localStorage holds no
+ *     pairing token (fresh page, or after Disconnect), the adapter
+ *     drops every trace of bridge data — crews, roster, quest log,
+ *     records — and applies the empty OFFLINE state. The room behind
+ *     the connect door shows nobody and claims nothing. (With a token
+ *     but an unreachable bridge, the roster stays and the chip reads
+ *     OFFLINE: paired, but the bridge is down.)
+ *   - REATTACH. A run already in flight when the page (re)loads is
+ *     discovered from GET /runs and ADOPTED as the tracked run: the
+ *     status line, run card and completion text pick it up from the
+ *     bridge's record alone (no local cache survives a reload, and
+ *     none is needed). Stamps that landed before the page arrived are
+ *     seeded as history — they never fire late bubbles; stamps that
+ *     land while the page watches still do.
+ *   - CREW SELECTION PERSISTS (page-local UI state, like the bridge
+ *     URL): the picker writes vokrew.floorCrew, and the first slow
+ *     poll after a (re)load restores it when the bridge still offers
+ *     that crew — otherwise the default/first rule applies. Without
+ *     this, a mid-run reload re-seated the DEFAULT crew and the
+ *     in-flight run (on the picked crew) fell out of the room: no
+ *     review walk, no stamp memory (Stage 3 evaluator run 1). The
+ *     crew roster itself still comes only from GET /crews.
+ *   - NO TOKEN = NO BRIDGE CALLS. Both polls short-circuit to the
+ *     locked reset when localStorage holds no token: unpaired, the
+ *     bridge has nothing to tell us (its answers would be 401s), and
+ *     polling the default URL from behind the door only spams the
+ *     console with refused connections (evaluator run 1 again).
  */
 (function () {
   const LS_BRIDGE = "vokrew.bridgeUrl";
   const LS_TOKEN = "vokrew.token";
+  const LS_CREW = "vokrew.floorCrew";
   const DEFAULT_BRIDGE = "http://127.0.0.1:7717";
   const ROLES = ["planner", "executor", "reviewer"];
   const PALETTE_BY_ROLE = { planner: "sunset", executor: "ocean", reviewer: "violet" };
@@ -115,7 +145,8 @@
     budget: null,           // GET /budget?surface=coding payload
     summaries: [],          // GET /runs?limit=20 (newest first)
     records: new Map(),     // run id -> full record
-    trackedId: null,        // last run submitted from this page
+    trackedId: null,        // last run submitted from this page (or adopted, Stage 3)
+    adopted: false,         // a pre-existing in-flight run was adopted this page lifetime
     selectedId: null,       // run shown in the run card
     cardOpen: false,
     seenStamps: new Set(),  // "<runId>:<role>" bubbles already raised
@@ -556,9 +587,36 @@
     applyOnce();
   }
 
+  /* No token in localStorage: the page is not paired, so nothing the
+     bridge once told us may stay on screen. Reset to the pristine
+     locked state — no crews, no roster, no quest log, no records —
+     and apply it. Runs only from the poll loop (see fastPoll). */
+  function resetSession() {
+    S.connected = false;
+    S.crews = [];
+    S.selectedCrew = null;
+    S.lanes = new Map();
+    S.budget = null;
+    S.summaries = [];
+    S.records = new Map();
+    S.trackedId = null;
+    S.adopted = false;
+    S.selectedId = null;
+    S.cardOpen = false;
+    S.seenStamps = new Set();
+    S.doneNoted = new Set();
+    S.lostIds = new Set();
+    S.visitFor = null;
+    S.agentNames = {};
+    localStorage.removeItem(LS_CREW); // a new pairing starts on the default crew
+    syncCrewPicker();
+    applyOnce();
+  }
+
   /* ---------------- polls ---------------- */
 
   async function slowPoll() {
+    if (!localStorage.getItem(LS_TOKEN)) { resetSession(); return; }
     const [crewsRes, lanesRes, budgetRes] = await Promise.all([
       call("/crews"), call("/lanes"), call("/budget?surface=coding"),
     ]);
@@ -567,7 +625,11 @@
       S.connected = true;
       S.crews = crewsRes.data.crews || [];
       if (!S.selectedCrew || !S.crews.some((c) => c.name === S.selectedCrew)) {
-        S.selectedCrew = S.crews.some((c) => c.name === "default") ? "default" : (S.crews[0] && S.crews[0].name) || null;
+        // Restore the user's picked crew across reloads when the
+        // bridge still offers it; else the default/first rule.
+        const stored = localStorage.getItem(LS_CREW);
+        S.selectedCrew = (stored && S.crews.some((c) => c.name === stored)) ? stored
+          : S.crews.some((c) => c.name === "default") ? "default" : (S.crews[0] && S.crews[0].name) || null;
       }
       syncCrewPicker();
     }
@@ -585,7 +647,7 @@
     S.fastBusy = true;
     try {
       const token = localStorage.getItem(LS_TOKEN);
-      if (!token) { markOffline(); return; }
+      if (!token) { resetSession(); return; }
       const res = await call("/runs?limit=20");
       if (res.status === 401 || res.status === 403) { markOffline(); return; }
       if (res.status !== 200 || !res.data || !res.data.ok) { markOffline(); return; }
@@ -634,6 +696,24 @@
       S.records.forEach((rec, id) => {
         if (!listed.has(id) && id !== S.trackedId && id !== S.selectedId) S.records.delete(id);
       });
+      // Stage 3 reattach: a run already in flight when this page
+      // (re)loaded — submitted from another client, or from this page
+      // before a reload — is adopted as the tracked run, purely from
+      // the bridge's record. Its already-landed stamps are seeded as
+      // history so they never fire late bubbles (noteStamps below
+      // still catches every stamp that lands from here on, and the
+      // completion bubble fires when it settles).
+      if (!S.trackedId && !S.adopted) {
+        const activeSum = S.summaries.find((x) => x.state === "running");
+        const rec = activeSum && S.records.get(activeSum.id);
+        if (rec && rec.state === "running") {
+          S.adopted = true;
+          S.trackedId = rec.id;
+          S.selectedId = rec.id;
+          S.cardOpen = true;
+          (rec.stamps || []).forEach((st) => S.seenStamps.add(rec.id + ":" + st.role));
+        }
+      }
       noteStamps();
       applyOnce();
     } catch {
@@ -698,6 +778,7 @@
     if (picker) {
       picker.addEventListener("change", () => {
         S.selectedCrew = picker.value;
+        localStorage.setItem(LS_CREW, picker.value); // survives reload (Stage 3 reattach)
         applyOnce();
       });
     }

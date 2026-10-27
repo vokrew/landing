@@ -86,7 +86,17 @@ input:focus, textarea:focus, select:focus { outline: 2px solid var(--lime-deep);
 pre { white-space: pre-wrap; word-wrap: break-word; font-family: var(--mono); font-size: 13.5px; line-height: 1.6; }
 
 /* ---------- connect ---------- */
-.connect-card { max-width: 560px; margin: 40px auto 0; }
+/* Stage 3: the connect screen is a door over the locked room — a fixed
+   overlay with a translucent backdrop, so the (empty, OFFLINE) Floor
+   stays visible behind the pairing card until the bridge answers. */
+#connectScreen {
+  position: fixed; inset: 0; z-index: 90; overflow-y: auto;
+  background: rgba(4, 6, 9, 0.74);
+  backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);
+  padding: 24px 16px 48px;
+}
+body.door-open { overflow: hidden; }
+.connect-card { max-width: 560px; margin: 24px auto 0; box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55); }
 .connect-card h1 { margin: 0 0 10px; font-size: 30px; font-weight: 900; letter-spacing: -0.01em; }
 .lede { color: var(--mut); margin: 0 0 14px; }
 .lede strong { color: var(--ink); }

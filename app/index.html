@@ -18,7 +18,9 @@
 </header>
 
 <main>
-  <!-- ============ CONNECT ============ -->
+  <!-- ============ CONNECT — the door (Stage 3) ============
+       Rendered as a fixed overlay: the locked Floor room stays visible
+       behind it (dimmed) until pairing succeeds. -->
   <section id="connectScreen" class="screen">
     <div class="card connect-card">
       <h1>Connect to your crew</h1>
@@ -68,18 +70,21 @@ node src/cli.js serve</pre>
     </div>
   </section>
 
-  <!-- ============ APP SHELL ============ -->
-  <section id="appShell" class="screen hidden">
+  <!-- ============ APP SHELL ============
+       Stage 3: the shell always renders. The Floor is the home screen;
+       unpaired, the connect screen above becomes a door over the locked
+       room (spec §3 "the door"). -->
+  <section id="appShell" class="screen">
     <nav class="tabs" role="tablist">
-      <button class="tab active" data-screen="chat" type="button">Chat</button>
+      <button class="tab active" data-screen="floor" type="button">Floor</button>
+      <button class="tab" data-screen="chat" type="button">Chat</button>
       <button class="tab" data-screen="run" type="button">Run</button>
       <button class="tab" data-screen="budget" type="button">Budget</button>
       <button class="tab" data-screen="crew" type="button">Crew</button>
-      <button class="tab" data-screen="floor" type="button">Floor</button>
     </nav>
 
     <!-- Chat -->
-    <div id="screen-chat" class="tab-screen">
+    <div id="screen-chat" class="tab-screen hidden">
       <div class="thread" id="chatThread"></div>
       <form id="chatForm" class="composer">
         <input id="chatInput" type="text" placeholder="Ask your crew…" autocomplete="off" />
@@ -132,8 +137,9 @@ node src/cli.js serve</pre>
       <div id="laneList"></div>
     </div>
 
-    <!-- Floor (Phase 1 — the crew room; Stage 2: live bridge data via floor-adapter.js) -->
-    <div id="screen-floor" class="tab-screen hidden">
+    <!-- Floor (Phase 1 — the crew room; Stage 2: live bridge data via
+         floor-adapter.js; Stage 3: the default post-pair screen) -->
+    <div id="screen-floor" class="tab-screen">
       <form id="floorRunForm">
         <input id="floorRunTask" type="text" placeholder="Give the crew a task — they plan, build, and review it live in the room…" autocomplete="off" />
         <label class="floor-crew-pick">Crew
@@ -171,7 +177,7 @@ node src/cli.js serve</pre>
           <div id="tasklist"></div>
           <div class="sidefoot">
             <div>RIG: <b id="rigFoot">checking…</b></div>
-            <div id="floorFoot">live bridge · stage 2</div>
+            <div id="floorFoot">live bridge · stage 3</div>
           </div>
         </aside>
 

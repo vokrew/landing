@@ -1,0 +1,318 @@
+{
+  "assertions": [
+    {
+      "name": "(0) connect door is up over the rendered shell",
+      "ok": true,
+      "detail": "{\"overlayVisible\":true,\"centerHit\":true,\"shellRendered\":true,\"activeTab\":\"floor\",\"floorVisible\":true,\"chip\":\"OFFLINE\",\"pill\":\"not connected\",\"connected\":false,\"ents\":0,\"rosterCards\":0}"
+    },
+    {
+      "name": "(0) Floor is the screen behind the door",
+      "ok": true,
+      "detail": "tab=floor"
+    },
+    {
+      "name": "(0) locked room: OFFLINE chip, nobody seated, no entities",
+      "ok": true,
+      "detail": "chip=OFFLINE connected=false ents=0 roster=0"
+    },
+    {
+      "name": "(0) status pill says not connected",
+      "ok": true,
+      "detail": "not connected"
+    },
+    {
+      "name": "(0) no agent appears or moves while locked",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "(0) locked-room screenshot captured",
+      "ok": true,
+      "detail": "211953 bytes"
+    },
+    {
+      "name": "(1) pairing via the page form stores a token and drops the door",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "(1) Floor is the default post-pair screen (no tab click)",
+      "ok": true,
+      "detail": "{\"activeTab\":\"floor\",\"floorVisible\":true,\"chatHidden\":true,\"pill\":\"connected\"}"
+    },
+    {
+      "name": "(1) room lights: chip LIVE, default crew seated",
+      "ok": true,
+      "detail": "chip=LIVE names=Planner,Executor,Reviewer"
+    },
+    {
+      "name": "(1) post-pair Floor screenshot captured",
+      "ok": true,
+      "detail": "355518 bytes"
+    },
+    {
+      "name": "(2) exactly the new crew's 3 entities exist, old crew gone",
+      "ok": true,
+      "detail": "rig:executor,rig:planner,rig:reviewer"
+    },
+    {
+      "name": "(2) roster shows the new crew by name",
+      "ok": true,
+      "detail": "Scout,Musky,Judge"
+    },
+    {
+      "name": "(2) crew-switch screenshot captured",
+      "ok": true,
+      "detail": "353871 bytes"
+    },
+    {
+      "name": "(3) run submitted from the Floor form on the switched crew",
+      "ok": true,
+      "detail": "79d16d14-e7f1-4432-b89c-2fd808e35eff"
+    },
+    {
+      "name": "(3) page tracked the run's phase before the reload",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "(3) reload happens mid-run (executor phase reached)",
+      "ok": true,
+      "detail": "phase=executor"
+    },
+    {
+      "name": "(3) after reload the room reattaches: quest row IN PROGRESS + run card reopened on the same runId",
+      "ok": true,
+      "detail": "{\"row\":\"RUN-79D1Write a one-line bash command that prints the current folder path, then explain it in one short sentence.in progressMusky\",\"cardOpen\":true,\"card"
+    },
+    {
+      "name": "(3) reviewer leaves its cubicle after the reload",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "(3) reviewer arrives at the executor's doorstep after the reload",
+      "ok": true,
+      "detail": "doorstep cell={\"cx\":23,\"cy\":46}"
+    },
+    {
+      "name": "(3) reattached doorway screenshot captured",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "(3) run completes done on the bridge",
+      "ok": true,
+      "detail": "state=done verdict=APPROVED"
+    },
+    {
+      "name": "(3) record stamps carry the NEW crew's agents (Scout/Musky/Judge)",
+      "ok": true,
+      "detail": "planner=Scout executor=Musky reviewer=Judge"
+    },
+    {
+      "name": "(3) quest-log row carries the verdict after reattach",
+      "ok": true,
+      "detail": "RUN-79D1 · APPROVEDWrite a one-line bash command that prints the current folder path, then explain it in one short sente"
+    },
+    {
+      "name": "(3) status line reports completion via the ADOPTED run (no form submit since reload)",
+      "ok": true,
+      "detail": "Run complete — verdict APPROVED · same family review"
+    },
+    {
+      "name": "(3) 'same family' label visible (status line)",
+      "ok": true,
+      "detail": "Run complete — verdict APPROVED · same family review"
+    },
+    {
+      "name": "(3) run card verdict == GET /runs/:id verdict",
+      "ok": true,
+      "detail": "Reviewer verdict: APPROVED"
+    },
+    {
+      "name": "(3) run card stamps name the real lane + model + new crew's agents",
+      "ok": true,
+      "detail": "planner: agent=Scout lane=local-gemma provider=openai-compatible model=gemma-local family=gemma tier=local latency=54351ms"
+    },
+    {
+      "name": "(3) 'same family' label visible (run card footer)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "(3) focus-panel stamps match the record (lane + model + family)",
+      "ok": true,
+      "detail": "planner:ok executor:ok reviewer:ok"
+    },
+    {
+      "name": "(3) budget pill increases by exactly the served stage count",
+      "ok": true,
+      "detail": "pill 0 -> 3, stamps=3"
+    },
+    {
+      "name": "(3) rig record reports crossFamily=false (single-family rig)",
+      "ok": true,
+      "detail": "crossFamily=false — if this is ever true, the rig changed, do not force it"
+    },
+    {
+      "name": "(4) Chat tab answers with a real local-gemma stamp",
+      "ok": true,
+      "detail": "[executor · lane=local-gemma · model=gemma-local · 7419ms]"
+    },
+    {
+      "name": "(4) Budget tab lists the lane with its call count",
+      "ok": true,
+      "detail": "local-gemma3 used · unlimitedno cap on this lanetoday (2026-10-27) · the other surface used 1 calls "
+    },
+    {
+      "name": "(4) Crew tab lists crews + lanes",
+      "ok": true,
+      "detail": "defaultDefault crew — plain pipeline roles, no named agents.rigplanner Scout · Plan small, verifiabl"
+    },
+    {
+      "name": "(4) Run tab (?wait=1 compat) returns a stamped result as today",
+      "ok": true,
+      "detail": "Reviewer verdict: APPROVED | planner: lane=local-gemma provider=openai-compatible model=gemma-local family=gemma tier=local latency=41739ms"
+    },
+    {
+      "name": "(4) Run tab run on the unnamed default crew stamps no agent names",
+      "ok": true,
+      "detail": "planner: lane=local-gemma provider=openai-compatible model=gemma-local family=gemma tier=local latency=41739ms"
+    },
+    {
+      "name": "(5) disconnect clears the token and relocks the room (OFFLINE, nobody seated)",
+      "ok": true,
+      "detail": "{\"token\":null,\"chip\":\"OFFLINE\",\"connected\":false,\"ents\":0,\"rosterCards\":0,\"pill\":\"not connected\"}"
+    },
+    {
+      "name": "(5) disconnected screenshot captured",
+      "ok": true,
+      "detail": "220371 bytes"
+    },
+    {
+      "name": "(h) zero console errors (excluding tallied reload-transport entries)",
+      "ok": true,
+      "detail": "transport=0; unexplained=none; nonLog=none"
+    }
+  ],
+  "consoleErrors": [],
+  "screenshots": [
+    {
+      "file": "stage3-locked-room.png",
+      "note": "fresh profile: connect door over the locked, empty Floor room"
+    },
+    {
+      "file": "stage3-floor-default.png",
+      "note": "just paired: Floor home screen, default crew seated"
+    },
+    {
+      "file": "stage3-crew-switched.png",
+      "note": "after crew switch: rig crew (Scout/Musky/Judge) seated, default crew gone"
+    },
+    {
+      "file": "stage3-reattached-doorway.png",
+      "note": "AFTER the mid-run reload: reviewer entity on the executor doorstep cell during phase reviewer"
+    },
+    {
+      "file": "stage3-disconnected.png",
+      "note": "after Disconnect: door back up, room reset to the pristine locked state"
+    }
+  ],
+  "rig": {
+    "llama": "gemma-local on :18080",
+    "bridge": "registry build on :17717",
+    "runId": "79d16d14-e7f1-4432-b89c-2fd808e35eff",
+    "reattach": {
+      "row": "RUN-79D1Write a one-line bash command that prints the current folder path, then explain it in one short sentence.in progressMusky",
+      "cardOpen": true,
+      "cardVerdict": "Running — phase: executor"
+    },
+    "finalRecord": {
+      "state": "done",
+      "verdict": "APPROVED",
+      "crossFamily": false,
+      "stamps": [
+        {
+          "role": "planner",
+          "agent": "Scout",
+          "lane": "local-gemma",
+          "provider": "openai-compatible",
+          "model": "gemma-local",
+          "family": "gemma",
+          "tier": "local",
+          "latencyMs": 54351,
+          "failover": false,
+          "attempts": [
+            {
+              "lane": "local-gemma",
+              "status": "served"
+            }
+          ]
+        },
+        {
+          "role": "executor",
+          "agent": "Musky",
+          "lane": "local-gemma",
+          "provider": "openai-compatible",
+          "model": "gemma-local",
+          "family": "gemma",
+          "tier": "local",
+          "latencyMs": 28605,
+          "failover": false,
+          "attempts": [
+            {
+              "lane": "local-gemma",
+              "status": "served"
+            }
+          ]
+        },
+        {
+          "role": "reviewer",
+          "agent": "Judge",
+          "lane": "local-gemma",
+          "provider": "openai-compatible",
+          "model": "gemma-local",
+          "family": "gemma",
+          "tier": "local",
+          "latencyMs": 22795,
+          "failover": false,
+          "attempts": [
+            {
+              "lane": "local-gemma",
+              "status": "served"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "phases": [
+    {
+      "phase": "planner",
+      "state": "running",
+      "atSec": 0,
+      "stamps": 0
+    },
+    {
+      "phase": "executor",
+      "state": "running",
+      "atSec": 54,
+      "stamps": 1
+    },
+    {
+      "phase": "reviewer",
+      "state": "running",
+      "atSec": 83,
+      "stamps": 2
+    },
+    {
+      "phase": null,
+      "state": "done",
+      "atSec": 106,
+      "stamps": 3
+    }
+  ],
+  "transportNoise": [],
+  "verdict": "STAGE 3 GATE: PASS"
+}

@@ -73,13 +73,18 @@ function setStatus(mode, text) {
   $("statusText").textContent = text;
 }
 
+/* Stage 3: the shell always renders; the connect screen is a door over
+   it. "Showing connect" raises the door over the Floor screen, which
+   the adapter holds in its locked state (OFFLINE, nobody seated) until
+   a bridge answers — the room is never faked and never hidden. */
 function showConnect(message) {
   state.sessionId = null;
   $("connectScreen").classList.remove("hidden");
-  $("appShell").classList.add("hidden");
+  document.body.classList.add("door-open");
   $("disconnectBtn").classList.add("hidden");
-  setStatus(state.token ? "" : "", state.token ? "bridge unreachable" : "not connected");
+  activateTab("floor"); // the locked room sits behind the door
   if (state.token) setStatus("bad", "bridge unreachable");
+  else setStatus("", "not connected");
   const err = $("pairError");
   if (message) {
     err.textContent = message;
@@ -105,9 +110,10 @@ async function enterApp() {
   }
   $("pairError").classList.add("hidden");
   $("connectScreen").classList.add("hidden");
-  $("appShell").classList.remove("hidden");
+  document.body.classList.remove("door-open");
   $("disconnectBtn").classList.remove("hidden");
   setStatus("ok", "connected");
+  activateTab("floor"); // Stage 3: the Floor is the default post-pair screen
   loadRunCrews();
   return true;
 }
@@ -193,18 +199,19 @@ $("disconnectBtn").addEventListener("click", () => disconnect());
 
 /* ---------------- tabs ---------------- */
 
-document.querySelectorAll(".tab").forEach((tab) => {
-  tab.addEventListener("click", () => {
-    document.querySelectorAll(".tab").forEach((t) => t.classList.toggle("active", t === tab));
-    const name = tab.dataset.screen;
-    ["chat", "run", "budget", "crew", "floor"].forEach((s) => {
-      $("screen-" + s).classList.toggle("hidden", s !== name);
-    });
-    if (name === "budget") refreshBudget();
-    if (name === "crew") refreshCrew();
-    if (name === "floor") openFloor();
-    else closeFloor();
+function activateTab(name) {
+  document.querySelectorAll(".tab").forEach((t) => t.classList.toggle("active", t.dataset.screen === name));
+  ["chat", "run", "budget", "crew", "floor"].forEach((s) => {
+    $("screen-" + s).classList.toggle("hidden", s !== name);
   });
+  if (name === "budget") refreshBudget();
+  if (name === "crew") refreshCrew();
+  if (name === "floor") openFloor();
+  else closeFloor();
+}
+
+document.querySelectorAll(".tab").forEach((tab) => {
+  tab.addEventListener("click", () => activateTab(tab.dataset.screen));
 });
 
 /* ---------------- floor (Phase 1) ----------------
@@ -463,13 +470,17 @@ $("bridgeUrl").value = state.bridge;
 
 if (state.token) {
   enterApp();
+} else {
+  // Unpaired: raise the door over the locked room (Stage 3). The shell
+  // and the empty, OFFLINE Floor render behind the pairing card.
+  showConnect();
 }
 
-// Health watch: if the bridge dies mid-session, drop back to Connect with
-// the unreachable message (spec rule). If it comes back and we still hold a
-// token, re-enter quietly.
+// Health watch: if the bridge dies mid-session, raise the door with the
+// unreachable message (spec rule). If it comes back and we still hold a
+// token, re-enter quietly. "In the app" = the door is down.
 setInterval(async () => {
-  const inApp = !$("appShell").classList.contains("hidden");
+  const inApp = $("connectScreen").classList.contains("hidden");
   const ok = await checkHealth();
   if (inApp && !ok) {
     showConnect(UNREACHABLE_MSG);
