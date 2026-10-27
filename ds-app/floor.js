@@ -3,7 +3,10 @@
 // roster is empty, the home spots are empty.
 //
 // Layout (36 × 22 tiles) — geometry unchanged from the office build; only
-// the drawing changed (KC room pass, 2026-10-27):
+// the drawing changed (KC room pass, 2026-10-27). Building pass (same
+// day): the working spots are cutaway buildings — interior floor slabs,
+// side walls, foundation courses — and the Terrace/Smithy wear room
+// shells (posts, wall plates, door sills). Drawing only, again.
 //   The Green  x 2..20,  y 2..14   the three home spots (facades row 2–3,
 //                                  worktables row 3, seats row 4), the square
 //   The Lane   x 22..24, y 2..19   connects the Green, Terrace, Smithy, Meadow
@@ -589,22 +592,32 @@ export function createFloor(canvas, { onSelect } = {}) {
             }
           }
         } else if (zname === "workshop") {
-          // smithy dirt with straw flecks and a swept-earth speckle
-          g.fillStyle = shade(base, (n - 0.5) * 9);
+          // smithy floor: worn stone flags over a warm grout bed — an
+          // interior surface, not swept dirt (building pass)
+          g.fillStyle = shade(base, (n - 0.5) * 6);
           g.fillRect(px, py, TILE, TILE);
-          g.strokeStyle = "rgba(226,192,110,.20)";
+          const flagLite = (hash(x * 3 + 1, y * 5) - 0.5) * 10;
+          g.fillStyle = flagLite > 0 ? `rgba(255,246,225,${flagLite / 90})` : `rgba(30,24,18,${-flagLite / 80})`;
+          rr(g, px + 1.5, py + 1.5, TILE - 3, TILE - 3, 3);
+          g.fill();
+          g.strokeStyle = "rgba(52,42,30,.38)";
           g.lineWidth = 1;
           g.beginPath();
-          for (let sIdx = 0; sIdx < 2; sIdx++) {
-            const sx2 = px + 5 + hash(x * 5 + sIdx, y * 2) * 24;
-            const sy2 = py + 6 + hash(x * 2, y * 5 + sIdx) * 24;
+          g.moveTo(px, py + TILE / 2);
+          g.lineTo(px + TILE, py + TILE / 2);
+          g.moveTo(px + (n > 0.5 ? TILE * 0.36 : TILE * 0.64), py);
+          g.lineTo(px + (n > 0.5 ? TILE * 0.36 : TILE * 0.64), py + TILE / 2);
+          g.moveTo(px + (n > 0.5 ? TILE * 0.64 : TILE * 0.36), py + TILE / 2);
+          g.lineTo(px + (n > 0.5 ? TILE * 0.64 : TILE * 0.36), py + TILE);
+          g.stroke();
+          if (n > 0.82) {
+            g.strokeStyle = "rgba(226,192,110,.16)";
+            g.beginPath();
+            const sx2 = px + 6 + hash(x * 5, y * 2) * 22;
+            const sy2 = py + 7 + hash(x * 2, y * 5) * 22;
             g.moveTo(sx2, sy2);
             g.lineTo(sx2 + 4.4, sy2 - 1.6);
-          }
-          g.stroke();
-          if (n > 0.8) {
-            g.fillStyle = "rgba(60,44,28,.16)";
-            g.fillRect(px + 5 + n * 20, py + 6 + hash(y, x) * 20, 2.4, 2.4);
+            g.stroke();
           }
         } else if (zname === "skyloft") {
           // warm oak planks
@@ -1184,6 +1197,142 @@ export function createFloor(canvas, { onSelect } = {}) {
     const winCx = (home.doorSide > 0 ? cx - 0.68 : cx + 0.68) * TILE;
     const winCy = 2.62 * TILE;
 
+    /* ---- the cutaway interior (building pass, 2026-10-27) ----
+       The cottage is a room you look into, not a facade on the lawn:
+       an interior floor slab (planks or stone flags, never the outdoor
+       earth), side walls with real thickness, the cut front wall left
+       as low stubs at the corners, a stone foundation course under the
+       front edge, and stepping stones where the path meets the room.
+       The worktable and the seat row sit inside this room. */
+    const slabX0 = fx - 5;
+    const slabX1 = fx + fw + 5;
+    const slabTop = fb - 3;
+    const slabBot = 4.88 * TILE;
+    const seed = role === "planner" ? 3 : role === "executor" ? 7 : 11;
+
+    // ground shadow spilling from under the front foundation
+    const slabShadow = g.createLinearGradient(0, slabBot + 9, 0, slabBot + 18);
+    slabShadow.addColorStop(0, "rgba(24,32,14,.34)");
+    slabShadow.addColorStop(1, "rgba(24,32,14,0)");
+    g.fillStyle = slabShadow;
+    g.fillRect(slabX0 - 3, slabBot + 9, slabX1 - slabX0 + 6, 9);
+
+    // interior floor surface — a material, not the yard
+    const floorBase = role === "executor" ? "#8f887b" : role === "planner" ? "#a57c50" : "#9c7a58";
+    g.fillStyle = floorBase;
+    g.fillRect(slabX0, slabTop, slabX1 - slabX0, slabBot - slabTop);
+    if (role === "executor") {
+      // stone flags: courses with offset joints, shade wandering per flag
+      const rows = 4;
+      for (let ry = 0; ry < rows; ry++) {
+        const fy2 = slabTop + (ry * (slabBot - slabTop)) / rows;
+        const fh = (slabBot - slabTop) / rows;
+        let fx2 = slabX0 - (ry % 2 ? 13 : 0);
+        while (fx2 < slabX1) {
+          const fwFlag = 25 + hash(Math.round(fx2 * 0.7), ry * 3 + seed) * 9;
+          const flagW = Math.min(fwFlag, slabX1 - fx2) - 2;
+          if (flagW > 1) {
+            const lite = hash(fx2, ry + seed) > 0.5;
+            g.fillStyle = lite ? "rgba(255,246,225,.07)" : "rgba(40,34,26,.07)";
+            rr(g, fx2 + 1, fy2 + 1, flagW, fh - 2, 2.4);
+            g.fill();
+          }
+          fx2 += fwFlag;
+        }
+        g.fillStyle = "rgba(52,45,36,.4)";
+        g.fillRect(slabX0, fy2, slabX1 - slabX0, 1);
+      }
+    } else {
+      // wood planks: courses run east-west, light wandering per course
+      const courseH = 10.5;
+      for (let cy2 = slabTop, ci = 0; cy2 < slabBot; cy2 += courseH, ci++) {
+        g.fillStyle = ci % 2 ? "rgba(255,232,190,.055)" : "rgba(52,32,14,.055)";
+        g.fillRect(slabX0, cy2, slabX1 - slabX0, Math.min(courseH, slabBot - cy2));
+        g.fillStyle = "rgba(58,36,16,.34)";
+        g.fillRect(slabX0, Math.min(cy2 + courseH - 1, slabBot - 1), slabX1 - slabX0, 1);
+        const jointX = slabX0 + 12 + hash(ci * 3, seed) * (slabX1 - slabX0 - 24);
+        g.fillRect(jointX, cy2, 1, Math.min(courseH, slabBot - cy2));
+      }
+    }
+    // a woven rug under the worktable and seat — the lived-in middle
+    g.fillStyle = role === "reviewer" ? "rgba(125,90,153,.28)" : role === "planner" ? "rgba(198,110,62,.20)" : "rgba(70,54,36,.20)";
+    rr(g, cx - 1.05 * TILE, 3.42 * TILE, 2.1 * TILE, 1.28 * TILE, 5);
+    g.fill();
+    g.strokeStyle = "rgba(255,240,215,.16)";
+    g.lineWidth = 1;
+    rr(g, cx - 1.05 * TILE + 2.5, 3.42 * TILE + 2.5, 2.1 * TILE - 5, 1.28 * TILE - 5, 4);
+    g.stroke();
+
+    // side walls: a real thickness of wall running from the facade to
+    // the front edge, with a skirting shadow where wall meets floor
+    const wallW = 12;
+    for (const sx of [slabX0, slabX1 - wallW]) {
+      const leftSide = sx === slabX0;
+      const wallFace = g.createLinearGradient(sx, 0, sx + wallW, 0);
+      wallFace.addColorStop(0, shade(home.wall, leftSide ? -46 : -30));
+      wallFace.addColorStop(0.45, shade(home.wall, -26));
+      wallFace.addColorStop(1, shade(home.wall, -44));
+      g.fillStyle = wallFace;
+      g.fillRect(sx, slabTop + 4, wallW, slabBot - slabTop - 4);
+      g.fillStyle = "rgba(30,20,10,.4)";
+      g.fillRect(leftSide ? sx : sx + wallW - 1, slabTop + 4, 1, slabBot - slabTop - 4);
+      g.fillStyle = "rgba(30,20,10,.20)";
+      g.fillRect(leftSide ? sx + wallW : sx - 3, slabTop + 6, 3, slabBot - slabTop - 8);
+    }
+
+    // contact shadow pooled under the back wall
+    const backShadow = g.createLinearGradient(0, slabTop, 0, slabTop + 13);
+    backShadow.addColorStop(0, "rgba(30,18,6,.24)");
+    backShadow.addColorStop(1, "rgba(30,18,6,0)");
+    g.fillStyle = backShadow;
+    g.fillRect(slabX0 + wallW, slabTop, slabX1 - slabX0 - wallW * 2, 13);
+
+    // cut front wall: low stubs left standing at both corners, the
+    // opening in the middle — the cutaway tell
+    for (const stX of [slabX0, slabX1 - 0.5 * TILE]) {
+      g.fillStyle = shade(home.wall, -14);
+      g.fillRect(stX, slabBot - 13, 0.5 * TILE, 13);
+      g.fillStyle = shade(home.wall, 18);
+      g.fillRect(stX, slabBot - 13, 0.5 * TILE, 3);
+      g.fillStyle = "rgba(255,246,220,.35)";
+      g.fillRect(stX, slabBot - 13, 0.5 * TILE, 1);
+      g.fillStyle = "rgba(30,20,10,.35)";
+      g.fillRect(stX, slabBot - 1, 0.5 * TILE, 1);
+    }
+
+    // foundation course: stone blocks carrying the front edge, with
+    // short returns running back under the side walls
+    g.fillStyle = "#7d7466";
+    g.fillRect(slabX0 - 2, slabBot, slabX1 - slabX0 + 4, 10);
+    for (let bx = slabX0 - 2, bi = 0; bx < slabX1 + 2; bx += 17, bi++) {
+      g.fillStyle = bi % 2 ? "rgba(255,246,225,.07)" : "rgba(38,32,24,.07)";
+      g.fillRect(bx, slabBot, Math.min(17, slabX1 + 2 - bx), 10);
+      g.fillStyle = "rgba(40,34,26,.45)";
+      g.fillRect(bx, slabBot, 1, 10);
+    }
+    g.fillStyle = "rgba(255,242,214,.4)";
+    g.fillRect(slabX0 - 2, slabBot, slabX1 - slabX0 + 4, 1);
+    g.fillStyle = "rgba(20,16,10,.4)";
+    g.fillRect(slabX0 - 2, slabBot + 9, slabX1 - slabX0 + 4, 1);
+    g.fillStyle = "#6b6357";
+    g.fillRect(slabX0 - 4, slabTop + 12, 3, slabBot + 10 - slabTop - 12);
+    g.fillRect(slabX1 + 1, slabTop + 12, 3, slabBot + 10 - slabTop - 12);
+
+    // stepping stones from the front opening down across the terrace —
+    // the path arrives at the room instead of the lawn
+    g.fillStyle = "#b3a58a";
+    for (const [sox, soy, sr] of [[0, 0.34, 10.5], [4, 0.8, 8.8]]) {
+      const scx = doorX + doorW / 2 + sox;
+      g.beginPath();
+      g.ellipse(scx, slabBot + soy * TILE, sr, sr * 0.34, 0, 0, Math.PI * 2);
+      g.fill();
+      g.strokeStyle = "rgba(70,58,40,.4)";
+      g.lineWidth = 1;
+      g.beginPath();
+      g.ellipse(scx, slabBot + soy * TILE, sr, sr * 0.34, 0, Math.PI * 0.15, Math.PI * 0.85);
+      g.stroke();
+    }
+
     // soft ground shadow the house stands on
     g.fillStyle = "rgba(30,40,18,.28)";
     g.beginPath();
@@ -1233,6 +1382,28 @@ export function createFloor(canvas, { onSelect } = {}) {
     g.lineTo(cx, fy - 0.55 * TILE - 1);
     g.lineTo(fx + fw + 5, fy + 2.4);
     g.stroke();
+    // roof thickness: the eaves edge is a board, not a line — a dark
+    // cut edge, a timber fascia under it, and the shadow the overhang
+    // throws down the wall face
+    g.strokeStyle = "rgba(46,28,14,.55)";
+    g.lineWidth = 2;
+    g.beginPath();
+    g.moveTo(fx - 2, fy + 9);
+    g.lineTo(cx, fy - 0.42 * TILE);
+    g.lineTo(fx + fw + 2, fy + 9);
+    g.stroke();
+    g.strokeStyle = "#5d4630";
+    g.lineWidth = 2.4;
+    g.beginPath();
+    g.moveTo(fx - 2, fy + 12);
+    g.lineTo(cx, fy - 0.42 * TILE + 3);
+    g.lineTo(fx + fw + 2, fy + 12);
+    g.stroke();
+    const eaveShadow = g.createLinearGradient(0, fy + 13, 0, fy + 30);
+    eaveShadow.addColorStop(0, "rgba(43,26,10,.20)");
+    eaveShadow.addColorStop(1, "rgba(43,26,10,0)");
+    g.fillStyle = eaveShadow;
+    g.fillRect(fx - 2, fy + 13, fw + 4, 17);
     // chimney puff house gets a chimney on the executor's smithy-cottage
     if (role === "executor") {
       g.fillStyle = "#8d8578";
@@ -1256,6 +1427,15 @@ export function createFloor(canvas, { onSelect } = {}) {
     g.beginPath();
     g.arc(doorX + (home.doorSide > 0 ? 4.6 : doorW - 4.6), 2.74 * TILE, 1.7, 0, Math.PI * 2);
     g.fill();
+    // a stone threshold step at the door, sitting on the interior slab
+    g.fillStyle = "#6e675c";
+    rr(g, doorX - 5, fb + 5.5, doorW + 10, 4.5, 1.6);
+    g.fill();
+    g.fillStyle = "#a29885";
+    rr(g, doorX - 5, fb - 1.5, doorW + 10, 7.5, 1.8);
+    g.fill();
+    g.fillStyle = "rgba(255,246,220,.35)";
+    g.fillRect(doorX - 3, fb - 1, doorW + 6, 1);
     // role-coloured doorstep mat
     g.fillStyle = shadeA(pal.base, 0.5);
     rr(g, doorX - 2, 3.2 * TILE, doorW + 4, 4.6, 2);
@@ -2029,11 +2209,74 @@ export function createFloor(canvas, { onSelect } = {}) {
     g.restore();
   }
 
+  // Room shell for the two east rooms (building pass): chunky corner
+  // posts, a skirting shadow where the side walls meet the floor, a
+  // timber plate along the south edge, and a stone sill where the Lane
+  // door crosses in — the cues that say "indoors" without closing the
+  // sightlines the layout needs.
+  function drawRoomShell(g, zone, door) {
+    const x0 = zone.x0 * TILE;
+    const y0 = zone.y0 * TILE;
+    const x1 = (zone.x1 + 1) * TILE;
+    const y1 = (zone.y1 + 1) * TILE;
+    // skirting shadow along the west and east walls
+    for (const [sx, dir] of [[x0, 1], [x1, -1]]) {
+      const sk = g.createLinearGradient(sx, 0, sx + dir * 8, 0);
+      sk.addColorStop(0, "rgba(24,16,8,.26)");
+      sk.addColorStop(1, "rgba(24,16,8,0)");
+      g.fillStyle = sk;
+      g.fillRect(Math.min(sx, sx + dir * 8), y0 + 4, 8, y1 - y0 - 8);
+    }
+    // south wall plate: the beam the south wall sits on
+    g.fillStyle = "#54402a";
+    g.fillRect(x0 + 3, y1 - 7, x1 - x0 - 6, 5);
+    g.fillStyle = "rgba(255,236,200,.10)";
+    g.fillRect(x0 + 3, y1 - 7, x1 - x0 - 6, 1);
+    g.fillStyle = "rgba(0,0,0,.22)";
+    g.fillRect(x0 + 3, y1 - 2, x1 - x0 - 6, 2);
+    // corner posts with a sunlit cap and a ground shadow
+    for (const [qx, qy] of [[x0 + 3, y0 + 3], [x1 - 14, y0 + 3], [x0 + 3, y1 - 14], [x1 - 14, y1 - 14]]) {
+      g.fillStyle = "rgba(0,0,0,.25)";
+      g.fillRect(qx + 1.5, qy + 9, 11, 3);
+      const post = g.createLinearGradient(qx, qy, qx + 11, qy);
+      post.addColorStop(0, "#7d6244");
+      post.addColorStop(1, "#5d4630");
+      g.fillStyle = post;
+      g.fillRect(qx, qy, 11, 11);
+      g.fillStyle = "rgba(255,236,200,.20)";
+      g.fillRect(qx, qy, 11, 2);
+      g.strokeStyle = "rgba(30,20,10,.45)";
+      g.lineWidth = 1;
+      g.strokeRect(qx + 0.5, qy + 0.5, 10, 10);
+    }
+    // stone sill where the Lane door crosses into the room — the floor
+    // changes at the threshold, like the cottages' steps
+    const dy = door.y * TILE;
+    g.fillStyle = "#6e675c";
+    rr(g, x0 - 4, dy + TILE - 9, 15, 6, 1.6);
+    g.fill();
+    g.fillStyle = "#a99a80";
+    rr(g, x0 - 4, dy + 3, 15, TILE - 10, 2);
+    g.fill();
+    g.fillStyle = "rgba(255,246,220,.32)";
+    g.fillRect(x0 - 2, dy + 3.5, 11, 1);
+  }
+
   function drawSkyloft(g) {
     // day window band on the north wall — blue sky over green hills
     const wx = 26 * TILE;
     const wy = 1 * TILE + 4;
     const ww = 8 * TILE;
+    // the wall the windows are set into: chunky end posts and a top
+    // beam, so the band reads as openings in a wall, not a sticker
+    g.fillStyle = "#5d4630";
+    g.fillRect(wx - 7, wy - 5, 10, 34);
+    g.fillRect(wx + ww - 3, wy - 5, 10, 34);
+    g.fillRect(wx - 7, wy - 6, ww + 14, 6);
+    g.fillStyle = "rgba(255,236,200,.18)";
+    g.fillRect(wx - 7, wy - 6, ww + 14, 1.4);
+    g.fillRect(wx - 7, wy - 5, 1.6, 34);
+    g.fillRect(wx + ww - 3, wy - 5, 1.6, 34);
     const sky = g.createLinearGradient(wx, wy, wx, wy + 22);
     sky.addColorStop(0, "#7ec3ee");
     sky.addColorStop(0.62, "#b5dff7");
@@ -2096,6 +2339,14 @@ export function createFloor(canvas, { onSelect } = {}) {
     for (let i = 0; i <= 8; i++) g.fillRect(wx + (i * TILE) - 1, wy, 2, 22);
     g.fillStyle = "rgba(255,255,255,.22)";
     g.fillRect(wx, wy, ww, 1.4);
+    // header beam under the window band — the wall continues below it
+    // and the room hangs from it
+    g.fillStyle = "#6b4f35";
+    g.fillRect(wx - 7, wy + 22, ww + 14, 7);
+    g.fillStyle = "rgba(255,236,200,.16)";
+    g.fillRect(wx - 7, wy + 22, ww + 14, 1.4);
+    g.fillStyle = "rgba(0,0,0,.28)";
+    g.fillRect(wx - 7, wy + 28, ww + 14, 1.6);
 
     // rug
     const rug = g.createRadialGradient(30 * TILE, 4.4 * TILE, 4, 30 * TILE, 4.4 * TILE, 5 * TILE);
@@ -2355,6 +2606,9 @@ export function createFloor(canvas, { onSelect } = {}) {
         g.fill();
       }
     }
+
+    // the room's shell goes on last, over the furniture feet
+    drawRoomShell(g, ZONES.skyloft, DOORS[1]);
   }
 
   function drawWorkshop(g) {
@@ -2452,6 +2706,26 @@ export function createFloor(canvas, { onSelect } = {}) {
     g.fill();
     g.fillStyle = "#6fa8d8";
     g.fillRect(31 * TILE + 14, 15 * TILE + 10, 3, 7);
+
+    // chimney breast: the forge's stone stack rises into the north
+    // wall, tying the hearth into the building's structure
+    const chX = 32.7 * TILE;
+    const breast = g.createLinearGradient(chX - 17, 0, chX + 17, 0);
+    breast.addColorStop(0, "#7e766a");
+    breast.addColorStop(0.5, "#948c7e");
+    breast.addColorStop(1, "#6e675c");
+    g.fillStyle = breast;
+    g.fillRect(chX - 17, 10 * TILE + 2, 34, 78);
+    g.strokeStyle = "rgba(50,44,36,.35)";
+    g.lineWidth = 1;
+    for (let jy = 10 * TILE + 13; jy < 12.3 * TILE; jy += 11) {
+      g.beginPath();
+      g.moveTo(chX - 16, jy);
+      g.lineTo(chX + 16, jy);
+      g.stroke();
+    }
+    g.fillStyle = "rgba(0,0,0,.18)";
+    g.fillRect(chX + 12, 10 * TILE + 2, 5, 78);
 
     // the forge, east wall — stone arch, glowing heart, anvil out front
     const fgx = 32.7 * TILE;
@@ -2604,6 +2878,9 @@ export function createFloor(canvas, { onSelect } = {}) {
     g.beginPath();
     g.arc(hx, hy + 6, 44, 0, Math.PI * 2);
     g.fill();
+
+    // the room's shell goes on last, over the furniture feet
+    drawRoomShell(g, ZONES.workshop, DOORS[2]);
   }
 
   function drawYard(g) {

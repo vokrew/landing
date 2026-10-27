@@ -1,0 +1,54 @@
+[llama:err] 0.00.006.397 I srv  llama_server: initializing ...
+[page] Vokrew web face: http://localhost:7789/
+[page] Serving /tmp/ds-app-baseline
+[llama:err] 0.00.317.605 I cmn  common_param: common_params_print_info: verbosity = 3 (adjust with the `-lv N` CLI arg)
+[llama:err] 0.00.319.385 W srv  llama_server: security: no API key is set and CORS allows all origins (see https://github.com/ggml-org/llama.cpp/pull/25655)
+[llama:err] 0.00.324.251 I srv    load_model: loading model '/home/hatch/workspace/vokrew-local-test/gemma3-1b.gguf'
+[bridge] Vokrew bridge listening on http://127.0.0.1:17717 (localhost only — not reachable from the internet)
+[bridge] Pair from the web face: POST /pair { "code": "<code below>" } -> Bearer token for /run, /chat, /budget, /lanes, /crews
+[bridge] Pairing code: 677047  (single-use, expires in 10 minutes)
+[chrome:err] [8948:8992:1027/202700.680131:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory
+[chrome:err] [8948:8992:1027/202700.791228:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[8948:8992:1027/202700.791338:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory
+[8948:8992:1027/202700.791361:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory
+[8948:8992:1027/202700.791371:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[chrome:err] [8948:8992:1027/202701.019445:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[chrome:err] [8948:8992:1027/202701.801829:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[chrome:err] 
+DevTools listening on ws://127.0.0.1:9341/devtools/browser/fff5338c-3ebc-46aa-a903-80c9d589f7f1
+[chrome:err] [8948:8948:1027/202701.933387:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[8948:8948:1027/202701.934135:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[8948:8992:1027/202701.934206:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[8948:8992:1027/202701.934218:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[8948:8948:1027/202701.934565:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[chrome:err] [8948:8948:1027/202701.992367:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[llama:err] 0.03.612.219 [llama:err] W load: control-looking token:    212 '</s>' was not control-type; this is probably a bug in the model. its type will be overridden
+[llama:err] 0.07.242.631 [llama:err] I cmn          init: llama threadpool init, n_threads = 2
+[llama:err] 0.12.296.289 I srv    load_model: initializing, n_slots = 4, n_ctx_slot = 4096, kv_unified = 'true'
+[llama:err] 0.12.426.997 I srv  llama_server: model loaded
+0.12.427.015 I srv  llama_server: listening on http://127.0.0.1:18080
+[20:27:12] NOTE pairing code captured (single-use, rig-isolated)
+[chrome:err] [8948:8948:1027/202712.543089:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[8948:8992:1027/202712.543456:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory
+[8948:8992:1027/202712.543504:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory
+[chrome:err] [8948:8948:1027/202712.555393:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[chrome:err] [8948:8992:1027/202712.560562:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[chrome:err] [8948:8948:1027/202712.882264:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.Properties.GetAll: object_path= /org/freedesktop/UPower/devices/DisplayDevice: unknown error type: 
+[chrome:err] [8948:8948:1027/202712.923467:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[chrome:err] [8948:8992:1027/202712.927797:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[chrome:err] [8948:8948:1027/202713.080378:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[8948:8992:1027/202713.080809:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[chrome:err] [8948:8948:1027/202713.219100:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[chrome:err] [8948:8948:1027/202714.588319:ERROR:chrome/browser/component_updater/optimization_guide_on_device_model_installer.cc:597] Failed to update on-device model component with error 5
+[chrome:err] [8948:8948:1027/202715.060632:ERROR:chrome/browser/component_updater/soda_component_installer.cc:96] On demand update of the SODA component failed with error: 5
+[chrome:err] [8948:8948:1027/202715.286792:ERROR:chrome/browser/component_updater/soda_language_pack_component_installer.cc:84] On demand update of the SODA language component failed with error: 5
+[20:27:16] FAIL page boots offline against rig bridge — {"paired":true,"online":true}
+[bridge] Pairing code: 570412  (single-use, expires in 10 minutes)
+[20:27:19] PASS paired via UI — {"paired":true,"online":true,"crew":"rig"}
+[20:27:19] PASS bridge token captured from page storage — present
+[20:27:21] NOTE paired-idle room luminance samples: 0.4234, 0.4234
+[20:27:22] shot before-01-idle.png
+[20:27:22] FAIL zero console errors (before, idle) — log: Failed to load resource: the server responded with a status of 404 (Not Found)
+[llama:err] 0.24.299.879 I srv    operator(): operator(): cleaning up before exit...
+[bridge] Vokrew bridge stopped.
+[20:27:23] DONE mode=before checks=4 failed=2
