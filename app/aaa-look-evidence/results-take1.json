@@ -1,0 +1,464 @@
+{
+  "take": 1,
+  "assertions": [
+    {
+      "name": "lane warm-up completed directly against llama-server",
+      "ok": true,
+      "detail": "1061ms"
+    },
+    {
+      "name": "vokrew: paired through the page's own form",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "vokrew: rig crew seated, overview scale measured (floor-oc parity band = within 5%)",
+      "ok": true,
+      "detail": "scale=0.34075 flooroc=null canvas=[1166,725] viewport=1440x813"
+    },
+    {
+      "name": "vokrew idle screenshot captured",
+      "ok": true,
+      "detail": "673087 bytes"
+    },
+    {
+      "name": "conductor call-out became exactly one hold; badge + noticeboard agree",
+      "ok": true,
+      "detail": "badge=\"1\" sidebar=1 noticeboard=1"
+    },
+    {
+      "name": "vokrew hold-pending screenshot captured",
+      "ok": true,
+      "detail": "733565 bytes"
+    },
+    {
+      "name": "approve clicked on the hold card",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "approved run registered on the bridge",
+      "ok": true,
+      "detail": "80944ae1-c3b4-44c8-a075-79ffb3354ea6"
+    },
+    {
+      "name": "vokrew mid-run screenshot captured (reviewer at doorway)",
+      "ok": true,
+      "detail": "doorstep={\"cx\":23,\"cy\":46}"
+    },
+    {
+      "name": "approved run settled done/APPROVED on the bridge",
+      "ok": true,
+      "detail": "state=done verdict=APPROVED duration=54s error=none"
+    },
+    {
+      "name": "reviewer reached the executor doorstep during the run",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "gap (a) measured: element at the executor's canvas click point in the settled layout",
+      "ok": true,
+      "detail": "atPoint=floorCardBody chain=[\"floorCardBody\",\"floorRunCard\",\"stage\",\"floorRoot\",\"screen-floor\"] cardHidden=false"
+    },
+    {
+      "name": "verdict landed in the conductor transcript, tied to the run id",
+      "ok": true,
+      "detail": "16:21:06VERDICTRUN-8094 — verdict APPROVED · same family review · ⚡ 3 calls"
+    },
+    {
+      "name": "vokrew settled screenshot captured",
+      "ok": true,
+      "detail": "522988 bytes"
+    },
+    {
+      "name": "G-3: Plan/Work/Review panes are markdown divs; Stamps stays a PRE ledger",
+      "ok": true,
+      "detail": "floorCardPlan:DIV.md floorCardWork:DIV.md floorCardReview:DIV.md stamps:PRE"
+    },
+    {
+      "name": "G-3: no literal ** leaks into rendered pane text",
+      "ok": true,
+      "detail": "the bridge record itself carried markdown — rendering was exercised on real lane output"
+    },
+    {
+      "name": "reviewer dossier shows the just-settled run in its history, verdict + same-family label intact",
+      "ok": true,
+      "detail": "RUN-8094 · reviewer · local-gemma · gemma-local · 20995ms · attempts 1 · verdict APPROVED · same family as executor"
+    },
+    {
+      "name": "vokrew dossier screenshot captured",
+      "ok": true,
+      "detail": "560928 bytes"
+    },
+    {
+      "name": "screencast frames captured",
+      "ok": true,
+      "detail": "263 frames over ~106s; state log entries=91"
+    },
+    {
+      "name": "state log corroborates: planner + executor work modes seen",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "state log corroborates: reviewer on doorstep cell in logged entries",
+      "ok": true,
+      "detail": "12 entries"
+    },
+    {
+      "name": "zero console errors in the Vokrew session (transport noise tallied + named)",
+      "ok": true,
+      "detail": "nonLog=0 noise=0 unexplained=none"
+    }
+  ],
+  "consoleErrors": [],
+  "screenshots": [
+    {
+      "file": "after-idle.png",
+      "note": "VOKREW FLOOR: idle room, rig crew (Scout/Musky/Judge) seated, house frame — pairs with flooroc-idle.png"
+    },
+    {
+      "file": "after-hold-pending.png",
+      "note": "VOKREW FLOOR: hold pending — sidebar hold card + office noticeboard card + top-bar badge 1"
+    },
+    {
+      "file": "after-midrun.png",
+      "note": "VOKREW FLOOR mid-run: Judge (reviewer) standing on Musky's doorstep cell during phase reviewer, run card docked as the slim strip"
+    },
+    {
+      "file": "after-settled.png",
+      "note": "VOKREW FLOOR: run settled — verdict in the conductor transcript + auto-expanded run card over the room (gap (a) in frame)"
+    },
+    {
+      "file": "after-dossier.png",
+      "note": "VOKREW FLOOR: Judge's dossier after the run — identity from the bridge + this run's history row — pairs with flooroc-focus-agent.png"
+    }
+  ],
+  "rig": {
+    "llama": "gemma-local on :18080",
+    "warmup": {
+      "ms": 1061,
+      "ok": true,
+      "via": "direct llama-server completion (bridge untouched)"
+    },
+    "bridge": "registry build on :17717, VOKREW_HOME=/tmp/vokrew-aaa-home"
+  },
+  "readability": {
+    "vokrew": {
+      "camS": 0.34075,
+      "innerWidth": 1440,
+      "innerHeight": 813,
+      "canvasBacking": [
+        1166,
+        725
+      ],
+      "canvasCss": [
+        1166,
+        725
+      ],
+      "names": [
+        "Scout",
+        "Musky",
+        "Judge"
+      ],
+      "effectiveScale": 0.34075,
+      "nameplateWorldPx": 9,
+      "characterWorldPx": 46,
+      "nameplateScreenPx": 3.07,
+      "characterScreenPx": 15.7
+    }
+  },
+  "flooroc": {},
+  "video": {
+    "take": 1,
+    "screencastStartWallMs": 1793117974485,
+    "task": "Scout, write a one-line bash command that prints the word hello, then explain it in one short sentence",
+    "framesDir": "/tmp/aaa-frames-take1",
+    "hold": {
+      "id": "h1",
+      "badge": "1",
+      "sidebarCards": 1,
+      "nbCards": 1,
+      "nbHidden": false
+    },
+    "doorstepCell": {
+      "cx": 23,
+      "cy": 46
+    },
+    "runId": "80944ae1-c3b4-44c8-a075-79ffb3354ea6",
+    "finalRecord": {
+      "state": "done",
+      "verdict": "APPROVED",
+      "crossFamily": false,
+      "error": null,
+      "stamps": [
+        {
+          "role": "planner",
+          "agent": "Scout",
+          "lane": "local-gemma",
+          "provider": "openai-compatible",
+          "model": "gemma-local",
+          "family": "gemma",
+          "tier": "local",
+          "latencyMs": 17990,
+          "failover": false,
+          "attempts": [
+            {
+              "lane": "local-gemma",
+              "status": "served"
+            }
+          ]
+        },
+        {
+          "role": "executor",
+          "agent": "Musky",
+          "lane": "local-gemma",
+          "provider": "openai-compatible",
+          "model": "gemma-local",
+          "family": "gemma",
+          "tier": "local",
+          "latencyMs": 15286,
+          "failover": false,
+          "attempts": [
+            {
+              "lane": "local-gemma",
+              "status": "served"
+            }
+          ]
+        },
+        {
+          "role": "reviewer",
+          "agent": "Judge",
+          "lane": "local-gemma",
+          "provider": "openai-compatible",
+          "model": "gemma-local",
+          "family": "gemma",
+          "tier": "local",
+          "latencyMs": 20995,
+          "failover": false,
+          "attempts": [
+            {
+              "lane": "local-gemma",
+              "status": "served"
+            }
+          ]
+        }
+      ]
+    },
+    "timeline": {
+      "runStartWallMs": 1793118010997,
+      "settledWallMs": 1793118065213,
+      "reviewerAtDoorstepWallMs": 1793118051472,
+      "runDurationSec": 54
+    },
+    "settledTranscript": [
+      {
+        "kind": "hold",
+        "hold": "h1",
+        "run": null,
+        "verdict": null,
+        "text": "16:20:05HELDfor Scout · planner · crew rigScout, write a one-line bash command that prints the word hello, then explain it in one short sentence"
+      },
+      {
+        "kind": "fired",
+        "hold": "h1",
+        "run": "80944ae1-c3b4-44c8-a075-79ffb3354ea6",
+        "verdict": null,
+        "text": "16:20:10FIREDRUN-8094 — approved hold for Scout · planner · crew rigScout, write a one-line bash command that prints the word hello, then explain it in one short sentence"
+      },
+      {
+        "kind": "verdict",
+        "hold": null,
+        "run": "80944ae1-c3b4-44c8-a075-79ffb3354ea6",
+        "verdict": "APPROVED",
+        "text": "16:21:06VERDICTRUN-8094 — verdict APPROVED · same family review · ⚡ 3 calls"
+      }
+    ],
+    "dossier": {
+      "headName": "Judge",
+      "headRole": "reviewer",
+      "kv": {
+        "crew": "rig",
+        "name": "Judge",
+        "seat": "reviewer · cubicle · Foundry",
+        "lane": "local-gemma",
+        "provider": "openai-compatible",
+        "model": "gemma-local",
+        "family": "gemma",
+        "tier": "local",
+        "laneCalls": "3",
+        "crewCalls": "3",
+        "share": "100%"
+      },
+      "histCount": 1,
+      "hist": [
+        {
+          "run": "80944ae1-c3b4-44c8-a075-79ffb3354ea6",
+          "role": "reviewer",
+          "verdict": "APPROVED",
+          "runState": "done",
+          "crossFamily": "no",
+          "text": "RUN-8094 · reviewer · local-gemma · gemma-local · 20995ms · attempts 1 · verdict APPROVED · same family as executor"
+        }
+      ],
+      "panelBox": {
+        "left": 1051,
+        "right": 1417,
+        "width": 366
+      }
+    },
+    "frameCount": 263,
+    "totalSec": 106,
+    "corroboration": {
+      "reviewerDoorstepLogEntries": 12,
+      "plannerWorkModeSeen": true,
+      "executorWorkModeSeen": true
+    }
+  },
+  "phases": [
+    {
+      "phase": "planner",
+      "state": "running",
+      "atSec": 0,
+      "stamps": 0
+    },
+    {
+      "phase": "executor",
+      "state": "running",
+      "atSec": 18,
+      "stamps": 1
+    },
+    {
+      "phase": "reviewer",
+      "state": "running",
+      "atSec": 33,
+      "stamps": 2
+    },
+    {
+      "phase": null,
+      "state": "done",
+      "atSec": 54,
+      "stamps": 3
+    }
+  ],
+  "gaps": {
+    "strip": {
+      "present": true,
+      "cardHidden": false,
+      "stripPresent": true,
+      "stripVisible": true,
+      "stripBox": {
+        "top": 766,
+        "bottom": 800,
+        "left": 536,
+        "right": 1156,
+        "height": 34
+      },
+      "stripText": "RUN-8094 · Scout is planning · ⚡ 0 calls served ▸",
+      "bodyVisible": false,
+      "bodyBox": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 0,
+        "height": 0
+      },
+      "canvasBox": {
+        "top": 87,
+        "bottom": 812,
+        "left": 263,
+        "right": 1429,
+        "width": 1166,
+        "height": 725
+      },
+      "stripCanvasOverlap": 21080,
+      "stripAreaFrac": 2.49,
+      "bodyCanvasOverlap": 0,
+      "verdict": null
+    },
+    "cardOcclusion": {
+      "x": 515,
+      "y": 423,
+      "atPoint": "floorCardBody",
+      "chain": [
+        "floorCardBody",
+        "floorRunCard",
+        "stage",
+        "floorRoot",
+        "screen-floor"
+      ],
+      "cardHidden": false
+    },
+    "settledCard": {
+      "present": true,
+      "cardHidden": false,
+      "stripPresent": true,
+      "stripVisible": true,
+      "stripBox": {
+        "top": 766,
+        "bottom": 800,
+        "left": 536,
+        "right": 1156,
+        "height": 34
+      },
+      "stripText": "RUN-8094 · verdict APPROVED · same family review · ⚡ 3 calls ▾",
+      "bodyVisible": true,
+      "bodyBox": {
+        "top": 286,
+        "bottom": 758,
+        "left": 506,
+        "right": 1186,
+        "height": 472
+      },
+      "canvasBox": {
+        "top": 87,
+        "bottom": 812,
+        "left": 263,
+        "right": 1429,
+        "width": 1166,
+        "height": 725
+      },
+      "stripCanvasOverlap": 21080,
+      "stripAreaFrac": 2.49,
+      "bodyCanvasOverlap": 320641.25,
+      "verdict": "Reviewer verdict: APPROVED"
+    }
+  },
+  "markdown": {
+    "probe": {
+      "panes": [
+        {
+          "id": "floorCardPlan",
+          "tag": "DIV",
+          "cls": "md",
+          "text": "Okay Scout, here’s your plan:Command: echo \"hello\"Explanation: This command uses the echo command to display the text \"hello\" on the terminal.Let me know if you need more steps!",
+          "html": "<p>Okay Scout, here’s your plan:</p><ol><li><strong>Command:</strong> <code>echo \"hello\"</code></li><li><strong>Explanation:</strong> This command uses the <code>echo</code> command to display the text \"hello\" on the terminal.</li></ol><p>Let me know if you need more steps!</p>"
+        },
+        {
+          "id": "floorCardWork",
+          "tag": "DIV",
+          "cls": "md",
+          "text": "Okay.Command: echo \"hello\"Explanation: This command outputs the text \"hello\" to the standard output of the command line.",
+          "html": "<p>Okay.</p><p><strong>Command:</strong> <code>echo \"hello\"</code></p><p><strong>Explanation:</strong> This command outputs the text \"hello\" to the standard output of the command line.</p>"
+        },
+        {
+          "id": "floorCardReview",
+          "tag": "DIV",
+          "cls": "md",
+          "text": "APPROVED Changes: The command is perfectly executed and produces the desired output. The explanation is concise and accurately describes the command’s functionality.",
+          "html": "<p>APPROVED Changes: The command is perfectly executed and produces the desired output. The explanation is concise and accurately describes the command’s functionality.</p>"
+        }
+      ],
+      "stampsTag": "PRE"
+    },
+    "rawRecordHadMarkdown": true
+  },
+  "consoleClassification": {
+    "total": 0,
+    "nonLog": 0,
+    "transportNoise": 0,
+    "unexplained": []
+  },
+  "verdict": "AAA LOOK PASS CAPTURE (take 1): COMPLETE"
+}

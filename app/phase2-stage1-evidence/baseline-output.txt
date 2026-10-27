@@ -1,0 +1,29 @@
+NOTE  quiet warm-up run done in 107s (attempt 2)
+PASS  (0) connect door up over the locked room — {"overlayVisible":true,"chip":"OFFLINE"}
+PASS  (1) paired through the page form
+PASS  (1) warm-up chat served by the real lane — ok
+NOTE  (1) quiet warm-up run (pre-browser) outcome — done in 107s
+PASS  (7) nameless crew: dossier opens on the role-label agent — head=Planner/planner
+FAIL  (7) nameless crew: identity says the agent is unnamed (no invented name) — name row=undefined
+FAIL  (7) nameless crew: crew + seat rows come from the bridge payload — {}
+FAIL  (7) zero-run agent: history is the honest empty state, zero fabricated rows — rows=0 empty=null
+PASS  (7) nameless dossier screenshot captured — 341822 bytes
+PASS  (5) close via the x button
+FAIL  (1) identity deep-equals GET /crews + GET /lanes (planner) — panel={"name":"Scout"} bridge={"crew":"rig","name":"Scout","lane":"local-gemma","provider":"openai-compatible","model":"gemma-local","family":"gemma","tier":"local"}
+FAIL  (1) seat row names the role (planner) — seat=undefined
+FAIL  (2) lane calls today == GET /budget for the lane — panel=undefined budget=3 day=2026-10-27
+FAIL  (2) crew calls + share are the same ledger, honestly derived — crew panel=undefined want=3 share=undefined
+FAIL  (7) rig planner before any page run: history matches the registry exactly (empty state, no rows) — rows=0 registry=0
+PASS  (1) idle dossier screenshot captured — 324707 bytes
+PASS  (5) close via Esc
+PASS  (4) run #1 submitted from the Floor form — 85f0f86d-1b2f-4875-88bb-7211145e8d9f
+PASS  (4) planner dossier open mid-run shows the live phase at two poll points — [{"status":"running","nowS":"Write a one-line bash command that prints the current folder path, then explain it in one short sentence. · phase: planner","bridgePhase":"planner","open":true,"head":"Scout"},{"status":"running","nowS":"Write a one-line bash command that prints the current folder path, then explain it in one short sentence. · phase: planner","bridgePhase":"planner","open":true,"head":"Scout"}]
+PASS  (4) phase transition: the open planner dossier leaves the planner phase as the record moves on — {"status":"idle","nowV":"At its desk","nowS":"Work is the default; heartbeat off.","head":"Scout","open":true}
+FAIL  (1b) identity deep-equals GET /crews + GET /lanes (reviewer) — panel={"name":"Judge"} bridge={"crew":"rig","name":"Judge","lane":"local-gemma","provider":"openai-compatible","model":"gemma-local","family":"gemma","tier":"local"}
+FAIL  (1b) seat row names the role (reviewer) — seat=undefined
+PASS  (4) reviewer dossier mid-review shows it live (status running in its phase) — status=running nowV="Visiting Musky" bridgePhase=reviewer
+PASS  (4) mid-review dossier screenshot captured — 439389 bytes
+PASS  (4) run #1 settles done on the bridge — verdict=APPROVED
+FAIL  evaluator completed without harness error — timeout waiting for dossier open for Musky
+
+PHASE 2 STAGE 1 GATE: FAIL (11)  (label=before, wrote baseline-results.json)

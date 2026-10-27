@@ -1,0 +1,25 @@
+SKIP_OC=1: reusing prior floor-oc captures + measurements
+OK    lane warm-up completed directly against llama-server — 1061ms
+OK    vokrew: paired through the page's own form
+OK    vokrew: rig crew seated, overview scale measured (floor-oc parity band = within 5%) — scale=0.34075 flooroc=null canvas=[1166,725] viewport=1440x813
+OK    vokrew idle screenshot captured — 673087 bytes
+OK    conductor call-out became exactly one hold; badge + noticeboard agree — badge="1" sidebar=1 noticeboard=1
+OK    vokrew hold-pending screenshot captured — 733565 bytes
+OK    approve clicked on the hold card
+OK    approved run registered on the bridge — 80944ae1-c3b4-44c8-a075-79ffb3354ea6
+OK    vokrew mid-run screenshot captured (reviewer at doorway) — doorstep={"cx":23,"cy":46}
+OK    approved run settled done/APPROVED on the bridge — state=done verdict=APPROVED duration=54s error=none
+OK    reviewer reached the executor doorstep during the run
+OK    gap (a) measured: element at the executor's canvas click point in the settled layout — atPoint=floorCardBody chain=["floorCardBody","floorRunCard","stage","floorRoot","screen-floor"] cardHidden=false
+OK    verdict landed in the conductor transcript, tied to the run id — 16:21:06VERDICTRUN-8094 — verdict APPROVED · same family review · ⚡ 3 calls
+OK    vokrew settled screenshot captured — 522988 bytes
+OK    G-3: Plan/Work/Review panes are markdown divs; Stamps stays a PRE ledger — floorCardPlan:DIV.md floorCardWork:DIV.md floorCardReview:DIV.md stamps:PRE
+OK    G-3: no literal ** leaks into rendered pane text — the bridge record itself carried markdown — rendering was exercised on real lane output
+OK    reviewer dossier shows the just-settled run in its history, verdict + same-family label intact — RUN-8094 · reviewer · local-gemma · gemma-local · 20995ms · attempts 1 · verdict APPROVED · same family as executor
+OK    vokrew dossier screenshot captured — 560928 bytes
+OK    screencast frames captured — 263 frames over ~106s; state log entries=91
+OK    state log corroborates: planner + executor work modes seen
+OK    state log corroborates: reviewer on doorstep cell in logged entries — 12 entries
+OK    zero console errors in the Vokrew session (transport noise tallied + named) — nonLog=0 noise=0 unexplained=none
+
+AAA LOOK PASS CAPTURE (take 1): COMPLETE

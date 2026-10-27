@@ -1,0 +1,45 @@
+NOTE  quiet warm-up run done in 113s (attempt 1)
+PASS  (0) connect door up over the locked room — {"overlayVisible":true,"chip":"OFFLINE"}
+PASS  (1) paired through the page form
+PASS  (1) warm-up chat served by the real lane — ok
+NOTE  (1) quiet warm-up run (pre-browser) outcome — done in 113s
+PASS  (a) window frame is the Phase 1 house recipe (1440 wide; layout height recorded) — 1440x813
+PASS  (a) canvas width within 5% of floor-oc 1188 — canvas=1166,725 ref=1188,761
+PASS  (a) canvas height within 5% of floor-oc 761 — canvas=1166,725 ref=1188,761
+PASS  (a) overview scale within 5% of floor-oc 0.35767 — scale=0.34075 ref=0.35767
+PASS  (a) character px within 5% of floor-oc 16.5 — char=15.7 ref=16.5
+PASS  (a) nameplate px within 5% of floor-oc 3.22 — nameplate=3.07 ref=3.22
+PASS  (a) desktop idle screenshot captured — 406033 bytes
+PASS  (d) Run tab removed (button + screen gone) — {"tabBtn":false,"screen":false}
+PASS  (b) run #1 submitted from the Floor form — 00e8fd0d-17ef-473c-bd81-e63195fb83dc
+PASS  (b) during the run the card is a slim strip (<=44px), expanded body hidden — strip={"top":766,"bottom":800,"left":536,"right":1156,"height":34} bodyVisible=false cardHidden=false
+PASS  (b) the card never covers the room: expanded body overlaps 0px, the docked strip is a HUD sliver (<=8% of canvas area) — bodyOverlap=0 stripArea=2.49% of canvas
+PASS  (b) room canvas fully inside the viewport during the run (no evaluator scrolling) — {"top":87,"bottom":812,"left":263,"right":1429,"width":1166,"height":725} innerHeight=813
+PASS  (b) pixel probe: the room is rendered on the canvas (not blank/covered) — {"ok":true,"nonBg":12104,"total":17368,"frac":0.697,"backing":[1166,725]}
+PASS  (b) strip text tells the truth: live phase + served calls == bridge record — strip="RUN-00E8 · Scout is planning · ⚡ 0 calls served ▸" phase=planner stamps=0
+PASS  (b) a real click on an agent mid-run opens the focus panel (room stays clickable) — click={"x":515,"y":348}
+PASS  (b) reviewer reached the executor doorstep during run #1 — doorstep={"cx":23,"cy":46}
+PASS  (b) run #1 settles done on the bridge — verdict=APPROVED
+PASS  (d) on settle the card auto-expands (body visible, no click) — bodyVisible=true strip="RUN-00E8 · verdict APPROVED · same family review · ⚡ 3 calls ▾"
+PASS  (d) settled card Plan text == bridge record plan (full stage text) — card=551B record=551B
+PASS  (d) settled card Work text == bridge record work (full stage text) — card=89B record=89B
+PASS  (d) settled card Review text == bridge record review (full stage text) — card=170B record=170B
+PASS  (d) settled card verdict + stamps name the real lane/model/agents — Reviewer verdict: APPROVED
+PASS  (d) 'same family' is labeled on the settled card (single-family rig) — crossFamily=false
+PASS  (d) desktop settled screenshot captured — 389842 bytes
+PASS  (d) budget pill increased by exactly the served stage count (all takes) — pill 3 -> 6, served=3
+PASS  (e) reload happens mid-run (executor phase) — phase=executor
+PASS  (e) after the reload the room reattaches to run #2 (quest row IN PROGRESS + strip tracking it) — {"row":"RUN-B9BEWrite a one-line bash command that prints the current folder path, then explain it in one short sentence.in progressMusky","strip":"RUN-B9BE · Musky is executing · 
+PASS  (e) reattached run completes; status line reports its verdict — Run complete — verdict APPROVED · same family review
+PASS  (c) phone idle: no element overflows the viewport width — []
+PASS  (c) phone: room canvas is a real width (was 138px strip) — canvas=[398,512]
+PASS  (c) phone: room stage height is a real viewport share (px reported) — stage={"top":189,"left":7,"right":405,"width":398,"height":512}
+PASS  (c) phone: clock and quest tracker inside the viewport — clock={"top":154,"left":337,"right":393,"width":56,"height":17} tracker={"top":199,"left":17,"right":297,"width":280,"height":134} iw=415
+PASS  (c) phone idle screenshot captured — 722604 bytes
+PASS  (c) phone: run settles done — verdict=APPROVED
+PASS  (c) phone post-settle: no element overflows the viewport width (expanded card included) — []
+PASS  (c) phone settled screenshot captured — 392951 bytes
+PASS  (h) zero console errors across the whole session (pair, runs, reload, phone) — transport=0; unexplained=none; nonLog=none
+
+PHASE 2 STAGE 0 GATE: PASS  (label=after, wrote results.json)
+exit=0

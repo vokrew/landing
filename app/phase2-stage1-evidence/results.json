@@ -1,0 +1,350 @@
+{
+  "assertions": [
+    {
+      "name": "(0) connect door up over the locked room",
+      "ok": true,
+      "detail": "{\"overlayVisible\":true,\"chip\":\"OFFLINE\"}"
+    },
+    {
+      "name": "(1) paired through the page form",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "(1) warm-up chat served by the real lane",
+      "ok": true,
+      "detail": "ok"
+    },
+    {
+      "name": "(1) quiet warm-up run (pre-browser) outcome",
+      "ok": true,
+      "note": true,
+      "detail": "done in 107s"
+    },
+    {
+      "name": "(7) nameless crew: dossier opens on the role-label agent",
+      "ok": true,
+      "detail": "head=Planner/planner"
+    },
+    {
+      "name": "(7) nameless crew: identity says the agent is unnamed (no invented name)",
+      "ok": true,
+      "detail": "name row=\"unnamed — role label only\""
+    },
+    {
+      "name": "(7) nameless crew: crew + seat rows come from the bridge payload",
+      "ok": true,
+      "detail": "{\"crew\":\"default\",\"name\":\"unnamed — role label only\",\"seat\":\"planner · cubicle · Foundry\",\"lane\":\"—\",\"provider\":\"—\",\"model\":\"—\",\"family\":\"—\",\"tier\":\"—\",\"laneCalls\":\"—\",\"crewCalls\":\"—\",\"share\":\"—\"}"
+    },
+    {
+      "name": "(7) zero-run agent: history is the honest empty state, zero fabricated rows",
+      "ok": true,
+      "detail": "rows=0 empty=\"No runs yet in this bridge session — this agent has not served a stage since the bridge started.\""
+    },
+    {
+      "name": "(7) nameless dossier screenshot captured",
+      "ok": true,
+      "detail": "345370 bytes"
+    },
+    {
+      "name": "(5) close via the x button",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "(1) identity deep-equals GET /crews + GET /lanes (planner)",
+      "ok": true,
+      "detail": "panel={\"crew\":\"rig\",\"name\":\"Scout\",\"lane\":\"local-gemma\",\"provider\":\"openai-compatible\",\"model\":\"gemma-local\",\"family\":\"gemma\",\"tier\":\"local\"} bridge={\"crew\":\"rig\",\"name\":\"Scout\",\"lane\":\"local-gemma\",\"provider\":\"openai-compatible\",\"model\":\"gemma-local\",\"family\":\"gemma\",\"tier\":\"local\"}"
+    },
+    {
+      "name": "(1) seat row names the role (planner)",
+      "ok": true,
+      "detail": "seat=\"planner · cubicle · Foundry\""
+    },
+    {
+      "name": "(2) lane calls today == GET /budget for the lane",
+      "ok": true,
+      "detail": "panel=\"3\" budget=3 day=2026-10-27"
+    },
+    {
+      "name": "(2) crew calls + share are the same ledger, honestly derived",
+      "ok": true,
+      "detail": "crew panel=\"3\" want=3 share=\"100%\""
+    },
+    {
+      "name": "(7) rig planner before any page run: history matches the registry exactly (empty state, no rows)",
+      "ok": true,
+      "detail": "rows=0 registry=0"
+    },
+    {
+      "name": "(1) idle dossier screenshot captured",
+      "ok": true,
+      "detail": "357629 bytes"
+    },
+    {
+      "name": "(5) close via Esc",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "(4) run #1 submitted from the Floor form",
+      "ok": true,
+      "detail": "e444234a-d0c9-4918-895d-420c773230bf"
+    },
+    {
+      "name": "(4) planner dossier open mid-run shows the live phase at two poll points",
+      "ok": true,
+      "detail": "[{\"status\":\"running\",\"nowS\":\"Write a one-line bash command that prints the current folder path, then explain it in one short sentence. · phase: planner\",\"bridgePhase\":\"planner\",\"open\":true,\"head\":\"Scout\"},{\"status\":\"running\",\"nowS\":\"Write a one-line bash command that prints the current folder path, then explain it in one short sentence. · phase: planner\",\"bridgePhase\":\"planner\",\"open\":true,\"head\":\"Scout\"}]"
+    },
+    {
+      "name": "(4) phase transition: the open planner dossier leaves the planner phase as the record moves on",
+      "ok": true,
+      "detail": "{\"status\":\"idle\",\"nowV\":\"At its desk\",\"nowS\":\"Work is the default; heartbeat off.\",\"head\":\"Scout\",\"open\":true}"
+    },
+    {
+      "name": "(1b) identity deep-equals GET /crews + GET /lanes (reviewer)",
+      "ok": true,
+      "detail": "panel={\"crew\":\"rig\",\"name\":\"Judge\",\"lane\":\"local-gemma\",\"provider\":\"openai-compatible\",\"model\":\"gemma-local\",\"family\":\"gemma\",\"tier\":\"local\"} bridge={\"crew\":\"rig\",\"name\":\"Judge\",\"lane\":\"local-gemma\",\"provider\":\"openai-compatible\",\"model\":\"gemma-local\",\"family\":\"gemma\",\"tier\":\"local\"}"
+    },
+    {
+      "name": "(1b) seat row names the role (reviewer)",
+      "ok": true,
+      "detail": "seat=\"reviewer · cubicle · Foundry\""
+    },
+    {
+      "name": "(4) reviewer dossier mid-review shows it live (status running in its phase)",
+      "ok": true,
+      "detail": "status=running nowV=\"Visiting Musky\" bridgePhase=reviewer"
+    },
+    {
+      "name": "(4) mid-review dossier screenshot captured",
+      "ok": true,
+      "detail": "439461 bytes"
+    },
+    {
+      "name": "(4) run #1 settles done on the bridge",
+      "ok": true,
+      "detail": "verdict=APPROVED"
+    },
+    {
+      "name": "(3) executor click-point diagnostic in the settled layout",
+      "ok": true,
+      "note": true,
+      "detail": "{\"x\":575,\"y\":371,\"atPoint\":\"floorCardVerdict\",\"cardHidden\":false}"
+    },
+    {
+      "name": "(3) executor history deep-equals GET /runs/:id across the registry (lane, model, latency, attempts, failover, verdict, crossFamily)",
+      "ok": true,
+      "detail": "rows=1"
+    },
+    {
+      "name": "(3) executor history contains the just-settled run with its verdict",
+      "ok": true,
+      "detail": "verdict=APPROVED"
+    },
+    {
+      "name": "(2b) lane calls today == GET /budget for the lane",
+      "ok": true,
+      "detail": "panel=\"6\" budget=6 day=2026-10-27"
+    },
+    {
+      "name": "(2b) crew calls + share are the same ledger, honestly derived",
+      "ok": true,
+      "detail": "crew panel=\"6\" want=6 share=\"100%\""
+    },
+    {
+      "name": "(3) reviewer history deep-equals GET /runs/:id across the registry",
+      "ok": true,
+      "detail": "rows=1"
+    },
+    {
+      "name": "(3) same-family review is labeled in the reviewer's history (single-family rig)",
+      "ok": true,
+      "detail": "RUN-E444 · reviewer · local-gemma · gemma-local · 53052ms · attempts 1 · verdict APPROVED · same family as executor"
+    },
+    {
+      "name": "(3) settled dossier screenshot captured",
+      "ok": true,
+      "detail": "470561 bytes"
+    },
+    {
+      "name": "(+) budget pill increased by exactly the served stage count (all takes)",
+      "ok": true,
+      "detail": "pill 3 -> 6, served=3"
+    },
+    {
+      "name": "(5) close via a real click on empty room space",
+      "ok": true,
+      "detail": "world=40,800 screen=603,105"
+    },
+    {
+      "name": "(6) dossier open on Scout before the crew switch",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "(6) crew switch auto-closes the dossier (G-7)",
+      "ok": true,
+      "detail": "{\"open\":false,\"head\":\"Scout\"}"
+    },
+    {
+      "name": "(+) phone: dossier opens for Musky with its identity intact",
+      "ok": true,
+      "detail": "{\"crew\":\"rig\",\"name\":\"Musky\",\"seat\":\"executor · cubicle · Foundry\",\"lane\":\"local-gemma\",\"provider\":\"openai-compatible\",\"model\":\"gemma-local\",\"family\":\"gemma\",\"tier\":\"local\",\"laneCalls\":\"6\",\"crewCalls\":\"6\",\"share\":\"100%\"}"
+    },
+    {
+      "name": "(+) phone: no element overflows the viewport width with the dossier open",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "name": "(+) phone: the dossier panel itself fits the viewport",
+      "ok": true,
+      "detail": "{\"left\":15,\"right\":397,\"width\":382} iw=415"
+    },
+    {
+      "name": "(+) phone dossier screenshot captured",
+      "ok": true,
+      "detail": "424925 bytes"
+    },
+    {
+      "name": "(8) zero console errors across the whole session (pair, dossier, run, crew switch, phone)",
+      "ok": true,
+      "detail": "transport=0; unexplained=none; nonLog=none"
+    }
+  ],
+  "consoleErrors": [],
+  "screenshots": [
+    {
+      "file": "after-dossier-nameless.png",
+      "note": "default (nameless) crew planner dossier: unnamed identity, empty history"
+    },
+    {
+      "file": "after-dossier-idle.png",
+      "note": "Scout (planner) dossier at idle: identity, today, empty history"
+    },
+    {
+      "file": "after-dossier-midrun.png",
+      "note": "Judge (reviewer) dossier open mid-review, reviewer at the executor doorstep"
+    },
+    {
+      "file": "after-dossier-settled.png",
+      "note": "Judge dossier after settle: history rows with the run's stamps, same-family labeled"
+    },
+    {
+      "file": "after-phone-dossier.png",
+      "note": "phone 412x915: Musky dossier open, no overflow"
+    }
+  ],
+  "rig": {
+    "llama": "gemma-local on :18080",
+    "quietWarmUpRun": {
+      "id": "2d201a7a-75fd-4a3a-aceb-9e1f7fb85ef6",
+      "attempt": 1,
+      "verdict": "APPROVED",
+      "secs": 107
+    },
+    "bridge": "registry build on :17717",
+    "run1": "e444234a-d0c9-4918-895d-420c773230bf",
+    "pageHiddenVerified": true,
+    "run1Takes": [
+      {
+        "id": "e444234a-d0c9-4918-895d-420c773230bf",
+        "state": "done",
+        "stamps": 3,
+        "error": null
+      }
+    ],
+    "finalRecord1": {
+      "state": "done",
+      "verdict": "APPROVED",
+      "crossFamily": false,
+      "stamps": 3
+    }
+  },
+  "label": "after",
+  "measurements": {
+    "namelessPanel": {
+      "present": true,
+      "open": true,
+      "headName": "Planner",
+      "headRole": "planner",
+      "kv": {
+        "crew": "default",
+        "name": "unnamed — role label only",
+        "seat": "planner · cubicle · Foundry",
+        "lane": "—",
+        "provider": "—",
+        "model": "—",
+        "family": "—",
+        "tier": "—",
+        "laneCalls": "—",
+        "crewCalls": "—",
+        "share": "—"
+      },
+      "hist": [],
+      "histCount": 0,
+      "histEmpty": "No runs yet in this bridge session — this agent has not served a stage since the bridge started.",
+      "nowV": "At its desk",
+      "nowS": "Work is the default; heartbeat off.",
+      "statusStat": "idle",
+      "panelBox": {
+        "left": 1051,
+        "right": 1417,
+        "width": 366
+      }
+    },
+    "rigCrewRoles": [
+      "planner",
+      "executor",
+      "reviewer"
+    ],
+    "livePlanner": [
+      {
+        "status": "running",
+        "nowS": "Write a one-line bash command that prints the current folder path, then explain it in one short sentence. · phase: planner",
+        "bridgePhase": "planner",
+        "open": true,
+        "head": "Scout"
+      },
+      {
+        "status": "running",
+        "nowS": "Write a one-line bash command that prints the current folder path, then explain it in one short sentence. · phase: planner",
+        "bridgePhase": "planner",
+        "open": true,
+        "head": "Scout"
+      }
+    ],
+    "plannerAfterPhase": {
+      "status": "idle",
+      "nowV": "At its desk",
+      "nowS": "Work is the default; heartbeat off.",
+      "head": "Scout",
+      "open": true
+    },
+    "executorClickDiag": {
+      "x": 575,
+      "y": 371,
+      "atPoint": "floorCardVerdict",
+      "cardHidden": false
+    },
+    "emptyCandidates": 8,
+    "afterCrewSwitch": {
+      "open": false,
+      "head": "Scout"
+    },
+    "phoneDossier": {
+      "innerWidth": 415,
+      "innerHeight": 922,
+      "wideElements": [],
+      "focusBox": {
+        "left": 15,
+        "right": 397,
+        "width": 382
+      },
+      "focusOpen": true
+    }
+  },
+  "transportNoise": [],
+  "verdict": "PHASE 2 STAGE 1 GATE: PASS"
+}

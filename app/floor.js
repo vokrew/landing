@@ -32,7 +32,13 @@
 const cv = document.getElementById("cv");
 const ctx = cv.getContext("2d");
 const stage = document.getElementById("stage");
-let W = 800, H = 600, DPR = Math.min(2, window.devicePixelRatio || 1);
+let W = 800, H = 600, DPR = 1;
+/* VOKREW EDIT (Phase 2 Stage 0 — PHASE1-FLOOR-SPEC §7.3 mitigation):
+   on viewports under 720px wide the canvas backing store is capped
+   at DPR 1.5 (a 2560x2000 world at a phone's native 2.6 DPR is
+   memory and fill-rate the phone never gets back); wider viewports
+   keep floor-oc's cap of 2. dprCap() is defined at resizeCanvas. */
+DPR = dprCap();
 
 const WW = 2560, WH = 2000, CELL = 20, GW = WW / CELL, GH = Math.ceil(WH / CELL);
 const MOVE_PERIOD = 0.16;
@@ -935,8 +941,12 @@ function simulate(dt) {
     if (!e) return;
     if (e.tween) {
       const p = Math.min(1, (simClock - e.tween.t0) / e.tween.dur);
-      e.x = e.tween.fromX + (e.tween.toX - e.tween.fromX) * p;
-      e.y = e.tween.fromY + (e.tween.toY - e.tween.fromY) * p;
+      /* AAA: smoothstep ease — a step starts and settles instead of
+         gliding at one constant speed (same endpoints, same clock,
+         so positions and sim truth are unchanged). */
+      const pe = p * p * (3 - 2 * p);
+      e.x = e.tween.fromX + (e.tween.toX - e.tween.fromX) * pe;
+      e.y = e.tween.fromY + (e.tween.toY - e.tween.fromY) * pe;
       e.stepPhase += dt * 12;
       if (p >= 1) finishTween(a, e);
     } else {
@@ -996,11 +1006,76 @@ function rr(g, x, y, w, h, r) {
 function fillRR(g, x, y, w, h, r, color) { g.fillStyle = color; rr(g, x, y, w, h, r); g.fill(); }
 function strokeRR(g, x, y, w, h, r, color, width) { g.strokeStyle = color; g.lineWidth = width || 1; rr(g, x, y, w, h, r); g.stroke(); }
 
+/* AAA LOOK PASS (KC, 2026-10-27): procedural surface grain. One
+   seeded speckle tile, built once and laid over floor plates — the
+   surfaces stop reading as flat vector fills with zero external
+   assets. Seeded (mulberry32) so the world is identical every load;
+   this is texture, not state, and never touches bridge data. */
+let _grainPattern = null, _grainSeed = 987654321;
+function _srand() {
+  _grainSeed |= 0; _grainSeed = _grainSeed + 0x6D2B79F5 | 0;
+  let t = Math.imul(_grainSeed ^ _grainSeed >>> 15, 1 | _grainSeed);
+  t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+  return ((t ^ t >>> 14) >>> 0) / 4294967296;
+}
+function grainPattern(g) {
+  if (_grainPattern) return _grainPattern;
+  const t = document.createElement("canvas"); t.width = t.height = 128;
+  const tg = t.getContext("2d");
+  for (let i = 0; i < 950; i++) {
+    const v = _srand();
+    tg.fillStyle = v > .5
+      ? "rgba(255,255,255," + (0.02 + _srand() * 0.05).toFixed(3) + ")"
+      : "rgba(0,0,0," + (0.03 + _srand() * 0.07).toFixed(3) + ")";
+    tg.fillRect(Math.floor(_srand() * 128), Math.floor(_srand() * 128), _srand() > .85 ? 2 : 1, 1);
+  }
+  tg.strokeStyle = "rgba(255,235,200,.05)"; tg.lineWidth = 1;
+  for (let i = 0; i < 14; i++) {
+    const y = Math.floor(_srand() * 128);
+    tg.beginPath(); tg.moveTo(0, y); tg.lineTo(128, y + (_srand() * 6 - 3)); tg.stroke();
+  }
+  _grainPattern = g.createPattern(t, "repeat");
+  return _grainPattern;
+}
+function grainOver(g, rect, alpha) {
+  g.save();
+  g.beginPath(); g.rect(rect.x, rect.y, rect.w, rect.h); g.clip();
+  g.globalAlpha = alpha;
+  g.fillStyle = grainPattern(g);
+  g.fillRect(rect.x, rect.y, rect.w, rect.h);
+  g.restore();
+}
+/* Woven-pile dot grid for rugs: alternating offset dots at pile
+   spacing, clipped to the rect (caller clips or passes a safe rect). */
+function weaveOver(g, rect, color, step) {
+  const st = step || 7;
+  g.save();
+  g.beginPath(); g.rect(rect.x, rect.y, rect.w, rect.h); g.clip();
+  g.fillStyle = color;
+  let row = 0;
+  for (let wy = rect.y + 3; wy < rect.y + rect.h - 2; wy += st, row++) {
+    for (let wx = rect.x + 3 + (row % 2) * (st / 2); wx < rect.x + rect.w - 2; wx += st) {
+      g.fillRect(wx, wy, 1.6, 1.6);
+    }
+  }
+  g.restore();
+}
+
 function drawFloorPattern(g, rect, base, seam, stepX, stepY) {
   g.fillStyle = base;
   g.fillRect(rect.x, rect.y, rect.w, rect.h);
   g.save();
   g.beginPath(); g.rect(rect.x, rect.y, rect.w, rect.h); g.clip();
+  /* AAA: alternating plank bands so large plates have a grain
+     direction instead of one flat tone. */
+  g.fillStyle = "rgba(255,255,255,.022)";
+  for (let y = rect.y + stepY; y < rect.y + rect.h; y += stepY * 2) {
+    g.fillRect(rect.x, y, rect.w, stepY);
+  }
+  g.fillStyle = "rgba(0,0,0,.05)";
+  for (let y = rect.y; y < rect.y + rect.h; y += stepY * 2) {
+    g.fillRect(rect.x, y + 3, rect.w, 1.5);
+  }
   g.strokeStyle = seam; g.lineWidth = 1;
   for (let x = rect.x; x <= rect.x + rect.w; x += stepX) {
     g.beginPath(); g.moveTo(x, rect.y); g.lineTo(x, rect.y + rect.h); g.stroke();
@@ -1009,6 +1084,7 @@ function drawFloorPattern(g, rect, base, seam, stepX, stepY) {
     g.beginPath(); g.moveTo(rect.x, y); g.lineTo(rect.x + rect.w, y); g.stroke();
   }
   g.restore();
+  grainOver(g, rect, .55);
 }
 
 function drawHall(g, r, base, seam, edge) {
@@ -1163,6 +1239,8 @@ function drawCubicle(g, c, pal) {
   for (let x = c.interior.x + 20; x < c.interior.x + c.interior.w; x += 40) {
     g.beginPath(); g.moveTo(x, c.interior.y); g.lineTo(x, c.interior.y + c.interior.h); g.stroke();
   }
+  /* AAA: woven pile over the cubicle rug tint. */
+  weaveOver(g, { x:c.interior.x + 10, y:c.interior.y + 10, w:c.interior.w - 20, h:c.interior.h - 20 }, "rgba(255,255,255,.055)");
   // Walls with exactly one entrance gap
   const wall = "#202e3f";
   const top = "#304459";
@@ -1257,6 +1335,8 @@ function drawConference(g) {
   g.fillStyle = "rgba(74,96,122,.24)";
   fillRR(g, c.interior.x + 12, c.interior.y + 12, c.interior.w - 24, c.interior.h - 24, 14, "rgba(74,96,122,.24)");
   g.strokeStyle = "rgba(140,180,220,.12)"; strokeRR(g, c.interior.x + 18, c.interior.y + 18, c.interior.w - 36, c.interior.h - 36, 12, "rgba(140,180,220,.12)", 2);
+  /* AAA: woven pile on the conference rug. */
+  weaveOver(g, { x:c.interior.x + 16, y:c.interior.y + 16, w:c.interior.w - 32, h:c.interior.h - 32 }, "rgba(200,225,255,.05)");
   // Walls
   drawWall(g, c.x, c.y, c.w, 20, "#202e3f", "#304459");
   drawWall(g, c.x, c.y + c.h - 20, c.w, 20, "#202e3f", "#304459");
@@ -1609,8 +1689,13 @@ function drawYard(g) {
 }
 function buildStaticWorld() {
   const c = document.createElement("canvas");
-  c.width = WW; c.height = WH;
+  /* VOKREW EDIT (Phase 2 Stage 0, spec §7.3): small screens build the
+     static layer at 0.75 scale (~44% of the pixels); drawFrame
+     stretches it back to world size. Wider viewports keep 1:1. */
+  const ss = window.innerWidth < 720 ? 0.75 : 1;
+  c.width = Math.round(WW * ss); c.height = Math.round(WH * ss);
   const g = c.getContext("2d");
+  if (ss !== 1) g.scale(ss, ss);
   g.fillStyle = "#05080c"; g.fillRect(0, 0, WW, WH);
   // Ground shadow plate
   const halo = g.createRadialGradient(WW/2, WH/2, 200, WW/2, WH/2, 1500);
@@ -1680,10 +1765,17 @@ function updateCamera(dt) {
   }
 }
 
+/* VOKREW EDIT (Phase 2 Stage 0, spec §7.3): see the note at the DPR
+   declaration — narrow viewports cap the backing store at 1.5. */
+function dprCap() {
+  const d = window.devicePixelRatio || 1;
+  return window.innerWidth < 720 ? Math.min(1.5, d) : Math.min(2, d);
+}
+
 function resizeCanvas() {
   const r = stage.getBoundingClientRect();
   W = Math.max(320, r.width); H = Math.max(240, r.height);
-  DPR = Math.min(2, window.devicePixelRatio || 1);
+  DPR = dprCap();
   cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
   if (!camReady) {
     cam.s = overviewScale(); cam.ts = cam.s;
@@ -2032,33 +2124,43 @@ function drawMeetingAura(now) {  const m = activeMeeting();
 }
 function drawDynamicSigns(now) {
   // Cubicle name signs + owner lamps. Clear, but not a status banner.
+  /* AAA: signs hold a constant SCREEN size against the camera —
+     a fixed 8px world font was ~3.5 screen px in overview. */
+  const sFs = Math.max(8, Math.min(19, 9.5 / Math.max(cam.s, 0.2)));
+  const sH = sFs + 7;
+  ctx.font = "800 " + sFs + "px system-ui"; ctx.textAlign = "center";
   Object.values(CUBICLES).forEach(c => {
     const owner = agents.find(a => a.deskId === c.id);
     const x = c.x + c.w/2, y = c.y + 33;
     const pal = owner ? paletteFor(owner) : null;
-    const w = owner ? Math.min(c.w - 60, Math.max(52, owner.name.length * 7 + 18)) : 70;
+    const label = owner ? owner.name.toUpperCase() : "OPEN DESK";
+    const w = Math.min(c.w - 16, Math.max(52, ctx.measureText(label).width + sFs * 1.4 + 12));
+    const top = y - 2.5 - sH / 2;
     ctx.fillStyle = owner ? "rgba(8,13,20,.92)" : "rgba(10,15,22,.72)";
-    rr(ctx, x - w/2, y - 10, w, 15, 3); ctx.fill();
+    rr(ctx, x - w/2, top, w, sH, 3); ctx.fill();
     ctx.strokeStyle = owner ? pal.body : "#35485d"; ctx.lineWidth = 1;
-    rr(ctx, x - w/2, y - 10, w, 15, 3); ctx.stroke();
+    rr(ctx, x - w/2, top, w, sH, 3); ctx.stroke();
     ctx.fillStyle = owner ? "#f2f7fc" : "#6f8296";
-    ctx.font = "800 8px system-ui"; ctx.textAlign = "center";
-    ctx.fillText(owner ? owner.name.toUpperCase() : "OPEN DESK", x, y + 1);
+    ctx.fillText(label, x, top + sH / 2 + sFs * 0.36);
     if (owner) {
       const active = a => a.status === "running";
       ctx.fillStyle = active(owner) ? "#43d68b" : (owner.lifecycleState === "ready" ? pal.body : "#6f8296");
-      ctx.beginPath(); ctx.arc(x + w/2 - 5, y - 2.5, 2.2, 0, 7); ctx.fill();
+      ctx.beginPath(); ctx.arc(x + w/2 - 5, top + sH / 2, Math.max(2.2, sFs * 0.26), 0, 7); ctx.fill();
     }
   });
   // Office door plate
   const o = OFFICE;
   const hancho = agents.find(a => a.deskId === "office");
+  const oLabel = hancho ? hancho.name.toUpperCase() + " · CEO" : "CEO · OPEN";
+  const oW = Math.min(o.w - 30, Math.max(112, ctx.measureText(oLabel).width + sFs * 1.4 + 14));
+  const oH = sFs + 6;
+  const oTop = o.y + o.h - 8 - oH;
   ctx.fillStyle = "rgba(10,15,22,.9)";
-  rr(ctx, o.x + o.w/2 - 56, o.y + o.h - 22, 112, 14, 3); ctx.fill();
+  rr(ctx, o.x + o.w/2 - oW/2, oTop, oW, oH, 3); ctx.fill();
   ctx.strokeStyle = "#7a5426"; ctx.lineWidth = 1;
-  rr(ctx, o.x + o.w/2 - 56, o.y + o.h - 22, 112, 14, 3); ctx.stroke();
-  ctx.fillStyle = "#f0c48a"; ctx.font = "800 8px system-ui"; ctx.textAlign = "center";
-  ctx.fillText(hancho ? hancho.name.toUpperCase() + " · CEO" : "CEO · OPEN", o.x + o.w/2, o.y + o.h - 12);
+  rr(ctx, o.x + o.w/2 - oW/2, oTop, oW, oH, 3); ctx.stroke();
+  ctx.fillStyle = "#f0c48a";
+  ctx.fillText(oLabel, o.x + o.w/2, oTop + oH / 2 + sFs * 0.36);
 }
 
 function agentLook(a) {
@@ -2234,20 +2336,42 @@ function drawAgent(a, e, now) {
 
   // Name tag
   const tagY = baseY - (seated ? 58 : 62) - bob;
-  ctx.font = "700 9px system-ui"; ctx.textAlign = "center";
-  const tw = Math.max(34, ctx.measureText(a.name).width + 12);
+  /* AAA: the tag holds a constant SCREEN size — the world font
+     scales against the camera so a name reads at working zoom,
+     not only in focus view (a fixed 9px world font was under 4
+     screen px in overview). The plate's bottom edge stays anchored
+     where the old 13px plate ended, so nothing collides anew. */
+  const tagFs = Math.max(9, Math.min(23, 10.5 / Math.max(cam.s, 0.2)));
+  const tagH = tagFs + 5;
+  const tagTop = tagY + 13 - tagH;
+  ctx.font = "700 " + tagFs + "px system-ui"; ctx.textAlign = "center";
+  const tw = Math.max(34, ctx.measureText(a.name).width + tagFs * 1.2);
+  /* VOKREW EDIT (Phase 2 Stage 2): the conductor reply pulse. While
+     this agent's chat reply is the latest in the conductor
+     transcript, the adapter keeps e.pulseUntil in the future (the
+     same entity-field convention as e.bubble) and the name tag
+     breathes gold. Driven only by a real chat response's stamp —
+     nothing sets it speculatively. */
+  const pulsing = !!(e.pulseUntil && Date.now() < e.pulseUntil);
+  if (pulsing) {
+    ctx.save();
+    ctx.strokeStyle = "rgba(240,195,122," + (0.35 + 0.3 * Math.sin(now / 170)).toFixed(3) + ")";
+    ctx.lineWidth = 5;
+    rr(ctx, e.x - tw/2 - 2, tagTop - 2, tw + 4, tagH + 4, 8); ctx.stroke();
+    ctx.restore();
+  }
   ctx.fillStyle = "rgba(8,13,20,.82)";
-  rr(ctx, e.x - tw/2, tagY, tw, 13, 6); ctx.fill();
-  ctx.strokeStyle = isBoss ? "rgba(240,195,122,.85)" : a.status === "running" ? "rgba(67,214,139,.55)" : "rgba(90,120,150,.35)";
-  ctx.lineWidth = isBoss ? 1.6 : 1;
-  rr(ctx, e.x - tw/2, tagY, tw, 13, 6); ctx.stroke();
+  rr(ctx, e.x - tw/2, tagTop, tw, tagH, Math.min(7, tagH / 2)); ctx.fill();
+  ctx.strokeStyle = pulsing ? "rgba(240,195,122,.95)" : isBoss ? "rgba(240,195,122,.85)" : a.status === "running" ? "rgba(67,214,139,.55)" : "rgba(90,120,150,.35)";
+  ctx.lineWidth = pulsing || isBoss ? 1.6 : 1;
+  rr(ctx, e.x - tw/2, tagTop, tw, tagH, Math.min(7, tagH / 2)); ctx.stroke();
   ctx.fillStyle = isBoss ? "#ffdf9e" : "#f0f6fb";
-  ctx.fillText(a.name, e.x, tagY + 9.5);
+  ctx.fillText(a.name, e.x, tagTop + tagFs + 1.5);
 
   // error mark only
   if (a.status === "running") {
     ctx.fillStyle = "#43d68b";
-    ctx.beginPath(); ctx.arc(e.x + tw/2 + 3, tagY + 3, 2.4, 0, 7); ctx.fill();
+    ctx.beginPath(); ctx.arc(e.x + tw/2 + 3, tagTop + tagH / 2, Math.max(2.4, tagFs * 0.24), 0, 7); ctx.fill();
   }
 }
 
@@ -2265,9 +2389,13 @@ function wrapText(text, maxChars) {
 }
 
 function drawBubble(e, text, now, tone) {
-  const lines = wrapText(text, 34);
-  const w = Math.min(250, Math.max(100, Math.max.apply(null, lines.map(l => l.length)) * 5.4 + 18));
-  const h = 14 + lines.length * 11;
+  /* AAA: same constant-screen-size treatment as the name tags —
+     wrap width and line height follow the scaled font. */
+  const bFs = Math.max(8.5, Math.min(18, 10 / Math.max(cam.s, 0.2)));
+  const lines = wrapText(text, Math.max(16, Math.round(34 * 8.5 / bFs)));
+  const w = Math.min(320, Math.max(100, Math.max.apply(null, lines.map(l => l.length)) * bFs * 0.58 + 20));
+  const lh = bFs + 3.5;
+  const h = 8 + lines.length * lh;
   const x = Math.max(10, Math.min(WW - w - 10, e.x - w/2));
   const y = e.y - 78 - h;
   ctx.save();
@@ -2281,8 +2409,8 @@ function drawBubble(e, text, now, tone) {
   ctx.moveTo(e.x - 5, y + h); ctx.lineTo(e.x + 5, y + h); ctx.lineTo(e.x, y + h + 6); ctx.closePath();
   ctx.fillStyle = tone === "meeting" ? "rgba(37,27,14,.96)" : "rgba(12,21,31,.96)"; ctx.fill();
   ctx.fillStyle = tone === "meeting" ? "#f1d2a2" : "#d7e6f4";
-  ctx.font = "600 8.5px system-ui"; ctx.textAlign = "left";
-  lines.forEach((l, i) => ctx.fillText(l, x + 9, y + 13 + i * 11));
+  ctx.font = "600 " + bFs + "px system-ui"; ctx.textAlign = "left";
+  lines.forEach((l, i) => ctx.fillText(l, x + 9, y + 5 + bFs + i * lh));
   ctx.restore();
 }
 
@@ -2373,6 +2501,14 @@ function drawMiniMap() {
   agents.forEach((a) => {
     const e = ents[a.id];
     if (!e) return;
+    /* AAA: status halo under the dot — the map reads at a glance
+       like the room's status colors, not as bare specks. */
+    c.beginPath();
+    c.arc(e.x * sx, e.y * sy, a.id === selectedId ? 5 : 3.6, 0, Math.PI * 2);
+    c.fillStyle = statusColor(a);
+    c.globalAlpha = .22;
+    c.fill();
+    c.globalAlpha = 1;
     c.beginPath();
     c.arc(e.x * sx, e.y * sy, a.id === selectedId ? 2.6 : 1.7, 0, Math.PI * 2);
     c.fillStyle = statusColor(a);
@@ -2386,12 +2522,87 @@ function drawMiniMap() {
     c.strokeStyle = "rgba(0,0,0,.55)"; c.lineWidth = 1; c.stroke();
   }
   const viewW = W / cam.s, viewH = H / cam.s;
+  /* AAA: the viewport is a lit window, not a bare outline. */
+  c.fillStyle = "rgba(240,195,122,.06)";
+  c.fillRect((cam.x - viewW / 2) * sx, (cam.y - viewH / 2) * sy, viewW * sx, viewH * sy);
   c.strokeStyle = "rgba(240,195,122,.85)";
   c.lineWidth = 1;
   c.strokeRect((cam.x - viewW / 2) * sx, (cam.y - viewH / 2) * sy, viewW * sx, viewH * sy);
   setText("mmCoords", Math.round(cam.x) + " · " + Math.round(cam.y));
 }
 /* VOKREW EDIT: drawFrame() below loses drawBoss()/drawPovWorld() (§4 cuts). */
+/* -------------------------------------------------------------------------
+   AAA LOOK PASS (KC): layered lighting. A half-scale shade plate is
+   cut with radial holes at every real light source, laid over the
+   world as a veil, then warm/cool glow is screened on top. Desk-lamp
+   strength follows the desk owner's REAL status from the bridge
+   (running = full pool, ready = medium, idle = ember, empty desk =
+   spill only); the conference pool brightens only while a meeting
+   is actually active. Light is state, never decoration faked ahead
+   of the data.
+   ------------------------------------------------------------------------- */
+let _shadeCv = null;
+function lightSources(now) {
+  const src = [];
+  Object.values(CUBICLES).forEach(c => {
+    const owner = agents.find(a => a.deskId === c.id);
+    let s = 0.12;
+    if (owner) s = owner.status === "running" ? 1.0 : (owner.lifecycleState === "ready" ? 0.55 : 0.38);
+    src.push({ x: c.desk.x + c.desk.w / 2, y: c.desk.y + c.desk.h / 2, r: 170, s, warm: 1 });
+  });
+  src.push({ x: OFFICE.x + OFFICE.w / 2, y: OFFICE.y + 46, r: 300, s: 0.62, warm: 1 });
+  src.push({ x: CONF.x + CONF.w / 2, y: CONF.y + CONF.h / 2, r: 330, s: activeMeeting() ? 0.95 : 0.3, warm: 1 });
+  const flicker = 0.72 + 0.09 * Math.sin(now / 137) * Math.sin(now / 61 + 1.7);
+  src.push({ x: FIXTURES.hearth.x + 30, y: FIXTURES.hearth.y + 60, r: 190, s: flicker, warm: 1 });
+  src.push({ x: FIXTURES.rig.x + 100, y: FIXTURES.rig.y + 45, r: 175, s: 0.36, warm: 0 });
+  src.push({ x: FIXTURES.board.x + 130, y: FIXTURES.board.y + 40, r: 210, s: 0.3, warm: 1 });
+  src.push({ x: ZONES.skyloft.x + ZONES.skyloft.w / 2, y: ZONES.skyloft.y + ZONES.skyloft.h / 2, r: 580, s: 0.22, warm: 0 });
+  src.push({ x: ZONES.workshop.x + ZONES.workshop.w / 2, y: ZONES.workshop.y + ZONES.workshop.h / 2, r: 500, s: 0.3, warm: 1 });
+  src.push({ x: ZONES.yard.x + ZONES.yard.w / 2, y: ZONES.yard.y + ZONES.yard.h / 2, r: 640, s: 0.15, warm: 0 });
+  [1760, 2050, 2340].forEach(x => src.push({ x, y: 1710, r: 125, s: 0.5, warm: 1 }));
+  return src;
+}
+function drawLighting(now) {
+  if (!_shadeCv) { _shadeCv = document.createElement("canvas"); _shadeCv.width = WW / 2; _shadeCv.height = WH / 2; }
+  const sg = _shadeCv.getContext("2d");
+  const src = lightSources(now);
+  sg.setTransform(1, 0, 0, 1, 0, 0);
+  sg.globalCompositeOperation = "source-over";
+  sg.clearRect(0, 0, _shadeCv.width, _shadeCv.height);
+  sg.fillStyle = "rgba(5,9,17,.92)";
+  sg.fillRect(0, 0, _shadeCv.width, _shadeCv.height);
+  sg.globalCompositeOperation = "destination-out";
+  src.forEach(L => {
+    const gx = L.x / 2, gy = L.y / 2, gr = L.r / 2;
+    const rad = sg.createRadialGradient(gx, gy, 0, gx, gy, gr);
+    rad.addColorStop(0, "rgba(255,255,255," + (0.88 * L.s).toFixed(3) + ")");
+    rad.addColorStop(0.55, "rgba(255,255,255," + (0.4 * L.s).toFixed(3) + ")");
+    rad.addColorStop(1, "rgba(255,255,255,0)");
+    sg.fillStyle = rad;
+    sg.beginPath(); sg.arc(gx, gy, gr, 0, 7); sg.fill();
+  });
+  ctx.save();
+  ctx.globalAlpha = 0.45;
+  ctx.imageSmoothingEnabled = true;
+  ctx.drawImage(_shadeCv, 0, 0, WW, WH);
+  ctx.restore();
+  ctx.save();
+  ctx.globalCompositeOperation = "screen";
+  src.forEach(L => {
+    const rad = ctx.createRadialGradient(L.x, L.y, 0, L.x, L.y, L.r);
+    if (L.warm) {
+      rad.addColorStop(0, "rgba(255,176,92," + (0.13 * L.s).toFixed(3) + ")");
+      rad.addColorStop(1, "rgba(255,176,92,0)");
+    } else {
+      rad.addColorStop(0, "rgba(110,165,255," + (0.1 * L.s).toFixed(3) + ")");
+      rad.addColorStop(1, "rgba(110,165,255,0)");
+    }
+    ctx.fillStyle = rad;
+    ctx.beginPath(); ctx.arc(L.x, L.y, L.r, 0, 7); ctx.fill();
+  });
+  ctx.restore();
+}
+
 function drawFrame(now) {
   ctx.setTransform(1, 0, 0, 1, 0, 0);
   ctx.clearRect(0, 0, cv.width, cv.height);
@@ -2401,7 +2612,7 @@ function drawFrame(now) {
   ctx.translate(W/2, H/2);
   ctx.scale(cam.s, cam.s);
   ctx.translate(-cam.x, -cam.y);
-  if (staticWorld) ctx.drawImage(staticWorld, 0, 0);
+  if (staticWorld) ctx.drawImage(staticWorld, 0, 0, WW, WH);
   drawSkyLive(now);
   drawYardLive(now);
   drawWorkshopLive(now);
@@ -2421,6 +2632,9 @@ function drawFrame(now) {
   });
   order.forEach(a => { const e = ents[a.id]; if (e) drawAgent(a, e, now); });
   drawHermes(now);
+  /* AAA: the light layer sits over the world and its people, under
+     the speech bubbles so talk stays readable. */
+  drawLighting(now);
   drawBubbles(now);
   ctx.restore();
 }
@@ -2930,11 +3144,18 @@ function nowText(a) {
 function focusStateSig(a) {
   const live = liveFor(a.id);
   const e = ents[a.id];
+  /* VOKREW EDIT (Phase 2 Stage 1): the dossier rides the same
+     signature, so an open panel re-renders when its lane's call
+     count or its stamp history changes — not only on room events. */
+  const dz = a.dossier || null;
+  const dzSig = dz ? [dz.laneCallsToday, dz.crewCallsToday, (dz.history || []).length,
+    dz.history && dz.history[0] ? dz.history[0].runId : "-"].join(":") : "-";
   return [
     a.id, a.status, a.lifecycleState, a.heartbeat, a.deskId, a.reportsTo,
     a.personality, a.xp, a.tasksDone, (a.memory || []).length, (a.beliefs || []).length,
     a.talkCount || 0,
-    live ? live.id : "-", e ? e.mode : "-", e ? e.activity : "-", modelName(a)
+    live ? live.id : "-", e ? e.mode : "-", e ? e.activity : "-", modelName(a),
+    dzSig
   ].join("|");
 }
 
@@ -3003,6 +3224,59 @@ function renderFocus() {
     return '<div class="memrow"><span class="when">' + esc(when) + '</span>' + esc(text) + '</div>';
   }).join("") : '<div class="muted">No memory yet.</div>';
 
+  /* VOKREW EDIT (Phase 2 Stage 1): the dossier — Identity / Today /
+     History sections rendered from a.dossier, the adapter's
+     translation of GET /crews + /lanes + /budget + /runs (see
+     dossierFor in floor-adapter.js). Fields the bridge did not
+     supply render as "—", never invented. When a dossier is
+     present it replaces floor-oc's Memory section: the structured
+     stamp history below carries the same stamps with their run
+     verdicts (the raw stamp lines still live in the run card). */
+  const dz = a.dossier || null;
+  let dossierHtml = "";
+  if (dz) {
+    const drow = (k, label, v) =>
+      '<div class="drow" data-k="' + k + '"><span class="dk">' + esc(label) + '</span>' +
+      '<span class="dv">' + esc(v === null || v === undefined || v === "" ? "—" : String(v)) + '</span></div>';
+    const idRows =
+      drow("crew", "Crew", dz.crew) +
+      drow("name", "Name", dz.nameless ? "unnamed — role label only" : dz.name) +
+      drow("seat", "Seat", dz.role + " · " + deskLabel(a.deskId)) +
+      drow("lane", "Lane", dz.laneId) +
+      drow("provider", "Provider", dz.provider) +
+      drow("model", "Model", dz.model) +
+      drow("family", "Family", dz.family) +
+      drow("tier", "Tier", dz.tier);
+    const todayRows =
+      drow("laneCalls", "Lane calls today", dz.laneCallsToday) +
+      drow("crewCalls", "Crew calls today", dz.crewCallsToday) +
+      drow("share", "Share of crew calls", dz.sharePct === null || dz.sharePct === undefined ? null : dz.sharePct + "%");
+    const hist = Array.isArray(dz.history) ? dz.history : [];
+    const histHtml = hist.length ? hist.map((h) => {
+      const bits = [h.identifier, h.role, (h.lane || "?") + " · " + (h.model || "?"), h.latencyMs + "ms"];
+      const attempts = h.attempts || [];
+      const failed = attempts.filter((x) => x.status !== "served");
+      if (attempts.length) bits.push("attempts " + attempts.length + (failed.length ? " (" + failed.map((x) => x.lane + " " + x.status).join("; ") + ")" : ""));
+      if (h.failover) bits.push("failover");
+      if (h.runState === "done") bits.push("verdict " + (h.verdict || "—"));
+      else if (h.runState === "failed") bits.push("run failed");
+      else bits.push("running");
+      if (h.role === "reviewer" && h.crossFamily === false) bits.push("same family as executor");
+      return '<div class="histrow" data-run="' + esc(h.runId) + '" data-role="' + esc(h.role) +
+        '" data-lane="' + esc(h.lane || "") + '" data-model="' + esc(h.model || "") +
+        '" data-latency="' + esc(h.latencyMs) + '" data-attempts="' + attempts.length +
+        '" data-failover="' + (h.failover ? "1" : "0") +
+        '" data-verdict="' + esc(h.runState === "done" ? (h.verdict || "") : "") +
+        '" data-runstate="' + esc(h.runState) +
+        '" data-xfam="' + (h.crossFamily === null || h.crossFamily === undefined ? "" : h.crossFamily ? "yes" : "no") + '">' +
+        esc(bits.join(" · ")) + '</div>';
+    }).join("") : '<div class="muted histempty">No runs yet in this bridge session — this agent has not served a stage since the bridge started.</div>';
+    dossierHtml =
+      '<div class="sec"><h3>Identity</h3><div class="drows">' + idRows + '</div></div>' +
+      '<div class="sec"><h3>Today</h3><div class="drows">' + todayRows + '</div></div>' +
+      '<div class="sec"><h3>History</h3><div class="dossier-history">' + histHtml + '</div></div>';
+  }
+
   panel.innerHTML =
     '<div class="panelhead"><div class="avatar" style="background:' + pal.body + ';box-shadow:0 0 16px ' + pal.glow + '66">' +
     esc(initials(a.name)) + (isCloud ? '<span class="cloud">\u2601</span>' : "") + '</div>' +
@@ -3022,7 +3296,8 @@ function renderFocus() {
     esc(live ? ((live.taskIdentifier || "run") + " \u00b7 " + ((tasks.find((x) => x.id === live.taskId) || {}).title || "")) : "") + '</div>' +
     '<div class="s" id="fRunStep">' + esc(live && live.lastStep ? String(live.lastStep.text || "") : "") + '</div></div></div>' +
     (a.instructions ? '<div class="sec"><h3>Instructions</h3><div class="pre">' + esc(a.instructions) + '</div></div>' : "") +
-    '<div class="sec"><h3>Memory</h3><div>' + memRows + '</div></div>' +
+    dossierHtml +
+    (dz ? "" : '<div class="sec"><h3>Memory</h3><div>' + memRows + '</div></div>') +
     '</div>';
 
   $id("f-close").onclick = () => { closePanels(); renderAll(); };

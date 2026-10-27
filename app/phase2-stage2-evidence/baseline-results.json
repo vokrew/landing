@@ -1,0 +1,320 @@
+{
+  "assertions": [
+    {
+      "name": "(0) connect door up over the locked room",
+      "ok": true,
+      "detail": "{\"overlayVisible\":true,\"chip\":\"OFFLINE\"}"
+    },
+    {
+      "name": "(1) paired through the page form",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "(1) warm-up chat served by the real lane",
+      "ok": true,
+      "detail": "ok"
+    },
+    {
+      "name": "(1) quiet warm-up run (pre-browser) outcome",
+      "ok": true,
+      "note": true,
+      "detail": "done in 108s"
+    },
+    {
+      "name": "(2) conductor is present in the Floor sidebar with an empty transcript and no holds",
+      "ok": false,
+      "detail": "present=false entries=? holds=?"
+    },
+    {
+      "name": "(2) snapshot: the page pill reads the same coding ledger as GET /budget",
+      "ok": true,
+      "detail": "pill=3 api=3 chat=1 registry=0"
+    },
+    {
+      "name": "(1) named task creates exactly one hold",
+      "ok": false,
+      "detail": "no hold"
+    },
+    {
+      "name": "(1) the hold names the called-out agent and its seat",
+      "ok": false,
+      "detail": "no hold"
+    },
+    {
+      "name": "(1) the hold carries the task text verbatim and the seated crew",
+      "ok": false,
+      "detail": "no hold"
+    },
+    {
+      "name": "(1) the transcript records the hold as issued (one hold entry, same id, same text)",
+      "ok": false,
+      "detail": "no transcript hold entry"
+    },
+    {
+      "name": "(1) the holds list + transcript render the hold (DOM rows carry its id, crew, seats)",
+      "ok": false,
+      "detail": "probe failed"
+    },
+    {
+      "name": "(1) fires nothing: registry + both budgets unchanged, zero /chat calls",
+      "ok": true,
+      "detail": "registry=0/0 coding=3/3 chat=1/1 chats=0 holds=1"
+    },
+    {
+      "name": "(1) conductor hold screenshot captured",
+      "ok": true,
+      "detail": "406341 bytes"
+    },
+    {
+      "name": "(1) multi-seat call-out creates exactly one more hold, naming both seats in order",
+      "ok": false,
+      "detail": "no second hold"
+    },
+    {
+      "name": "(1b) fires nothing: registry + both budgets unchanged, zero /chat calls",
+      "ok": true,
+      "detail": "registry=0/0 coding=3/3 chat=1/1 chats=0 holds=2"
+    },
+    {
+      "name": "(2) the unknown call-out is flagged in the transcript, naming the unknown",
+      "ok": false,
+      "detail": "no flag entry"
+    },
+    {
+      "name": "(2) the flag renders inline in the transcript (DOM row names Zebedee, says nothing was fired)",
+      "ok": false,
+      "detail": "no flag row"
+    },
+    {
+      "name": "(2) no hold was created for the unknown name",
+      "ok": false,
+      "detail": "probe failed"
+    },
+    {
+      "name": "(2) fires nothing: registry + both budgets unchanged, zero /chat calls",
+      "ok": true,
+      "detail": "registry=0/0 coding=3/3 chat=1/1 chats=0 holds=2"
+    },
+    {
+      "name": "(2) unknown-flag screenshot captured",
+      "ok": true,
+      "detail": "406631 bytes"
+    },
+    {
+      "name": "(5) a plain instruction becomes a hold for the whole crew (no seats called out, standard chain)",
+      "ok": false,
+      "detail": "no third hold"
+    },
+    {
+      "name": "(5) fires nothing: registry + both budgets unchanged, zero /chat calls",
+      "ok": true,
+      "detail": "registry=0/0 coding=3/3 chat=1/1 chats=0 holds=3"
+    },
+    {
+      "name": "(3) the question returns a reply in the conductor transcript",
+      "ok": false,
+      "detail": "no reply entry"
+    },
+    {
+      "name": "(3) exactly one POST /chat was fired, carrying the question verbatim, surface=chat, the seated crew",
+      "ok": false,
+      "detail": "chats=0 req=none status=?"
+    },
+    {
+      "name": "(3) the transcript reply's stamp deep-equals the real /chat response stamp (role, agent, lane, provider, model, family, tier, latency, attempts, failover)",
+      "ok": false,
+      "detail": "entry=null response=undefined"
+    },
+    {
+      "name": "(3) the answering stage is the crew's executor, named by the bridge (Musky on local-gemma/gemma-local)",
+      "ok": false,
+      "detail": ""
+    },
+    {
+      "name": "(3) the rendered reply row carries the same stamp as data attributes",
+      "ok": false,
+      "detail": "no reply row"
+    },
+    {
+      "name": "(3) the answering agent's nameplate pulse is live in the page (pulseUntil ahead of the clock at two samples)",
+      "ok": false,
+      "detail": "{\"first\":{\"executor\":null,\"planner\":null,\"reviewer\":null},\"second\":{\"executor\":null,\"planner\":null,\"reviewer\":null}}"
+    },
+    {
+      "name": "(3) only the answerer pulses — planner and reviewer nameplates stay quiet",
+      "ok": false,
+      "detail": "{\"first\":{\"executor\":null,\"planner\":null,\"reviewer\":null},\"second\":{\"executor\":null,\"planner\":null,\"reviewer\":null}}"
+    },
+    {
+      "name": "(3)/(6) the chat budget moved by exactly the served calls (1) and the coding budget did not move",
+      "ok": false,
+      "detail": "chat 1 -> 1; coding 3 -> 3"
+    },
+    {
+      "name": "(3) chat reply screenshot captured",
+      "ok": true,
+      "detail": "405954 bytes"
+    },
+    {
+      "name": "(4) the transcript survives the reload — same entries, same order (sessionStorage)",
+      "ok": false,
+      "detail": "pre=0 post=none"
+    },
+    {
+      "name": "(4) the holds survive the reload — same holds, same seats, still pending",
+      "ok": false,
+      "detail": "pre=0 post=none"
+    },
+    {
+      "name": "(4) the reload itself fired nothing (registry + budgets unchanged)",
+      "ok": true,
+      "detail": "registry=0/0 coding=3/3 chat=1/1"
+    },
+    {
+      "name": "(4) post-reload screenshot captured",
+      "ok": true,
+      "detail": "406364 bytes"
+    },
+    {
+      "name": "(6) gate run submitted from the Floor form",
+      "ok": true,
+      "detail": "4fb7cf68-0d9d-4f05-a3c4-539bf6048edc"
+    },
+    {
+      "name": "(6) the gate run settles done on the bridge",
+      "ok": true,
+      "detail": "verdict=APPROVED stamps=3"
+    },
+    {
+      "name": "(6) the settled run's verdict lands in the conductor transcript, equal to the bridge record",
+      "ok": false,
+      "detail": "no verdict entry"
+    },
+    {
+      "name": "(6) the same-family review is labeled in the transcript verdict (single-family rig)",
+      "ok": false,
+      "detail": "record crossFamily=false"
+    },
+    {
+      "name": "(6) the verdict renders as a transcript row carrying the run id + verdict + family label",
+      "ok": false,
+      "detail": "no verdict row"
+    },
+    {
+      "name": "(6) budget math across the gate: coding moved by exactly the served run stamps (all takes), chat by exactly the one served chat call — no phantom calls",
+      "ok": false,
+      "detail": "coding 3 -> 6 (served 3); chat 1 -> 1 (served 1)"
+    },
+    {
+      "name": "(6) the page pill equals the bridge's coding ledger at the end",
+      "ok": true,
+      "detail": "pill=6 api=6"
+    },
+    {
+      "name": "(+) phone: no element overflows the viewport width (conductor included)",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "name": "(+) phone: the conductor bar fits the viewport and the session transcript is intact",
+      "ok": false,
+      "detail": "{\"present\":false,\"entries\":null,\"holds\":null,\"formBox\":null,\"inputBox\":null}"
+    },
+    {
+      "name": "(+) phone conductor screenshot captured",
+      "ok": true,
+      "detail": "732507 bytes"
+    },
+    {
+      "name": "(7) zero console errors across the whole session (pair, holds, flag, chat, reload, run, phone)",
+      "ok": true,
+      "detail": "transport=0; unexplained=none; nonLog=none"
+    }
+  ],
+  "consoleErrors": [],
+  "screenshots": [
+    {
+      "file": "before-conductor-hold.png",
+      "note": "conductor: named call-out to Scout became a hold; transcript + holds list show it"
+    },
+    {
+      "file": "before-unknown-flag.png",
+      "note": "conductor: 'Zebedee, do the thing' flagged inline — no crewmate by that name, nothing fired"
+    },
+    {
+      "file": "before-chat-reply.png",
+      "note": "conductor: question answered in the transcript with the real chat stamp; Musky's nameplate pulses"
+    },
+    {
+      "file": "before-after-reload.png",
+      "note": "after reload: transcript + 3 holds restored from sessionStorage, nothing fired"
+    },
+    {
+      "file": "before-phone-conductor.png",
+      "note": "phone 412x915: conductor bar + transcript in the stacked sidebar, no overflow"
+    }
+  ],
+  "rig": {
+    "llama": "gemma-local on :18080",
+    "quietWarmUpRun": {
+      "id": "e75d117d-4885-4ee4-8a84-a63235a2483a",
+      "attempt": 1,
+      "verdict": "APPROVED",
+      "secs": 108
+    },
+    "bridge": "registry build on :17717",
+    "pageHiddenVerified": true,
+    "gateRun": "4fb7cf68-0d9d-4f05-a3c4-539bf6048edc",
+    "gateRunTakes": [
+      {
+        "id": "4fb7cf68-0d9d-4f05-a3c4-539bf6048edc",
+        "state": "done",
+        "stamps": 3,
+        "error": null
+      }
+    ]
+  },
+  "label": "before",
+  "measurements": {
+    "snapshot": {
+      "coding": 3,
+      "chat": 1,
+      "registry": 0,
+      "pill": 3
+    },
+    "pulse": {
+      "first": {
+        "executor": null,
+        "planner": null,
+        "reviewer": null
+      },
+      "second": {
+        "executor": null,
+        "planner": null,
+        "reviewer": null
+      }
+    },
+    "preReload": {
+      "entries": 0,
+      "holds": 0
+    },
+    "phone": {
+      "audit": {
+        "innerWidth": 415,
+        "innerHeight": 922,
+        "wideElements": []
+      },
+      "conductor": {
+        "present": false,
+        "entries": null,
+        "holds": null,
+        "formBox": null,
+        "inputBox": null
+      }
+    }
+  },
+  "capturedChats": [],
+  "transportNoise": [],
+  "verdict": "PHASE 2 STAGE 2 GATE: FAIL (26)"
+}

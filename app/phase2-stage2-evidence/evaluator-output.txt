@@ -1,0 +1,49 @@
+NOTE  quiet warm-up run done in 100s (attempt 1)
+PASS  (0) connect door up over the locked room — {"overlayVisible":true,"chip":"OFFLINE"}
+PASS  (1) paired through the page form
+PASS  (1) warm-up chat served by the real lane — ok
+NOTE  (1) quiet warm-up run (pre-browser) outcome — done in 100s
+PASS  (2) conductor is present in the Floor sidebar with an empty transcript and no holds — present=true entries=0 holds=0
+PASS  (2) snapshot: the page pill reads the same coding ledger as GET /budget — pill=3 api=3 chat=1 registry=0
+PASS  (1) named task creates exactly one hold — holds=1
+PASS  (1) the hold names the called-out agent and its seat — [{"role":"planner","name":"Scout"}]
+PASS  (1) the hold carries the task text verbatim and the seated crew — crew=rig text="Scout, draft the release checklist and tag the open issues"
+PASS  (1) the transcript records the hold as issued (one hold entry, same id, same text) — entry=h1 hold=h1
+PASS  (1) the holds list + transcript render the hold (DOM rows carry its id, crew, seats) — holdRows=[{"hold":"h1","crew":"rig","seats":"planner","text":"HELD FOR SCOUT · PLANNER · CREW RIGScout, draft the release checklist and tag the open issues"}] count=1 held
+PASS  (1) fires nothing: registry + both budgets unchanged, zero /chat calls — registry=0/0 coding=3/3 chat=1/1 chats=0 holds=1
+PASS  (1) conductor hold screenshot captured — 438476 bytes
+PASS  (1) multi-seat call-out creates exactly one more hold, naming both seats in order — [{"role":"executor","name":"Musky"},{"role":"reviewer","name":"Judge"}]
+PASS  (1b) fires nothing: registry + both budgets unchanged, zero /chat calls — registry=0/0 coding=3/3 chat=1/1 chats=0 holds=2
+PASS  (2) the unknown call-out is flagged in the transcript, naming the unknown — ["Zebedee"]
+PASS  (2) the flag renders inline in the transcript (DOM row names Zebedee, says nothing was fired) — 10:09:03NOT SENTno crewmate named Zebedee in crew rig — nothing was fired.
+PASS  (2) no hold was created for the unknown name — holds=2
+PASS  (2) fires nothing: registry + both budgets unchanged, zero /chat calls — registry=0/0 coding=3/3 chat=1/1 chats=0 holds=2
+PASS  (2) unknown-flag screenshot captured — 445636 bytes
+PASS  (5) a plain instruction becomes a hold for the whole crew (no seats called out, standard chain) — crew=rig seats=[]
+PASS  (5) fires nothing: registry + both budgets unchanged, zero /chat calls — registry=0/0 coding=3/3 chat=1/1 chats=0 holds=3
+PASS  (3) the question returns a reply in the conductor transcript — reply="The pwd command prints the root directory.\n"
+PASS  (3) exactly one POST /chat was fired, carrying the question verbatim, surface=chat, the seated crew — chats=1 req={"message":"What does the pwd command print?","surface":"chat","crew":"rig"} status=200
+PASS  (3) the transcript reply's stamp deep-equals the real /chat response stamp (role, agent, lane, provider, model, family, tier, latency, attempts, failover) — entry={"role":"executor","agent":"Musky","lane":"local-gemma","provider":"openai-compatible","model":"gemma-local","family":"gemma","tier":"local","latencyMs":7699,"failover":false,"attempts":[{"lane":"local-gemma","status":"served"}]} response={"role":"executor","agent":"Musky","lane":"local-gemma","provider":"openai-compatible","model":"gemma-local","family":"gemma","tier":"local","latencyMs":7699,"failover":false,"attempts":[{"lane":"local-gemma","status":"served"}]}
+PASS  (3) the answering stage is the crew's executor, named by the bridge (Musky on local-gemma/gemma-local) — {"role":"executor","agent":"Musky","lane":"local-gemma","provider":"openai-compatible","model":"gemma-local","family":"gemma","tier":"local","latencyMs":7699,"failover":false,"attempts":[{"lane":"local-gemma","status":"served"}]}
+PASS  (3) the rendered reply row carries the same stamp as data attributes — {"role":"executor","agent":"Musky","lane":"local-gemma","model":"gemma-local","latency":"7699"}
+PASS  (3) the answering agent's nameplate pulse is live in the page (pulseUntil ahead of the clock at two samples) — {"first":{"executor":3807,"planner":null,"reviewer":null},"second":{"executor":3149,"planner":null,"reviewer":null}}
+PASS  (3) only the answerer pulses — planner and reviewer nameplates stay quiet — {"first":{"executor":3807,"planner":null,"reviewer":null},"second":{"executor":3149,"planner":null,"reviewer":null}}
+PASS  (3)/(6) the chat budget moved by exactly the served calls (1) and the coding budget did not move — chat 1 -> 2; coding 3 -> 3
+PASS  (3) chat reply screenshot captured — 439047 bytes
+PASS  (4) the transcript survives the reload — same entries, same order (sessionStorage) — pre=7 post=7
+PASS  (4) the holds survive the reload — same holds, same seats, still pending — pre=3 post=3
+PASS  (4) the reload itself fired nothing (registry + budgets unchanged) — registry=0/0 coding=3/3 chat=2/2
+PASS  (4) post-reload screenshot captured — 437720 bytes
+PASS  (6) gate run submitted from the Floor form — ffb2dd65-a4a0-4352-ae09-a06ac1f03706
+PASS  (6) the gate run settles done on the bridge — verdict=APPROVED stamps=3
+PASS  (6) the settled run's verdict lands in the conductor transcript, equal to the bridge record — entry verdict=APPROVED xfam=false calls=3
+PASS  (6) the same-family review is labeled in the transcript verdict (single-family rig) — record crossFamily=false
+PASS  (6) the verdict renders as a transcript row carrying the run id + verdict + family label — {"run":"ffb2dd65-a4a0-4352-ae09-a06ac1f03706","verdict":"APPROVED","xfam":"no"}
+PASS  (6) budget math across the gate: coding moved by exactly the served run stamps (all takes), chat by exactly the one served chat call — no phantom calls — coding 3 -> 6 (served 3); chat 1 -> 2 (served 1)
+PASS  (6) the page pill equals the bridge's coding ledger at the end — pill=6 api=6
+PASS  (+) phone: no element overflows the viewport width (conductor included) — []
+PASS  (+) phone: the conductor bar fits the viewport and the session transcript is intact — {"present":true,"entries":8,"holds":3,"formBox":{"left":7,"right":405,"width":398},"inputBox":{"left":16,"right":344,"width":328}}
+PASS  (+) phone conductor screenshot captured — 709466 bytes
+PASS  (7) zero console errors across the whole session (pair, holds, flag, chat, reload, run, phone) — transport=0; unexplained=none; nonLog=none
+
+PHASE 2 STAGE 2 GATE: PASS  (label=after, wrote results.json)

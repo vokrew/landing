@@ -1,0 +1,462 @@
+{
+  "take": 4,
+  "assertions": [
+    {
+      "name": "lane warm-up completed directly against llama-server",
+      "ok": true,
+      "detail": "925ms"
+    },
+    {
+      "name": "vokrew: paired through the page's own form",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "vokrew: rig crew seated, overview scale measured (floor-oc parity band = within 5%)",
+      "ok": true,
+      "detail": "scale=0.34075 flooroc=null canvas=[1166,725] viewport=1440x813"
+    },
+    {
+      "name": "vokrew idle screenshot captured",
+      "ok": true,
+      "detail": "423811 bytes"
+    },
+    {
+      "name": "conductor call-out became exactly one hold; badge + noticeboard agree",
+      "ok": true,
+      "detail": "badge=\"1\" sidebar=1 noticeboard=1"
+    },
+    {
+      "name": "vokrew hold-pending screenshot captured",
+      "ok": true,
+      "detail": "484963 bytes"
+    },
+    {
+      "name": "approve clicked on the hold card",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "approved run registered on the bridge",
+      "ok": true,
+      "detail": "397ee72e-3277-4dd0-9e2c-4462959bdbd0"
+    },
+    {
+      "name": "vokrew mid-run screenshot captured (reviewer at doorway)",
+      "ok": true,
+      "detail": "doorstep={\"cx\":23,\"cy\":46}"
+    },
+    {
+      "name": "approved run settled done/APPROVED on the bridge",
+      "ok": true,
+      "detail": "state=done verdict=APPROVED duration=70s error=none"
+    },
+    {
+      "name": "reviewer reached the executor doorstep during the run",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "gap (a) measured: element at the executor's canvas click point in the settled layout",
+      "ok": true,
+      "detail": "atPoint=floorCardBody chain=[\"floorCardBody\",\"floorRunCard\",\"stage\",\"floorRoot\",\"screen-floor\"] cardHidden=false"
+    },
+    {
+      "name": "verdict landed in the conductor transcript, tied to the run id",
+      "ok": true,
+      "detail": "11:42:57VERDICTRUN-397E \u2014 verdict APPROVED \u00b7 same family review \u00b7 \u26a1 3 calls"
+    },
+    {
+      "name": "vokrew settled screenshot captured",
+      "ok": true,
+      "detail": "430385 bytes"
+    },
+    {
+      "name": "reviewer dossier shows the just-settled run in its history, verdict + same-family label intact",
+      "ok": true,
+      "detail": "RUN-397E \u00b7 reviewer \u00b7 local-gemma \u00b7 gemma-local \u00b7 21300ms \u00b7 attempts 1 \u00b7 verdict APPROVED \u00b7 same family as executor"
+    },
+    {
+      "name": "vokrew dossier screenshot captured",
+      "ok": true,
+      "detail": "452770 bytes"
+    },
+    {
+      "name": "screencast frames captured",
+      "ok": true,
+      "detail": "391 frames over ~97.1s; state log entries=94"
+    },
+    {
+      "name": "state log corroborates: planner + executor work modes seen",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "state log corroborates: reviewer on doorstep cell in logged entries",
+      "ok": true,
+      "detail": "16 entries"
+    },
+    {
+      "name": "zero console errors in the Vokrew session (transport noise tallied + named)",
+      "ok": true,
+      "detail": "nonLog=0 noise=0 unexplained=none"
+    }
+  ],
+  "consoleErrors": [],
+  "screenshots": [
+    {
+      "file": "vokrew-idle.png",
+      "note": "VOKREW FLOOR: idle room, rig crew (Scout/Musky/Judge) seated, house frame \u2014 pairs with flooroc-idle.png"
+    },
+    {
+      "file": "vokrew-hold-pending.png",
+      "note": "VOKREW FLOOR: hold pending \u2014 sidebar hold card + office noticeboard card + top-bar badge 1"
+    },
+    {
+      "file": "vokrew-midrun.png",
+      "note": "VOKREW FLOOR mid-run: Judge (reviewer) standing on Musky's doorstep cell during phase reviewer, run card docked as the slim strip"
+    },
+    {
+      "file": "vokrew-settled.png",
+      "note": "VOKREW FLOOR: run settled \u2014 verdict in the conductor transcript + auto-expanded run card over the room (gap (a) in frame)"
+    },
+    {
+      "file": "vokrew-dossier.png",
+      "note": "VOKREW FLOOR: Judge's dossier after the run \u2014 identity from the bridge + this run's history row \u2014 pairs with flooroc-focus-agent.png"
+    }
+  ],
+  "rig": {
+    "llama": "gemma-local on :18080",
+    "warmup": {
+      "ms": 925,
+      "ok": true,
+      "via": "direct llama-server completion (bridge untouched)"
+    },
+    "bridge": "registry build on :17717, VOKREW_HOME=/tmp/vokrew-p2s4-home"
+  },
+  "readability": {
+    "vokrew": {
+      "camS": 0.34075,
+      "innerWidth": 1440,
+      "innerHeight": 813,
+      "canvasBacking": [
+        1166,
+        725
+      ],
+      "canvasCss": [
+        1166,
+        725
+      ],
+      "names": [
+        "Scout",
+        "Musky",
+        "Judge"
+      ],
+      "effectiveScale": 0.34075,
+      "nameplateWorldPx": 9,
+      "characterWorldPx": 46,
+      "nameplateScreenPx": 3.07,
+      "characterScreenPx": 15.7
+    },
+    "flooroc": {
+      "camS": 0.35767,
+      "camMode": "overview",
+      "innerWidth": 1440,
+      "innerHeight": 813,
+      "canvasBacking": [
+        1188,
+        761
+      ],
+      "canvasCss": [
+        1188,
+        761
+      ],
+      "agents": [
+        "Example CEO",
+        "Example Worker"
+      ],
+      "nameplateWorldPx": 9,
+      "characterWorldPx": 46,
+      "nameplateScreenPx": 3.22,
+      "characterScreenPx": 16.5
+    },
+    "floorocFocus": {
+      "camS": 0.8047574999723915,
+      "mode": "focus",
+      "nameplateScreenPx": 7.24,
+      "characterScreenPx": 37
+    }
+  },
+  "flooroc": {
+    "server": "floor-oc server.js from four-hands-clone/tools/floor on :13201, data = data.example.json (2 placeholder agents, 1 unassigned task)",
+    "consoleErrors": [
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags"
+    ],
+    "source": "captured in take 1 part A (same build, same session rig); takes 2-4 ran SKIP_OC=1 and reused these files"
+  },
+  "video": {
+    "take": 4,
+    "screencastStartWallMs": 1793101292840,
+    "task": "Scout, write a one-line bash command that prints the word hello, then explain it in one short sentence",
+    "framesDir": "/tmp/phase2s4-frames-take4",
+    "hold": {
+      "id": "h1",
+      "badge": "1",
+      "sidebarCards": 1,
+      "nbCards": 1,
+      "nbHidden": false
+    },
+    "doorstepCell": {
+      "cx": 23,
+      "cy": 46
+    },
+    "runId": "397ee72e-3277-4dd0-9e2c-4462959bdbd0",
+    "finalRecord": {
+      "state": "done",
+      "verdict": "APPROVED",
+      "crossFamily": false,
+      "error": null,
+      "stamps": [
+        {
+          "role": "planner",
+          "agent": "Scout",
+          "lane": "local-gemma",
+          "provider": "openai-compatible",
+          "model": "gemma-local",
+          "family": "gemma",
+          "tier": "local",
+          "latencyMs": 33155,
+          "failover": false,
+          "attempts": [
+            {
+              "lane": "local-gemma",
+              "status": "served"
+            }
+          ]
+        },
+        {
+          "role": "executor",
+          "agent": "Musky",
+          "lane": "local-gemma",
+          "provider": "openai-compatible",
+          "model": "gemma-local",
+          "family": "gemma",
+          "tier": "local",
+          "latencyMs": 15909,
+          "failover": false,
+          "attempts": [
+            {
+              "lane": "local-gemma",
+              "status": "served"
+            }
+          ]
+        },
+        {
+          "role": "reviewer",
+          "agent": "Judge",
+          "lane": "local-gemma",
+          "provider": "openai-compatible",
+          "model": "gemma-local",
+          "family": "gemma",
+          "tier": "local",
+          "latencyMs": 21300,
+          "failover": false,
+          "attempts": [
+            {
+              "lane": "local-gemma",
+              "status": "served"
+            }
+          ]
+        }
+      ]
+    },
+    "timeline": {
+      "runStartWallMs": 1793101307121,
+      "settledWallMs": 1793101377237,
+      "reviewerAtDoorstepWallMs": 1793101361882,
+      "runDurationSec": 70
+    },
+    "settledTranscript": [
+      {
+        "kind": "hold",
+        "hold": "h1",
+        "run": null,
+        "verdict": null,
+        "text": "11:41:42HELDfor Scout \u00b7 planner \u00b7 crew rigScout, write a one-line bash command that prints the word hello, then explain it in one short sentence"
+      },
+      {
+        "kind": "fired",
+        "hold": "h1",
+        "run": "397ee72e-3277-4dd0-9e2c-4462959bdbd0",
+        "verdict": null,
+        "text": "11:41:46FIREDRUN-397E \u2014 approved hold for Scout \u00b7 planner \u00b7 crew rigScout, write a one-line bash command that prints the word hello, then explain it in one short sentence"
+      },
+      {
+        "kind": "verdict",
+        "hold": null,
+        "run": "397ee72e-3277-4dd0-9e2c-4462959bdbd0",
+        "verdict": "APPROVED",
+        "text": "11:42:57VERDICTRUN-397E \u2014 verdict APPROVED \u00b7 same family review \u00b7 \u26a1 3 calls"
+      }
+    ],
+    "dossier": {
+      "headName": "Judge",
+      "headRole": "reviewer",
+      "kv": {
+        "crew": "rig",
+        "name": "Judge",
+        "seat": "reviewer \u00b7 cubicle \u00b7 Foundry",
+        "lane": "local-gemma",
+        "provider": "openai-compatible",
+        "model": "gemma-local",
+        "family": "gemma",
+        "tier": "local",
+        "laneCalls": "3",
+        "crewCalls": "3",
+        "share": "100%"
+      },
+      "histCount": 1,
+      "hist": [
+        {
+          "run": "397ee72e-3277-4dd0-9e2c-4462959bdbd0",
+          "role": "reviewer",
+          "verdict": "APPROVED",
+          "runState": "done",
+          "crossFamily": "no",
+          "text": "RUN-397E \u00b7 reviewer \u00b7 local-gemma \u00b7 gemma-local \u00b7 21300ms \u00b7 attempts 1 \u00b7 verdict APPROVED \u00b7 same family as executor"
+        }
+      ],
+      "panelBox": {
+        "left": 1051,
+        "right": 1417,
+        "width": 366
+      }
+    },
+    "frameCount": 391,
+    "totalSec": 97.1,
+    "corroboration": {
+      "reviewerDoorstepLogEntries": 16,
+      "plannerWorkModeSeen": true,
+      "executorWorkModeSeen": true
+    }
+  },
+  "phases": [
+    {
+      "phase": "planner",
+      "state": "running",
+      "atSec": 0,
+      "stamps": 0
+    },
+    {
+      "phase": "executor",
+      "state": "running",
+      "atSec": 33,
+      "stamps": 1
+    },
+    {
+      "phase": "reviewer",
+      "state": "running",
+      "atSec": 49,
+      "stamps": 2
+    },
+    {
+      "phase": null,
+      "state": "done",
+      "atSec": 70,
+      "stamps": 3
+    }
+  ],
+  "gaps": {
+    "strip": {
+      "present": true,
+      "cardHidden": false,
+      "stripPresent": true,
+      "stripVisible": true,
+      "stripBox": {
+        "top": 766,
+        "bottom": 800,
+        "left": 536,
+        "right": 1156,
+        "height": 34
+      },
+      "stripText": "RUN-397E \u00b7 Musky is executing \u00b7 \u26a1 1 calls served \u25b8",
+      "bodyVisible": false,
+      "bodyBox": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 0,
+        "height": 0
+      },
+      "canvasBox": {
+        "top": 87,
+        "bottom": 812,
+        "left": 263,
+        "right": 1429,
+        "width": 1166,
+        "height": 725
+      },
+      "stripCanvasOverlap": 21080,
+      "stripAreaFrac": 2.49,
+      "bodyCanvasOverlap": 0,
+      "verdict": null
+    },
+    "cardOcclusion": {
+      "x": 515,
+      "y": 423,
+      "atPoint": "floorCardBody",
+      "chain": [
+        "floorCardBody",
+        "floorRunCard",
+        "stage",
+        "floorRoot",
+        "screen-floor"
+      ],
+      "cardHidden": false
+    },
+    "settledCard": {
+      "present": true,
+      "cardHidden": false,
+      "stripPresent": true,
+      "stripVisible": true,
+      "stripBox": {
+        "top": 766,
+        "bottom": 800,
+        "left": 536,
+        "right": 1156,
+        "height": 34
+      },
+      "stripText": "RUN-397E \u00b7 verdict APPROVED \u00b7 same family review \u00b7 \u26a1 3 calls \u25be",
+      "bodyVisible": true,
+      "bodyBox": {
+        "top": 286,
+        "bottom": 758,
+        "left": 506,
+        "right": 1186,
+        "height": 472
+      },
+      "canvasBox": {
+        "top": 87,
+        "bottom": 812,
+        "left": 263,
+        "right": 1429,
+        "width": 1166,
+        "height": 725
+      },
+      "stripCanvasOverlap": 21080,
+      "stripAreaFrac": 2.49,
+      "bodyCanvasOverlap": 320641.25,
+      "verdict": "Reviewer verdict: APPROVED"
+    }
+  },
+  "consoleClassification": {
+    "total": 0,
+    "nonLog": 0,
+    "transportNoise": 0,
+    "unexplained": []
+  },
+  "verdict": "PHASE 2 STAGE 4 CAPTURE (take 4): COMPLETE"
+}

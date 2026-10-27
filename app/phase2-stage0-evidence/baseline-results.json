@@ -1,0 +1,457 @@
+{
+  "assertions": [
+    {
+      "name": "(0) connect door up over the locked room",
+      "ok": true,
+      "detail": "{\"overlayVisible\":true,\"chip\":\"OFFLINE\"}"
+    },
+    {
+      "name": "(1) paired through the page form",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "(1) warm-up chat served by the real lane",
+      "ok": true,
+      "detail": "ok"
+    },
+    {
+      "name": "(a) viewport is 1440x900",
+      "ok": true,
+      "detail": "1440x900"
+    },
+    {
+      "name": "(a) canvas width within 5% of floor-oc 1188",
+      "ok": true,
+      "detail": "canvas=1166,611 ref=1188,761"
+    },
+    {
+      "name": "(a) canvas height within 5% of floor-oc 761",
+      "ok": false,
+      "detail": "canvas=1166,611 ref=1188,761"
+    },
+    {
+      "name": "(a) overview scale within 5% of floor-oc 0.35767",
+      "ok": false,
+      "detail": "scale=0.28717 ref=0.35767"
+    },
+    {
+      "name": "(a) character px within 5% of floor-oc 16.5",
+      "ok": false,
+      "detail": "char=13.2 ref=16.5"
+    },
+    {
+      "name": "(a) nameplate px within 5% of floor-oc 3.22",
+      "ok": false,
+      "detail": "nameplate=2.58 ref=3.22"
+    },
+    {
+      "name": "(a) desktop idle screenshot captured",
+      "ok": true,
+      "detail": "407354 bytes"
+    },
+    {
+      "name": "(d) Run tab removed (button + screen gone)",
+      "ok": false,
+      "detail": "{\"tabBtn\":true,\"screen\":true}"
+    },
+    {
+      "name": "(b) run #1 submitted from the Floor form",
+      "ok": true,
+      "detail": "2f863ed3-7a38-438c-8df3-0fbc8becd64b"
+    },
+    {
+      "name": "(b) during the run the card is a slim strip (<=44px), expanded body hidden",
+      "ok": false,
+      "detail": "strip=null bodyVisible=false cardHidden=false"
+    },
+    {
+      "name": "(b) strip does not intersect the room canvas",
+      "ok": true,
+      "detail": "stripOverlap=0 bodyOverlap=0"
+    },
+    {
+      "name": "(b) room canvas fully inside the viewport during the run (no evaluator scrolling)",
+      "ok": false,
+      "detail": "{\"top\":780.59375,\"bottom\":1391.59375,\"left\":263,\"right\":1429,\"width\":1166,\"height\":611}"
+    },
+    {
+      "name": "(b) pixel probe: the room is rendered on the canvas (not blank/covered)",
+      "ok": true,
+      "detail": "{\"ok\":true,\"nonBg\":8599,\"total\":14696,\"frac\":0.585,\"backing\":[1166,611]}"
+    },
+    {
+      "name": "(b) strip text tells the truth: live phase + served calls == bridge record",
+      "ok": false,
+      "detail": "strip=\"null\" phase=planner stamps=0"
+    },
+    {
+      "name": "(b) a real click on an agent mid-run opens the focus panel (room stays clickable)",
+      "ok": false,
+      "detail": "click={\"x\":567,\"y\":1001}"
+    },
+    {
+      "name": "(b) reviewer reached the executor doorstep during run #1",
+      "ok": false,
+      "detail": "doorstep={\"cx\":23,\"cy\":46}"
+    },
+    {
+      "name": "(b) run #1 settles done on the bridge",
+      "ok": false,
+      "detail": "verdict=null"
+    },
+    {
+      "name": "(d) on settle the card auto-expands (body visible, no click)",
+      "ok": false,
+      "detail": "bodyVisible=false strip=\"null\""
+    },
+    {
+      "name": "(d) settled card Plan text == bridge record plan (full stage text)",
+      "ok": false,
+      "detail": "card=0B record=0B"
+    },
+    {
+      "name": "(d) settled card Work text == bridge record work (full stage text)",
+      "ok": false,
+      "detail": "card=0B record=0B"
+    },
+    {
+      "name": "(d) settled card Review text == bridge record review (full stage text)",
+      "ok": false,
+      "detail": "card=0B record=0B"
+    },
+    {
+      "name": "(d) settled card verdict + stamps name the real lane/model/agents",
+      "ok": false,
+      "detail": "Run failed — run failed: no lane could serve role \"planner\" (local-gemma:failed)"
+    },
+    {
+      "name": "(d) 'same family' is labeled on the settled card (single-family rig)",
+      "ok": false,
+      "detail": "crossFamily=null"
+    },
+    {
+      "name": "(d) desktop settled screenshot captured",
+      "ok": true,
+      "detail": "197422 bytes"
+    },
+    {
+      "name": "(d) budget pill increased by exactly the served stage count",
+      "ok": true,
+      "detail": "pill 0 -> 0, stamps=0"
+    },
+    {
+      "name": "(e) reload happens mid-run (executor phase)",
+      "ok": false,
+      "detail": "phase=null"
+    },
+    {
+      "name": "(e) after the reload the room reattaches to run #2 (quest row IN PROGRESS + strip tracking it)",
+      "ok": false,
+      "detail": "null"
+    },
+    {
+      "name": "(e) reattached run completes; status line reports its verdict",
+      "ok": false,
+      "detail": ""
+    },
+    {
+      "name": "(c) phone idle: no element overflows the viewport width",
+      "ok": false,
+      "detail": "[\"clock right=434\",\"questtracker right=561\",\"qhead right=548\",\"qcycle right=548\",\"qtitle right=548\",\"qmeta right=548\",\"qbar right=548\",\"qfoot right=548\",\"qn right=548\"]"
+    },
+    {
+      "name": "(c) phone: room canvas is a real width (was 138px strip)",
+      "ok": false,
+      "detail": "canvas=[138,626]"
+    },
+    {
+      "name": "(c) phone: room stage height is a real viewport share (px reported)",
+      "ok": true,
+      "detail": "stage={\"top\":392,\"left\":263,\"right\":401,\"width\":138,\"height\":626}"
+    },
+    {
+      "name": "(c) phone: clock and quest tracker inside the viewport",
+      "ok": false,
+      "detail": "clock={\"top\":356,\"left\":369,\"right\":434,\"width\":65,\"height\":19} tracker={\"top\":410,\"left\":281,\"right\":561,\"width\":280,\"height\":134} iw=415"
+    },
+    {
+      "name": "(c) phone idle screenshot captured",
+      "ok": true,
+      "detail": "618186 bytes"
+    },
+    {
+      "name": "(c) phone: run settles done",
+      "ok": true,
+      "detail": "verdict=APPROVED"
+    },
+    {
+      "name": "(c) phone post-settle: no element overflows the viewport width (expanded card included)",
+      "ok": false,
+      "detail": "[\"clock right=434\",\"questtracker right=561\",\"qhead right=548\",\"qcycle right=548\",\"qtitle right=548\",\"qmeta right=548\",\"qbar right=548\",\"I right=547\",\"qfoot right=548\",\"qn right=548\"]"
+    },
+    {
+      "name": "(c) phone settled screenshot captured",
+      "ok": true,
+      "detail": "218672 bytes"
+    },
+    {
+      "name": "(h) zero console errors across the whole session (pair, runs, reload, phone)",
+      "ok": true,
+      "detail": "transport=0; unexplained=none; nonLog=none"
+    }
+  ],
+  "consoleErrors": [],
+  "screenshots": [
+    {
+      "file": "before-desktop-idle.png",
+      "note": "desktop 1440x900 idle overview, rig crew seated"
+    },
+    {
+      "file": "before-desktop-settled.png",
+      "note": "desktop: run #1 settled, card auto-expanded with full stage text"
+    },
+    {
+      "file": "before-phone-idle.png",
+      "note": "phone 412x915: paired, rig crew seated, stacked layout"
+    },
+    {
+      "file": "before-phone-settled.png",
+      "note": "phone 412x915: run settled, card expanded, no overflow"
+    }
+  ],
+  "rig": {
+    "llama": "gemma-local on :18080",
+    "bridge": "registry build on :17717",
+    "run1": "2f863ed3-7a38-438c-8df3-0fbc8becd64b",
+    "finalRecord1": {
+      "state": "failed",
+      "verdict": null,
+      "crossFamily": null,
+      "stamps": 0
+    },
+    "run2": "b90c6e07-36b9-4dbe-8b93-175aac6e18f7",
+    "run3": "1909a29a-ef90-4928-bfbd-0650eb4ed14d"
+  },
+  "label": "before",
+  "measurements": {
+    "desktopIdle": {
+      "innerWidth": 1440,
+      "innerHeight": 900,
+      "canvasCss": [
+        1166,
+        611
+      ],
+      "canvasBacking": [
+        1166,
+        611
+      ],
+      "canvasRect": {
+        "top": 289,
+        "bottom": 900,
+        "left": 263,
+        "right": 1429
+      },
+      "rootRect": {
+        "top": 236,
+        "bottom": 901,
+        "height": 665,
+        "width": 1420
+      },
+      "stageRect": {
+        "top": 289,
+        "bottom": 900,
+        "height": 611,
+        "width": 1166
+      },
+      "camS": 0.28717,
+      "camMode": "overview",
+      "charPx": 13.2,
+      "nameplatePx": 2.58,
+      "floorOcStageHeight": 848
+    },
+    "runTab": {
+      "tabBtn": true,
+      "screen": true
+    },
+    "midRunCard": {
+      "present": true,
+      "cardHidden": false,
+      "cardBox": {
+        "top": 236,
+        "bottom": 717.59375,
+        "left": 10,
+        "right": 1430,
+        "width": 1420,
+        "height": 481.59375
+      },
+      "stripPresent": false,
+      "stripVisible": false,
+      "stripBox": null,
+      "stripText": null,
+      "bodyPresent": false,
+      "bodyVisible": false,
+      "bodyBox": null,
+      "canvasBox": {
+        "top": 780.59375,
+        "bottom": 1391.59375,
+        "left": 263,
+        "right": 1429,
+        "width": 1166,
+        "height": 611
+      },
+      "stripCanvasOverlap": 0,
+      "bodyCanvasOverlap": 0,
+      "verdict": "Running — phase: planner"
+    },
+    "pixelProbe": {
+      "ok": true,
+      "nonBg": 8599,
+      "total": 14696,
+      "frac": 0.585,
+      "backing": [
+        1166,
+        611
+      ]
+    },
+    "settledCard": {
+      "present": true,
+      "cardHidden": false,
+      "cardBox": {
+        "top": 236,
+        "bottom": 655.90625,
+        "left": 10,
+        "right": 1430,
+        "width": 1420,
+        "height": 419.90625
+      },
+      "stripPresent": false,
+      "stripVisible": false,
+      "stripBox": null,
+      "stripText": null,
+      "bodyPresent": false,
+      "bodyVisible": false,
+      "bodyBox": null,
+      "canvasBox": {
+        "top": 718.90625,
+        "bottom": 1329.90625,
+        "left": 263,
+        "right": 1429,
+        "width": 1166,
+        "height": 611
+      },
+      "stripCanvasOverlap": 0,
+      "bodyCanvasOverlap": 0,
+      "verdict": "Run failed — run failed: no lane could serve role \"planner\" (local-gemma:failed)"
+    },
+    "phoneIdle": {
+      "innerWidth": 415,
+      "innerHeight": 922,
+      "docScrollWidth": 415,
+      "wideElements": [
+        "clock right=434",
+        "questtracker right=561",
+        "qhead right=548",
+        "qcycle right=548",
+        "qtitle right=548",
+        "qmeta right=548",
+        "qbar right=548",
+        "qfoot right=548",
+        "qn right=548"
+      ],
+      "canvasCss": [
+        138,
+        626
+      ],
+      "canvasBacking": [
+        640,
+        1252
+      ],
+      "stage": {
+        "top": 392,
+        "left": 263,
+        "right": 401,
+        "width": 138,
+        "height": 626
+      },
+      "clock": {
+        "top": 356,
+        "left": 369,
+        "right": 434,
+        "width": 65,
+        "height": 19
+      },
+      "questtracker": {
+        "top": 410,
+        "left": 281,
+        "right": 561,
+        "width": 280,
+        "height": 134
+      },
+      "strip": null,
+      "card": {
+        "top": 0,
+        "left": 0,
+        "right": 0,
+        "width": 0,
+        "height": 0
+      }
+    },
+    "phoneSettled": {
+      "innerWidth": 415,
+      "innerHeight": 922,
+      "docScrollWidth": 415,
+      "wideElements": [
+        "clock right=434",
+        "questtracker right=561",
+        "qhead right=548",
+        "qcycle right=548",
+        "qtitle right=548",
+        "qmeta right=548",
+        "qbar right=548",
+        "I right=547",
+        "qfoot right=548",
+        "qn right=548"
+      ],
+      "canvasCss": [
+        138,
+        626
+      ],
+      "canvasBacking": [
+        640,
+        1252
+      ],
+      "stage": {
+        "top": 1779,
+        "left": 263,
+        "right": 401,
+        "width": 138,
+        "height": 626
+      },
+      "clock": {
+        "top": 1743,
+        "left": 369,
+        "right": 434,
+        "width": 65,
+        "height": 19
+      },
+      "questtracker": {
+        "top": 1797,
+        "left": 281,
+        "right": 561,
+        "width": 280,
+        "height": 134
+      },
+      "strip": null,
+      "card": {
+        "top": 369,
+        "left": 10,
+        "right": 402,
+        "width": 392,
+        "height": 1347
+      }
+    }
+  },
+  "transportNoise": [],
+  "verdict": "PHASE 2 STAGE 0 GATE: FAIL (24)"
+}

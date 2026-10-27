@@ -1,0 +1,52 @@
+NOTE  quiet warm-up run done in 49s (attempt 1)
+PASS  (0) connect door up over the locked room — {"overlayVisible":true,"chip":"OFFLINE"}
+PASS  (0) paired through the page form
+PASS  (A0) snapshot: the page pill reads the same coding ledger as GET /budget, registry empty after the restart — pill=3 api=3 chat=1 registry=0
+PASS  (A1) the named task still creates exactly one hold (Stage 2 behavior intact) — id=h1
+PASS  (A1) the hold card offers Approve / Edit / Dismiss and is not stale — actions=["approve","edit","dismiss"] stale=0
+PASS  (A2) the office noticeboard is visible and renders the same hold as a card with the same actions — hidden=false cards=1
+PASS  (A3) the top-bar badge shows the real pending count (1) and the sidebar count agrees — badge="1" sidebar="1 held"
+PASS  (A4) the hold card shows no stamps, no verdict, no fake progress (it is an instruction, not a run) — HELD FOR SCOUT · PLANNER · CREW RIGScout, draft the release checklist and tag the open issuesApprove — run itEditDismiss
+PASS  (A5) creating the hold fired nothing (registry + coding ledger unchanged) — registry=0 coding=3/3
+PASS  (A) hold card screenshot captured — 430595 bytes
+PASS  (A6) the hold survives a page reload — same id, same text, badge still 1 — id=h1
+PASS  (A6) the reload itself fired nothing — registry=0 coding=3/3
+NOTE  (A) approved run take 1 died on the lane (rig contention, G-9) — resubmitting the same instruction as a fresh hold — run failed: no lane could serve role "executor" (local-gemma:failed)
+PASS  (A7) the Approve control is clickable
+PASS  (A7) approving the hold fires a run whose bridge record carries the held task verbatim and the held crew — run=adf49044-85c2-43a3-813f-be6a04aa2c26
+PASS  (A8) the hold clears on approve — state, both surfaces, badge 0, noticeboard hidden — badge="0" cards=0 nbHidden=true
+PASS  (A9) the transcript logs the firing, tied to the real run id — run=adf49044-85c2-43a3-813f-be6a04aa2c26
+PASS  (A10) the approved run settles done on the bridge — verdict=APPROVED stamps=3 takes=2
+PASS  (A10) budget rule: the coding ledger moved by exactly the served stamps of every settled run, the chat ledger never moved — coding=7 expected=7 (snapshot 3 + banked 0); chat=1/1
+PASS  (A10) the page pill equals the bridge's coding ledger after the run — pill=7
+PASS  (A11) Edit opens the task text in place, prefilled with the held text — textarea="Tidy the changelog and bump the version"
+PASS  (A11) saving the edit rewrites the hold in place (edited flag set, still pending, nothing fired) — edited=true registry=2/2
+PASS  (A11) edited hold screenshot captured — 425637 bytes
+PASS  (A12) approving the edited hold fires a run whose record carries the EDITED task text — run=50942cf3-207f-424b-9b56-f6772339b91c
+PASS  (A12) the edited run settles done — verdict=APPROVED takes=1
+PASS  (A12) budget rule: the coding ledger moved by exactly the served stamps of every settled run, the chat ledger never moved — coding=10 expected=10 (snapshot 3 + banked 0); chat=1/1
+PASS  (A13) Dismiss clears the hold (state + surfaces + badge 0) and the transcript notes the dismissal — 11:14:30NOTEdismissed the held instruction for Scout · planner · crew rigScout, sweep the risers and log the c
+PASS  (A13) dismissing fired nothing (registry unchanged) — registry 3 -> 3
+NOTE  (B) reject rig live — same bridge home, reviewer standing instructions set to the CHANGES drill; token + ledger carried over
+PASS  (B1) a run on the reject rig settles with the reviewer's rejection verdict (CHANGES — this bridge's rejection; see header) — [{"id":"984cdd31-384c-4fcd-8acb-a7d21f69405a","state":"done","verdict":"CHANGES","stamps":3}]
+PASS  (B2) the rejected run offers retry-as-hold in the transcript verdict row, and the run card offers it too — rowRetry=984cdd31-384c-4fcd-8acb-a7d21f69405a cardRetry=984cdd31-384c-4fcd-8acb-a7d21f69405a
+PASS  (B2) no retry hold exists before the offer is taken — holds=0
+PASS  (B3) taking the offer creates exactly one hold carrying the original task text and crew — fromRun=984cdd31-384c-4fcd-8acb-a7d21f69405a text="Write a one-line bash command that prints the current folde
+PASS  (B3) retry hold screenshot captured — 420134 bytes
+PASS  (B4) creating the retry hold fired nothing (registry + ledger unchanged by the click) — registry 1 -> 1; coding 13 -> 13
+PASS  (B5) the retry offer is one-shot — no retry control remains for that run once the hold exists — cardRetry=null
+PASS  (B6) dismissing the retry hold clears it, zeroes the badge, and the transcript notes the dismissal — 11:15:36NOTEdismissed the held instruction for whole crew (rig) — standard chainWrite a one-line bash command 
+PASS  (B6) budget rule: the coding ledger moved by exactly the served stamps of every settled run, the chat ledger never moved — coding=13 expected=13 (snapshot 3 + banked 7); chat=1/1
+PASS  (C1) the hold is created for crew rig and is not stale while the crew exists — id=h19 crew=rig
+PASS  (C2) re-paired with the replacement bridge through the page form
+PASS  (C2) with crew rig gone from GET /crews, the hold renders stale in the sidebar and on the noticeboard — sidebar stale=1; noticeboard stale=1
+PASS  (C3) a stale hold can only be dismissed — no Approve, no Edit (absent or disabled) — actions=["dismiss"]
+PASS  (C4) nothing has fired on the replacement bridge (its registry and ledger are untouched) — runs=0 coding=0
+PASS  (C) stale hold screenshot captured — 487950 bytes
+PASS  (C5) dismissing the stale hold clears it, zeroes the badge, and the transcript notes the dismissal — 11:15:42NOTEdismissed the held instruction for Scout · planner · crew rigScout, final sweep of the risers befo
+PASS  (D1) phone: no element overflows the viewport width with a hold pending (badge, cards, noticeboard included) — []
+PASS  (D1) phone: the hold persists across the reload, its card is in the layout, and the office noticeboard shows it inside the viewport — {"audit":{"innerWidth":415,"innerHeight":922,"wideElements":[]},"badge":"1","nb":{"hidden":false,"box":{"left":133,"right":395,"width":262}},"entries":16}
+PASS  (D) phone screenshot captured — 711498 bytes
+PASS  (E) zero console errors across the whole session (pair, holds, approve, edit, dismiss, reject, retry, stale swap, phone) — transport=2; authProbe=1; registryProbe=1; unexplained=none; nonLog=none
+
+PHASE 2 STAGE 3 GATE: PASS  (label=after, wrote results.json)

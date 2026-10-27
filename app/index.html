@@ -78,7 +78,6 @@ node src/cli.js serve</pre>
     <nav class="tabs" role="tablist">
       <button class="tab active" data-screen="floor" type="button">Floor</button>
       <button class="tab" data-screen="chat" type="button">Chat</button>
-      <button class="tab" data-screen="run" type="button">Run</button>
       <button class="tab" data-screen="budget" type="button">Budget</button>
       <button class="tab" data-screen="crew" type="button">Crew</button>
     </nav>
@@ -94,31 +93,10 @@ node src/cli.js serve</pre>
       <p class="hint">Verify sends the answer to a reviewer from a different model family. Tip: prefix a message with <code>!check </code> to verify just that one.</p>
     </div>
 
-    <!-- Run -->
-    <div id="screen-run" class="tab-screen hidden">
-      <form id="runForm">
-        <label>Task
-          <textarea id="runTask" rows="4" placeholder="What should the crew plan, build, and review?"></textarea>
-        </label>
-        <div class="row">
-          <label>Crew
-            <select id="runCrew"></select>
-          </label>
-          <label>Workspace <span class="opt">(optional)</span>
-            <input id="runWorkspace" type="text" placeholder="/path/to/project" spellcheck="false" autocomplete="off" />
-          </label>
-        </div>
-        <p class="error hidden" id="runError"></p>
-        <button class="btn primary" id="runBtn" type="submit">Run the crew</button>
-      </form>
-      <div id="runResult" class="hidden">
-        <div class="verdict" id="runVerdict"></div>
-        <div class="stage-block"><h3>Plan</h3><pre id="runPlan"></pre></div>
-        <div class="stage-block"><h3>Work</h3><pre id="runWork"></pre></div>
-        <div class="stage-block"><h3>Review</h3><pre id="runReview"></pre></div>
-        <div class="stage-block"><h3>Stamps</h3><pre class="stamps" id="runStamps"></pre></div>
-      </div>
-    </div>
+    <!-- Run tab folded into the Floor (Phase 2 Stage 0): the Floor's
+         own run form + settled run card carry the full stage text —
+         proven byte-equal to the bridge record by the Stage 0
+         evaluator before this tab was removed. -->
 
     <!-- Budget -->
     <div id="screen-budget" class="tab-screen hidden">
@@ -148,20 +126,16 @@ node src/cli.js serve</pre>
         <button class="btn primary" id="floorRunBtn" type="submit">Run the crew</button>
         <span id="floorRunStatus" role="status"></span>
       </form>
-      <div id="floorRunCard" class="hidden">
-        <button class="btn ghost small" id="floorCardClose" type="button">Close</button>
-        <div class="verdict" id="floorCardVerdict"></div>
-        <div class="stage-block"><h3>Plan</h3><pre id="floorCardPlan"></pre></div>
-        <div class="stage-block"><h3>Work</h3><pre id="floorCardWork"></pre></div>
-        <div class="stage-block"><h3>Review</h3><pre id="floorCardReview"></pre></div>
-        <div class="stage-block"><h3>Stamps</h3><pre class="stamps" id="floorCardStamps"></pre></div>
-      </div>
       <div id="floorRoot">
         <div id="top">
           <div class="brand"><div class="mark">▦</div><div><div class="name">THE FLOOR</div><div class="tagline">VOKREW CREW ROOM</div></div><div class="phase" id="floorModeChip">CONNECTING</div></div>
           <div class="topstat hideSm"><span class="dot" id="connDot"></span><span id="floorStatus">connecting</span></div>
           <div class="topstat hideSm" id="runStat">RUNS <b id="runCount">0</b></div>
           <div class="topstat" id="budgetWrap"><span class="resicon">⚡</span>CALLS TODAY <b id="budgetStatus">—</b></div>
+          <!-- Phase 2 Stage 3: the top bar carries at most the real
+               pending-hold count (a badge fed by the adapter's hold
+               state — never stamps, never progress). -->
+          <div class="topstat" id="holdStat"><span class="resicon">📌</span><span class="tb-label">HOLDS</span> <b id="holdBadge">0</b></div>
           <div class="spacer"></div>
           <div class="clock" id="clock">--:--:--</div>
         </div>
@@ -175,6 +149,27 @@ node src/cli.js serve</pre>
           <div id="roster"></div>
           <div class="sideblock"><div class="lbl">⚑ QUEST LOG</div><div class="cnt" id="taskCount">0 open</div></div>
           <div id="tasklist"></div>
+          <!-- Phase 2 Stage 2: the text conductor — one input bar in
+               the Floor screen. Task instructions become holds (they
+               do NOT fire on their own) and questions are answered
+               over POST /chat (surface=chat). Phase 2 Stage 3: holds
+               are actionable here and on the office noticeboard —
+               approve fires the run, edit rewrites the task in
+               place, dismiss clears it; a run the reviewer did not
+               approve offers retry-as-hold. The transcript + holds
+               persist for the page session in sessionStorage (run
+               records stay bridge-bound). All rendering lives in
+               floor-adapter.js (renderConductor); every entry traces
+               to a typed instruction, a real chat response stamp, or
+               a real run record's verdict. -->
+          <div class="sideblock"><div class="lbl">🎙 CONDUCTOR</div><div class="cnt" id="holdCount">0 held</div></div>
+          <div id="conductorLog" aria-live="polite"></div>
+          <div id="holdList"></div>
+          <form id="conductorForm">
+            <input id="conductorInput" type="text" placeholder="Conduct your crew — a task, or a question…" autocomplete="off" />
+            <button class="btn primary small" id="conductorSend" type="submit">Send</button>
+          </form>
+          <p class="conductor-hint">Name a crewmate to call them out (“Scout, …”). Tasks are held until you approve them — approve, edit, or dismiss a hold below or on the office noticeboard; questions are answered in chat.</p>
           <div class="sidefoot">
             <div>RIG: <b id="rigFoot">checking…</b></div>
             <div id="floorFoot">live bridge · stage 3</div>
@@ -192,6 +187,16 @@ node src/cli.js serve</pre>
             <canvas id="mini" width="220" height="172"></canvas>
             <div class="mmlegend"><i class="you"></i>crew <i class="here"></i>view</div>
           </div>
+          <!-- Phase 2 Stage 3: the office noticeboard — held
+               instructions rendered as cards in the room (the same
+               holds, the same actions as the sidebar list; rendered
+               by floor-adapter.js, visible only while holds are
+               pending). A hold is an instruction, not a run: no
+               stamps, no verdict, no progress live here. -->
+          <div id="noticeboard" class="hudpanel hidden">
+            <div class="nbhead"><span>📌 NOTICEBOARD</span><span id="nbCount">0 held</span></div>
+            <div id="nbList"></div>
+          </div>
           <div id="viewbar">
             <button data-view="overview" class="on">Overview</button>
             <button data-view="foundry">Foundry</button>
@@ -200,6 +205,35 @@ node src/cli.js serve</pre>
             <button data-view="yard">Yard</button>
           </div>
           <div id="hint">drag to pan · scroll to zoom · click a character</div>
+          <!-- Phase 2 Stage 0 (G-1): the run card lives INSIDE the room,
+               docked as a slim status strip over the stage's bottom edge.
+               During a run it shows phase + calls served and nothing
+               more; the full card is a panel that grows up from the
+               strip on click or on settle. The room is never pushed
+               down or covered by it (Phase 1 LOOK-GATE G-1). -->
+          <div id="floorRunCard" class="hidden">
+            <button id="floorCardStrip" type="button" aria-expanded="false">
+              <span id="floorStripText"></span>
+              <span id="floorStripCaret" aria-hidden="true">▸</span>
+            </button>
+            <div id="floorCardBody" class="hidden">
+              <button class="btn ghost small" id="floorCardClose" type="button">Close</button>
+              <div class="verdict" id="floorCardVerdict"></div>
+              <!-- Phase 2 Stage 3: a settled run the reviewer did
+                   not approve (or that failed) offers retry-as-hold;
+                   the adapter shows this only for such a run and
+                   only until the offer is taken. -->
+              <button class="btn amber small hidden" id="floorCardRetry" type="button">↩ Retry as hold</button>
+              <!-- AAA LOOK PASS (KC): Plan/Work/Review render lane
+                   markdown as formatted text (G-3) — panes are .md
+                   divs filled by floor-adapter.js setMd(); Stamps
+                   stay a raw <pre> ledger. -->
+              <div class="stage-block"><h3>Plan</h3><div class="md" id="floorCardPlan"></div></div>
+              <div class="stage-block"><h3>Work</h3><div class="md" id="floorCardWork"></div></div>
+              <div class="stage-block"><h3>Review</h3><div class="md" id="floorCardReview"></div></div>
+              <div class="stage-block"><h3>Stamps</h3><pre class="stamps" id="floorCardStamps"></pre></div>
+            </div>
+          </div>
         </div>
 
         <div id="focus" class="panel"></div>

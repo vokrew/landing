@@ -1,0 +1,3174 @@
+{
+  "runId": "80944ae1-c3b4-44c8-a075-79ffb3354ea6",
+  "take": 1,
+  "doorstep": {
+    "cx": 23,
+    "cy": 46
+  },
+  "entries": [
+    {
+      "wallMs": 1793117974483,
+      "act": []
+    },
+    {
+      "wallMs": 1793117975485,
+      "act": []
+    },
+    {
+      "wallMs": 1793117976495,
+      "act": []
+    },
+    {
+      "wallMs": 1793117977563,
+      "act": []
+    },
+    {
+      "wallMs": 1793117978586,
+      "act": []
+    },
+    {
+      "wallMs": 1793117979662,
+      "act": []
+    },
+    {
+      "wallMs": 1793117980671,
+      "act": []
+    },
+    {
+      "wallMs": 1793117981688,
+      "act": []
+    },
+    {
+      "wallMs": 1793117982760,
+      "act": []
+    },
+    {
+      "wallMs": 1793117983776,
+      "act": []
+    },
+    {
+      "wallMs": 1793117984815,
+      "act": []
+    },
+    {
+      "wallMs": 1793117985896,
+      "act": []
+    },
+    {
+      "wallMs": 1793117986973,
+      "act": []
+    },
+    {
+      "wallMs": 1793117988091,
+      "act": []
+    },
+    {
+      "wallMs": 1793117989150,
+      "act": []
+    },
+    {
+      "wallMs": 1793117990198,
+      "act": []
+    },
+    {
+      "wallMs": 1793117991317,
+      "act": []
+    },
+    {
+      "wallMs": 1793117992394,
+      "act": []
+    },
+    {
+      "wallMs": 1793117993466,
+      "act": []
+    },
+    {
+      "wallMs": 1793117994640,
+      "act": []
+    },
+    {
+      "wallMs": 1793117995926,
+      "act": []
+    },
+    {
+      "wallMs": 1793117996930,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 310,
+          "y": 1270,
+          "cell": {
+            "cx": 15,
+            "cy": 63
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        }
+      ]
+    },
+    {
+      "wallMs": 1793117997961,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 310,
+          "y": 1270,
+          "cell": {
+            "cx": 15,
+            "cy": 63
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        }
+      ]
+    },
+    {
+      "wallMs": 1793117999058,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 310,
+          "y": 1270,
+          "cell": {
+            "cx": 15,
+            "cy": 63
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118000965,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 310,
+          "y": 1270,
+          "cell": {
+            "cx": 15,
+            "cy": 63
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118002018,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 310,
+          "y": 1270,
+          "cell": {
+            "cx": 15,
+            "cy": 63
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118003084,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 310,
+          "y": 1270,
+          "cell": {
+            "cx": 15,
+            "cy": 63
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118004134,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 310,
+          "y": 1270,
+          "cell": {
+            "cx": 15,
+            "cy": 63
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118005188,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 310,
+          "y": 1270,
+          "cell": {
+            "cx": 15,
+            "cy": 63
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118006256,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 310,
+          "y": 1270,
+          "cell": {
+            "cx": 15,
+            "cy": 63
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118007284,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 310,
+          "y": 1270,
+          "cell": {
+            "cx": 15,
+            "cy": 63
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118008338,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 310,
+          "y": 1270,
+          "cell": {
+            "cx": 15,
+            "cy": 63
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118010557,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 310,
+          "y": 1270,
+          "cell": {
+            "cx": 15,
+            "cy": 63
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118011638,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "work",
+          "activity": "work",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 310,
+          "y": 1270,
+          "cell": {
+            "cx": 15,
+            "cy": 63
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118013125,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "work",
+          "activity": "work",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 310,
+          "y": 1270,
+          "cell": {
+            "cx": 15,
+            "cy": 63
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118015433,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "work",
+          "activity": "work",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 310,
+          "y": 1270,
+          "cell": {
+            "cx": 15,
+            "cy": 63
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118016484,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "work",
+          "activity": "work",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 310,
+          "y": 1270,
+          "cell": {
+            "cx": 15,
+            "cy": 63
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118017566,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "work",
+          "activity": "work",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 310,
+          "y": 1270,
+          "cell": {
+            "cx": 15,
+            "cy": 63
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118018712,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "work",
+          "activity": "work",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 310,
+          "y": 1270,
+          "cell": {
+            "cx": 15,
+            "cy": 63
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118019763,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "work",
+          "activity": "work",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 310,
+          "y": 1270,
+          "cell": {
+            "cx": 15,
+            "cy": 63
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118020868,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "work",
+          "activity": "work",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 310,
+          "y": 1270,
+          "cell": {
+            "cx": 15,
+            "cy": 63
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118021912,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "work",
+          "activity": "work",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 310,
+          "y": 1270,
+          "cell": {
+            "cx": 15,
+            "cy": 63
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118023048,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "work",
+          "activity": "work",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 310,
+          "y": 1270,
+          "cell": {
+            "cx": 15,
+            "cy": 63
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118024065,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "work",
+          "activity": "work",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 310,
+          "y": 1270,
+          "cell": {
+            "cx": 15,
+            "cy": 63
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118025171,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "work",
+          "activity": "work",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 310,
+          "y": 1270,
+          "cell": {
+            "cx": 15,
+            "cy": 63
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118026242,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "work",
+          "activity": "work",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 310,
+          "y": 1270,
+          "cell": {
+            "cx": 15,
+            "cy": 63
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118027349,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "work",
+          "activity": "work",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 310,
+          "y": 1270,
+          "cell": {
+            "cx": 15,
+            "cy": 63
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118028435,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "work",
+          "activity": "work",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 310,
+          "y": 1270,
+          "cell": {
+            "cx": 15,
+            "cy": 63
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118029499,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "work",
+          "activity": "work",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 310,
+          "y": 1270,
+          "cell": {
+            "cx": 15,
+            "cy": 63
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118030590,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "work",
+          "activity": "work",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 310,
+          "y": 1270,
+          "cell": {
+            "cx": 15,
+            "cy": 63
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118031696,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "work",
+          "activity": "work",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 310,
+          "y": 1270,
+          "cell": {
+            "cx": 15,
+            "cy": 63
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118032766,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "work",
+          "activity": "work",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 310,
+          "y": 1270,
+          "cell": {
+            "cx": 15,
+            "cy": 63
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118033893,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "work",
+          "activity": "work",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 310,
+          "y": 1270,
+          "cell": {
+            "cx": 15,
+            "cy": 63
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118034940,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "work",
+          "activity": "work",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 310,
+          "y": 1270,
+          "cell": {
+            "cx": 15,
+            "cy": 63
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118036047,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "work",
+          "activity": "work",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 310,
+          "y": 1270,
+          "cell": {
+            "cx": 15,
+            "cy": 63
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118037139,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "work",
+          "activity": "work",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 310,
+          "y": 1270,
+          "cell": {
+            "cx": 15,
+            "cy": 63
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118038287,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "work",
+          "activity": "work",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 310,
+          "y": 1270,
+          "cell": {
+            "cx": 15,
+            "cy": 63
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118039400,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "work",
+          "activity": "work",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 310,
+          "y": 1270,
+          "cell": {
+            "cx": 15,
+            "cy": 63
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118040433,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "work",
+          "activity": "work",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 310,
+          "y": 1270,
+          "cell": {
+            "cx": 15,
+            "cy": 63
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118041570,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "work",
+          "activity": "work",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 310,
+          "y": 1270,
+          "cell": {
+            "cx": 15,
+            "cy": 63
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118042865,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "work",
+          "activity": "work",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 310,
+          "y": 1270,
+          "cell": {
+            "cx": 15,
+            "cy": 63
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118044005,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "work",
+          "activity": "work",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 310,
+          "y": 1270,
+          "cell": {
+            "cx": 15,
+            "cy": 63
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118045042,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "work",
+          "activity": "work",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 310,
+          "y": 1270,
+          "cell": {
+            "cx": 15,
+            "cy": 63
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118046174,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 390,
+          "y": 1230,
+          "cell": {
+            "cx": 19,
+            "cy": 61
+          },
+          "mode": "visit",
+          "activity": "visit",
+          "tween": false,
+          "sitting": false
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118047318,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 450,
+          "y": 1210,
+          "cell": {
+            "cx": 22,
+            "cy": 60
+          },
+          "mode": "visit",
+          "activity": "visit",
+          "tween": true,
+          "sitting": false
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118048613,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 450,
+          "y": 1150,
+          "cell": {
+            "cx": 22,
+            "cy": 57
+          },
+          "mode": "visit",
+          "activity": "visit",
+          "tween": false,
+          "sitting": false
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118049672,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 450,
+          "y": 1071,
+          "cell": {
+            "cx": 22,
+            "cy": 54
+          },
+          "mode": "visit",
+          "activity": "visit",
+          "tween": true,
+          "sitting": false
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118050682,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 469,
+          "y": 971,
+          "cell": {
+            "cx": 22,
+            "cy": 49
+          },
+          "mode": "visit",
+          "activity": "visit",
+          "tween": true,
+          "sitting": false
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118051727,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 470,
+          "y": 930,
+          "cell": {
+            "cx": 23,
+            "cy": 46
+          },
+          "mode": "visit",
+          "activity": "visit",
+          "tween": false,
+          "sitting": false
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118054892,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 470,
+          "y": 930,
+          "cell": {
+            "cx": 23,
+            "cy": 46
+          },
+          "mode": "visit",
+          "activity": "visit",
+          "tween": false,
+          "sitting": false
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118055925,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 470,
+          "y": 930,
+          "cell": {
+            "cx": 23,
+            "cy": 46
+          },
+          "mode": "visit",
+          "activity": "visit",
+          "tween": false,
+          "sitting": false
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118056967,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 470,
+          "y": 930,
+          "cell": {
+            "cx": 23,
+            "cy": 46
+          },
+          "mode": "visit",
+          "activity": "visit",
+          "tween": false,
+          "sitting": false
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118058078,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 470,
+          "y": 930,
+          "cell": {
+            "cx": 23,
+            "cy": 46
+          },
+          "mode": "visit",
+          "activity": "visit",
+          "tween": false,
+          "sitting": false
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118059100,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 470,
+          "y": 930,
+          "cell": {
+            "cx": 23,
+            "cy": 46
+          },
+          "mode": "visit",
+          "activity": "visit",
+          "tween": false,
+          "sitting": false
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118060169,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 470,
+          "y": 930,
+          "cell": {
+            "cx": 23,
+            "cy": 46
+          },
+          "mode": "visit",
+          "activity": "visit",
+          "tween": false,
+          "sitting": false
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118061411,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 470,
+          "y": 930,
+          "cell": {
+            "cx": 23,
+            "cy": 46
+          },
+          "mode": "visit",
+          "activity": "visit",
+          "tween": false,
+          "sitting": false
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118062614,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 470,
+          "y": 930,
+          "cell": {
+            "cx": 23,
+            "cy": 46
+          },
+          "mode": "visit",
+          "activity": "visit",
+          "tween": false,
+          "sitting": false
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118064137,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 470,
+          "y": 930,
+          "cell": {
+            "cx": 23,
+            "cy": 46
+          },
+          "mode": "visit",
+          "activity": "visit",
+          "tween": false,
+          "sitting": false
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118065217,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 470,
+          "y": 930,
+          "cell": {
+            "cx": 23,
+            "cy": 46
+          },
+          "mode": "visit",
+          "activity": "visit",
+          "tween": false,
+          "sitting": false
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118066837,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 470,
+          "y": 938,
+          "cell": {
+            "cx": 23,
+            "cy": 46
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": true,
+          "sitting": false
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118067936,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 470,
+          "y": 1029,
+          "cell": {
+            "cx": 23,
+            "cy": 50
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": true,
+          "sitting": false
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118069000,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 450,
+          "y": 1124,
+          "cell": {
+            "cx": 22,
+            "cy": 55
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": true,
+          "sitting": false
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118070247,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 450,
+          "y": 1212,
+          "cell": {
+            "cx": 22,
+            "cy": 60
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": true,
+          "sitting": false
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118071478,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 351,
+          "y": 1250,
+          "cell": {
+            "cx": 18,
+            "cy": 62
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": true,
+          "sitting": false
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118073569,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 310,
+          "y": 1270,
+          "cell": {
+            "cx": 15,
+            "cy": 63
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118074647,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 310,
+          "y": 1270,
+          "cell": {
+            "cx": 15,
+            "cy": 63
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118075716,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 310,
+          "y": 1270,
+          "cell": {
+            "cx": 15,
+            "cy": 63
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118076748,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 310,
+          "y": 1270,
+          "cell": {
+            "cx": 15,
+            "cy": 63
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118079309,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 310,
+          "y": 1270,
+          "cell": {
+            "cx": 15,
+            "cy": 63
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118080333,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 310,
+          "y": 1270,
+          "cell": {
+            "cx": 15,
+            "cy": 63
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        }
+      ]
+    },
+    {
+      "wallMs": 1793118081383,
+      "act": [
+        {
+          "agent": "rig:planner",
+          "x": 310,
+          "y": 710,
+          "cell": {
+            "cx": 15,
+            "cy": 35
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:executor",
+          "x": 310,
+          "y": 930,
+          "cell": {
+            "cx": 15,
+            "cy": 46
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        },
+        {
+          "agent": "rig:reviewer",
+          "x": 310,
+          "y": 1270,
+          "cell": {
+            "cx": 15,
+            "cy": 63
+          },
+          "mode": "desk",
+          "activity": "desk",
+          "tween": false,
+          "sitting": true
+        }
+      ]
+    }
+  ]
+}
