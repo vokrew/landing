@@ -1,0 +1,226 @@
+{
+  "assertions": [
+    {
+      "name": "(0) connect door up over the locked room",
+      "ok": true,
+      "detail": "{\"overlayVisible\":true,\"chip\":\"OFFLINE\"}"
+    },
+    {
+      "name": "(1) paired through the page form",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "(1) warm-up chat served by the real lane",
+      "ok": true,
+      "detail": "ok"
+    },
+    {
+      "name": "(1) quiet warm-up run (pre-browser) outcome",
+      "ok": true,
+      "note": true,
+      "detail": "done in 107s"
+    },
+    {
+      "name": "(7) nameless crew: dossier opens on the role-label agent",
+      "ok": true,
+      "detail": "head=Planner/planner"
+    },
+    {
+      "name": "(7) nameless crew: identity says the agent is unnamed (no invented name)",
+      "ok": false,
+      "detail": "name row=undefined"
+    },
+    {
+      "name": "(7) nameless crew: crew + seat rows come from the bridge payload",
+      "ok": false,
+      "detail": "{}"
+    },
+    {
+      "name": "(7) zero-run agent: history is the honest empty state, zero fabricated rows",
+      "ok": false,
+      "detail": "rows=0 empty=null"
+    },
+    {
+      "name": "(7) nameless dossier screenshot captured",
+      "ok": true,
+      "detail": "341822 bytes"
+    },
+    {
+      "name": "(5) close via the x button",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "(1) identity deep-equals GET /crews + GET /lanes (planner)",
+      "ok": false,
+      "detail": "panel={\"name\":\"Scout\"} bridge={\"crew\":\"rig\",\"name\":\"Scout\",\"lane\":\"local-gemma\",\"provider\":\"openai-compatible\",\"model\":\"gemma-local\",\"family\":\"gemma\",\"tier\":\"local\"}"
+    },
+    {
+      "name": "(1) seat row names the role (planner)",
+      "ok": false,
+      "detail": "seat=undefined"
+    },
+    {
+      "name": "(2) lane calls today == GET /budget for the lane",
+      "ok": false,
+      "detail": "panel=undefined budget=3 day=2026-10-27"
+    },
+    {
+      "name": "(2) crew calls + share are the same ledger, honestly derived",
+      "ok": false,
+      "detail": "crew panel=undefined want=3 share=undefined"
+    },
+    {
+      "name": "(7) rig planner before any page run: history matches the registry exactly (empty state, no rows)",
+      "ok": false,
+      "detail": "rows=0 registry=0"
+    },
+    {
+      "name": "(1) idle dossier screenshot captured",
+      "ok": true,
+      "detail": "324707 bytes"
+    },
+    {
+      "name": "(5) close via Esc",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "(4) run #1 submitted from the Floor form",
+      "ok": true,
+      "detail": "85f0f86d-1b2f-4875-88bb-7211145e8d9f"
+    },
+    {
+      "name": "(4) planner dossier open mid-run shows the live phase at two poll points",
+      "ok": true,
+      "detail": "[{\"status\":\"running\",\"nowS\":\"Write a one-line bash command that prints the current folder path, then explain it in one short sentence. · phase: planner\",\"bridgePhase\":\"planner\",\"open\":true,\"head\":\"Scout\"},{\"status\":\"running\",\"nowS\":\"Write a one-line bash command that prints the current folder path, then explain it in one short sentence. · phase: planner\",\"bridgePhase\":\"planner\",\"open\":true,\"head\":\"Scout\"}]"
+    },
+    {
+      "name": "(4) phase transition: the open planner dossier leaves the planner phase as the record moves on",
+      "ok": true,
+      "detail": "{\"status\":\"idle\",\"nowV\":\"At its desk\",\"nowS\":\"Work is the default; heartbeat off.\",\"head\":\"Scout\",\"open\":true}"
+    },
+    {
+      "name": "(1b) identity deep-equals GET /crews + GET /lanes (reviewer)",
+      "ok": false,
+      "detail": "panel={\"name\":\"Judge\"} bridge={\"crew\":\"rig\",\"name\":\"Judge\",\"lane\":\"local-gemma\",\"provider\":\"openai-compatible\",\"model\":\"gemma-local\",\"family\":\"gemma\",\"tier\":\"local\"}"
+    },
+    {
+      "name": "(1b) seat row names the role (reviewer)",
+      "ok": false,
+      "detail": "seat=undefined"
+    },
+    {
+      "name": "(4) reviewer dossier mid-review shows it live (status running in its phase)",
+      "ok": true,
+      "detail": "status=running nowV=\"Visiting Musky\" bridgePhase=reviewer"
+    },
+    {
+      "name": "(4) mid-review dossier screenshot captured",
+      "ok": true,
+      "detail": "439389 bytes"
+    },
+    {
+      "name": "(4) run #1 settles done on the bridge",
+      "ok": true,
+      "detail": "verdict=APPROVED"
+    },
+    {
+      "name": "evaluator completed without harness error",
+      "ok": false,
+      "detail": "timeout waiting for dossier open for Musky"
+    }
+  ],
+  "consoleErrors": [],
+  "screenshots": [
+    {
+      "file": "before-dossier-nameless.png",
+      "note": "default (nameless) crew planner dossier: unnamed identity, empty history"
+    },
+    {
+      "file": "before-dossier-idle.png",
+      "note": "Scout (planner) dossier at idle: identity, today, empty history"
+    },
+    {
+      "file": "before-dossier-midrun.png",
+      "note": "Judge (reviewer) dossier open mid-review, reviewer at the executor doorstep"
+    }
+  ],
+  "rig": {
+    "llama": "gemma-local on :18080",
+    "quietWarmUpRun": {
+      "id": "db5b84a5-0c62-4113-8e50-23c80610b2cd",
+      "attempt": 2,
+      "verdict": "APPROVED",
+      "secs": 107
+    },
+    "bridge": "registry build on :17717",
+    "run1": "85f0f86d-1b2f-4875-88bb-7211145e8d9f",
+    "pageHiddenVerified": true,
+    "run1Takes": [
+      {
+        "id": "85f0f86d-1b2f-4875-88bb-7211145e8d9f",
+        "state": "done",
+        "stamps": 3,
+        "error": null
+      }
+    ],
+    "finalRecord1": {
+      "state": "done",
+      "verdict": "APPROVED",
+      "crossFamily": false,
+      "stamps": 3
+    }
+  },
+  "label": "before",
+  "measurements": {
+    "namelessPanel": {
+      "present": true,
+      "open": true,
+      "headName": "Planner",
+      "headRole": "planner",
+      "kv": {},
+      "hist": [],
+      "histCount": 0,
+      "histEmpty": null,
+      "nowV": "At its desk",
+      "nowS": "Work is the default; heartbeat off.",
+      "statusStat": "idle",
+      "panelBox": {
+        "left": 1051,
+        "right": 1417,
+        "width": 366
+      }
+    },
+    "rigCrewRoles": [
+      "planner",
+      "executor",
+      "reviewer"
+    ],
+    "livePlanner": [
+      {
+        "status": "running",
+        "nowS": "Write a one-line bash command that prints the current folder path, then explain it in one short sentence. · phase: planner",
+        "bridgePhase": "planner",
+        "open": true,
+        "head": "Scout"
+      },
+      {
+        "status": "running",
+        "nowS": "Write a one-line bash command that prints the current folder path, then explain it in one short sentence. · phase: planner",
+        "bridgePhase": "planner",
+        "open": true,
+        "head": "Scout"
+      }
+    ],
+    "plannerAfterPhase": {
+      "status": "idle",
+      "nowV": "At its desk",
+      "nowS": "Work is the default; heartbeat off.",
+      "head": "Scout",
+      "open": true
+    }
+  },
+  "verdict": "PHASE 2 STAGE 1 GATE: FAIL (11)"
+}
