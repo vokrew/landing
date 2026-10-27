@@ -2219,7 +2219,7 @@ export function createFloor(canvas, { onSelect } = {}) {
         g.fill();
       }
     }
-    for (const [lx3, ly3] of [[9.3, 6.9], [14.6, 12.9]]) {
+    for (const [lx3, ly3] of [[14.6, 12.9]]) {
       const X = lx3 * T;
       const Y = ly3 * T;
       g.fillStyle = "rgba(35,55,22,.2)";
