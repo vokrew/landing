@@ -1,0 +1,60 @@
+OK    shell (desktop): page is the unpaired shell
+OK    shell (desktop): sector map present and tab strip docks fully clear of it (>=6px air, zero overlap) — minimap=232x216 clearance=12.2px overlap=0px2
+OK    shell (desktop): every room tab is clickable through its center (nothing paints over it) — hitOk=11111
+OK    shell (desktop): tab strip sits inside the stage
+OK    shell (desktop): room mean luminance clears the ambient floor (0.0772) — mean=0.0807 floor=0.0772 samples=1380
+OK    shell (desktop): no horizontal overflow — {"sw":1440,"iw":1440}
+OK    shell (desktop) screenshot captured — 612038 bytes
+OK    shell (desktop): sector "overview" — zone label answers, tab active, every tab clickable through, minimap fully clear — zone=THE FLOOR clearance=12.2px overlap=0px2 hitOk=11111
+OK    shell (desktop): sector "foundry" — zone label answers, tab active, every tab clickable through, minimap fully clear — zone=THE FOUNDRY clearance=12.2px overlap=0px2 hitOk=11111
+OK    shell (desktop): sector screenshot captured — 582228 bytes
+OK    shell (desktop): sector "skyloft" — zone label answers, tab active, every tab clickable through, minimap fully clear — zone=SKYLOFT clearance=12.2px overlap=0px2 hitOk=11111
+OK    shell (desktop): sector "workshop" — zone label answers, tab active, every tab clickable through, minimap fully clear — zone=WORKSHOP clearance=12.2px overlap=0px2 hitOk=11111
+OK    shell (desktop): sector "yard" — zone label answers, tab active, every tab clickable through, minimap fully clear — zone=THE YARD clearance=12.2px overlap=0px2 hitOk=11111
+OK    shell (desktop): zero console errors (transport noise tallied + named) — nonLog=0 noise=0 unexplained=none
+OK    phone shell: page is the unpaired shell
+OK    phone shell: sector map is hidden at this width (existing <=1320px rule) — nothing for the tabs to collide with
+OK    phone shell: every room tab is clickable through its center — hitOk=11111
+OK    phone shell: tab strip does not collide with the hint pill or the (absent) run strip — hintOverlap=0 stripOverlap=0
+OK    phone shell: zero horizontal overflow at 412px — {"sw":412,"iw":412}
+OK    phone shell: room mean luminance clears the ambient floor (0.0646) — mean=0.0663 floor=0.0646 samples=749
+OK    phone shell screenshot captured — 884784 bytes
+OK    shell (phone): zero console errors (transport noise tallied + named) — nonLog=0 noise=0 unexplained=none
+OK    rig: lane warm-up completed directly against llama-server
+OK    regression: paired through the expanded setup tab
+OK    regression: paired page is out of shell mode
+OK    paired idle (desktop): sector map present and tab strip docks fully clear of it (>=6px air, zero overlap) — minimap=232x216 clearance=12.2px overlap=0px2
+OK    paired idle (desktop): every room tab is clickable through its center (nothing paints over it) — hitOk=11111
+OK    paired idle (desktop): tab strip sits inside the stage
+OK    paired idle (desktop): room mean luminance clears the ambient floor (0.0781) — mean=0.0816 floor=0.0781 samples=1380
+OK    regression paired-idle screenshot captured — 702480 bytes
+OK    paired (desktop): sector "overview" — zone label answers, tab active, every tab clickable through, minimap fully clear — zone=THE FLOOR clearance=12.2px overlap=0px2 hitOk=11111
+OK    paired (desktop): sector "foundry" — zone label answers, tab active, every tab clickable through, minimap fully clear — zone=THE FOUNDRY clearance=12.2px overlap=0px2 hitOk=11111
+OK    paired (desktop): sector "skyloft" — zone label answers, tab active, every tab clickable through, minimap fully clear — zone=SKYLOFT clearance=12.2px overlap=0px2 hitOk=11111
+OK    paired (desktop): sector "workshop" — zone label answers, tab active, every tab clickable through, minimap fully clear — zone=WORKSHOP clearance=12.2px overlap=0px2 hitOk=11111
+OK    paired (desktop): sector "yard" — zone label answers, tab active, every tab clickable through, minimap fully clear — zone=THE YARD clearance=12.2px overlap=0px2 hitOk=11111
+OK    regression: conductor call-out became exactly one hold; badge + noticeboard agree — badge="1" sidebar=1 noticeboard=1
+OK    regression: with a hold pending, the noticeboard (top-right) and the tab strip do not collide — nb∩vb=0 nb∩mm=0
+OK    regression: approve clicked on the hold card
+OK    regression: approved run registered on the bridge — 6dcc28fd-58cf-47b9-8bb0-0e043482ab07
+OK    regression mid-run: tab strip still fully clear of the sector map — clearance=12.2px
+OK    regression mid-run: docked run strip and tab strip do not collide; tabs still clickable through — strip∩vb=0 hitOk=11111
+OK    regression mid-run screenshot captured — 769785 bytes
+OK    regression: approved run settled done/APPROVED on the bridge — state=done verdict=APPROVED duration=45s
+OK    regression: reviewer reached the executor doorstep during the run (state-log corroborated) — 7 entries
+OK    regression: verdict landed in the conductor transcript, tied to the run id — 17:25:15VERDICTRUN-6DCC — verdict APPROVED · same family review · ⚡ 3 calls
+OK    regression settled screenshot captured — 603676 bytes
+OK    regression: zero console errors (transport noise tallied + named) — nonLog=0 noise=0 unexplained=none
+OK    phone regression: paired through the expanded setup tab
+OK    phone paired idle: tabs clickable through, no collision with hint pill, no overflow — hitOk=11111 hintOverlap=0 overflow={"sw":415,"iw":415}
+OK    phone regression: conductor call-out became exactly one hold; noticeboard shows it — noticeboard=1 sidebar=1
+OK    phone hold pending: noticeboard and tab strip do not collide — nb∩vb=0px2
+OK    phone regression: hold dismissed from its card
+OK    phone regression: run fired through the bridge API — status=202 runId=efec6974-ed78-40b8-be3a-304a22d2a96a
+OK    phone mid-run: docked run strip and tab strip do not collide; every tab still clickable through its center — strip∩vb=0px2 hitOk=11111
+OK    phone mid-run: zero horizontal overflow — {"sw":415,"iw":415}
+OK    phone paired mid-run screenshot captured — 816828 bytes
+OK    phone regression: API-fired run settled done/APPROVED on the bridge — state=done verdict=APPROVED
+OK    phone regression: zero console errors (transport noise tallied + named) — nonLog=0 noise=0 unexplained=none
+
+HUD CAPTURE (after): COMPLETE — 58/58 assertions

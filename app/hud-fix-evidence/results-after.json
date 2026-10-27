@@ -1,0 +1,1464 @@
+{
+  "phase": "after",
+  "assertions": [
+    {
+      "name": "shell (desktop): page is the unpaired shell",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "shell (desktop): sector map present and tab strip docks fully clear of it (>=6px air, zero overlap)",
+      "ok": true,
+      "detail": "minimap=232x216 clearance=12.2px overlap=0px2"
+    },
+    {
+      "name": "shell (desktop): every room tab is clickable through its center (nothing paints over it)",
+      "ok": true,
+      "detail": "hitOk=11111"
+    },
+    {
+      "name": "shell (desktop): tab strip sits inside the stage",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "shell (desktop): room mean luminance clears the ambient floor (0.0772)",
+      "ok": true,
+      "detail": "mean=0.0807 floor=0.0772 samples=1380"
+    },
+    {
+      "name": "shell (desktop): no horizontal overflow",
+      "ok": true,
+      "detail": "{\"sw\":1440,\"iw\":1440}"
+    },
+    {
+      "name": "shell (desktop) screenshot captured",
+      "ok": true,
+      "detail": "612038 bytes"
+    },
+    {
+      "name": "shell (desktop): sector \"overview\" — zone label answers, tab active, every tab clickable through, minimap fully clear",
+      "ok": true,
+      "detail": "zone=THE FLOOR clearance=12.2px overlap=0px2 hitOk=11111"
+    },
+    {
+      "name": "shell (desktop): sector \"foundry\" — zone label answers, tab active, every tab clickable through, minimap fully clear",
+      "ok": true,
+      "detail": "zone=THE FOUNDRY clearance=12.2px overlap=0px2 hitOk=11111"
+    },
+    {
+      "name": "shell (desktop): sector screenshot captured",
+      "ok": true,
+      "detail": "582228 bytes"
+    },
+    {
+      "name": "shell (desktop): sector \"skyloft\" — zone label answers, tab active, every tab clickable through, minimap fully clear",
+      "ok": true,
+      "detail": "zone=SKYLOFT clearance=12.2px overlap=0px2 hitOk=11111"
+    },
+    {
+      "name": "shell (desktop): sector \"workshop\" — zone label answers, tab active, every tab clickable through, minimap fully clear",
+      "ok": true,
+      "detail": "zone=WORKSHOP clearance=12.2px overlap=0px2 hitOk=11111"
+    },
+    {
+      "name": "shell (desktop): sector \"yard\" — zone label answers, tab active, every tab clickable through, minimap fully clear",
+      "ok": true,
+      "detail": "zone=THE YARD clearance=12.2px overlap=0px2 hitOk=11111"
+    },
+    {
+      "name": "shell (desktop): zero console errors (transport noise tallied + named)",
+      "ok": true,
+      "detail": "nonLog=0 noise=0 unexplained=none"
+    },
+    {
+      "name": "phone shell: page is the unpaired shell",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "phone shell: sector map is hidden at this width (existing <=1320px rule) — nothing for the tabs to collide with",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "phone shell: every room tab is clickable through its center",
+      "ok": true,
+      "detail": "hitOk=11111"
+    },
+    {
+      "name": "phone shell: tab strip does not collide with the hint pill or the (absent) run strip",
+      "ok": true,
+      "detail": "hintOverlap=0 stripOverlap=0"
+    },
+    {
+      "name": "phone shell: zero horizontal overflow at 412px",
+      "ok": true,
+      "detail": "{\"sw\":412,\"iw\":412}"
+    },
+    {
+      "name": "phone shell: room mean luminance clears the ambient floor (0.0646)",
+      "ok": true,
+      "detail": "mean=0.0663 floor=0.0646 samples=749"
+    },
+    {
+      "name": "phone shell screenshot captured",
+      "ok": true,
+      "detail": "884784 bytes"
+    },
+    {
+      "name": "shell (phone): zero console errors (transport noise tallied + named)",
+      "ok": true,
+      "detail": "nonLog=0 noise=0 unexplained=none"
+    },
+    {
+      "name": "rig: lane warm-up completed directly against llama-server",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "regression: paired through the expanded setup tab",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "regression: paired page is out of shell mode",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "paired idle (desktop): sector map present and tab strip docks fully clear of it (>=6px air, zero overlap)",
+      "ok": true,
+      "detail": "minimap=232x216 clearance=12.2px overlap=0px2"
+    },
+    {
+      "name": "paired idle (desktop): every room tab is clickable through its center (nothing paints over it)",
+      "ok": true,
+      "detail": "hitOk=11111"
+    },
+    {
+      "name": "paired idle (desktop): tab strip sits inside the stage",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "paired idle (desktop): room mean luminance clears the ambient floor (0.0781)",
+      "ok": true,
+      "detail": "mean=0.0816 floor=0.0781 samples=1380"
+    },
+    {
+      "name": "regression paired-idle screenshot captured",
+      "ok": true,
+      "detail": "702480 bytes"
+    },
+    {
+      "name": "paired (desktop): sector \"overview\" — zone label answers, tab active, every tab clickable through, minimap fully clear",
+      "ok": true,
+      "detail": "zone=THE FLOOR clearance=12.2px overlap=0px2 hitOk=11111"
+    },
+    {
+      "name": "paired (desktop): sector \"foundry\" — zone label answers, tab active, every tab clickable through, minimap fully clear",
+      "ok": true,
+      "detail": "zone=THE FOUNDRY clearance=12.2px overlap=0px2 hitOk=11111"
+    },
+    {
+      "name": "paired (desktop): sector \"skyloft\" — zone label answers, tab active, every tab clickable through, minimap fully clear",
+      "ok": true,
+      "detail": "zone=SKYLOFT clearance=12.2px overlap=0px2 hitOk=11111"
+    },
+    {
+      "name": "paired (desktop): sector \"workshop\" — zone label answers, tab active, every tab clickable through, minimap fully clear",
+      "ok": true,
+      "detail": "zone=WORKSHOP clearance=12.2px overlap=0px2 hitOk=11111"
+    },
+    {
+      "name": "paired (desktop): sector \"yard\" — zone label answers, tab active, every tab clickable through, minimap fully clear",
+      "ok": true,
+      "detail": "zone=THE YARD clearance=12.2px overlap=0px2 hitOk=11111"
+    },
+    {
+      "name": "regression: conductor call-out became exactly one hold; badge + noticeboard agree",
+      "ok": true,
+      "detail": "badge=\"1\" sidebar=1 noticeboard=1"
+    },
+    {
+      "name": "regression: with a hold pending, the noticeboard (top-right) and the tab strip do not collide",
+      "ok": true,
+      "detail": "nb∩vb=0 nb∩mm=0"
+    },
+    {
+      "name": "regression: approve clicked on the hold card",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "regression: approved run registered on the bridge",
+      "ok": true,
+      "detail": "6dcc28fd-58cf-47b9-8bb0-0e043482ab07"
+    },
+    {
+      "name": "regression mid-run: tab strip still fully clear of the sector map",
+      "ok": true,
+      "detail": "clearance=12.2px"
+    },
+    {
+      "name": "regression mid-run: docked run strip and tab strip do not collide; tabs still clickable through",
+      "ok": true,
+      "detail": "strip∩vb=0 hitOk=11111"
+    },
+    {
+      "name": "regression mid-run screenshot captured",
+      "ok": true,
+      "detail": "769785 bytes"
+    },
+    {
+      "name": "regression: approved run settled done/APPROVED on the bridge",
+      "ok": true,
+      "detail": "state=done verdict=APPROVED duration=45s"
+    },
+    {
+      "name": "regression: reviewer reached the executor doorstep during the run (state-log corroborated)",
+      "ok": true,
+      "detail": "7 entries"
+    },
+    {
+      "name": "regression: verdict landed in the conductor transcript, tied to the run id",
+      "ok": true,
+      "detail": "17:25:15VERDICTRUN-6DCC — verdict APPROVED · same family review · ⚡ 3 calls"
+    },
+    {
+      "name": "regression settled screenshot captured",
+      "ok": true,
+      "detail": "603676 bytes"
+    },
+    {
+      "name": "regression: zero console errors (transport noise tallied + named)",
+      "ok": true,
+      "detail": "nonLog=0 noise=0 unexplained=none"
+    },
+    {
+      "name": "phone regression: paired through the expanded setup tab",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "phone paired idle: tabs clickable through, no collision with hint pill, no overflow",
+      "ok": true,
+      "detail": "hitOk=11111 hintOverlap=0 overflow={\"sw\":415,\"iw\":415}"
+    },
+    {
+      "name": "phone regression: conductor call-out became exactly one hold; noticeboard shows it",
+      "ok": true,
+      "detail": "noticeboard=1 sidebar=1"
+    },
+    {
+      "name": "phone hold pending: noticeboard and tab strip do not collide",
+      "ok": true,
+      "detail": "nb∩vb=0px2"
+    },
+    {
+      "name": "phone regression: hold dismissed from its card",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "phone regression: run fired through the bridge API",
+      "ok": true,
+      "detail": "status=202 runId=efec6974-ed78-40b8-be3a-304a22d2a96a"
+    },
+    {
+      "name": "phone mid-run: docked run strip and tab strip do not collide; every tab still clickable through its center",
+      "ok": true,
+      "detail": "strip∩vb=0px2 hitOk=11111"
+    },
+    {
+      "name": "phone mid-run: zero horizontal overflow",
+      "ok": true,
+      "detail": "{\"sw\":415,\"iw\":415}"
+    },
+    {
+      "name": "phone paired mid-run screenshot captured",
+      "ok": true,
+      "detail": "816828 bytes"
+    },
+    {
+      "name": "phone regression: API-fired run settled done/APPROVED on the bridge",
+      "ok": true,
+      "detail": "state=done verdict=APPROVED"
+    },
+    {
+      "name": "phone regression: zero console errors (transport noise tallied + named)",
+      "ok": true,
+      "detail": "nonLog=0 noise=0 unexplained=none"
+    }
+  ],
+  "screenshots": [
+    {
+      "file": "after-shell-desktop.png",
+      "note": "SHELL desktop (after): bottom-right HUD corner — tab strip vs sector map"
+    },
+    {
+      "file": "after-shell-sector-foundry.png",
+      "note": "shell (desktop): Foundry sector — tab strip + sector map corner"
+    },
+    {
+      "file": "after-phone-shell.png",
+      "note": "SHELL phone 412x915 (after): bottom HUD corner"
+    },
+    {
+      "file": "after-paired-idle.png",
+      "note": "PAIRED idle desktop (after): bottom-right HUD corner"
+    },
+    {
+      "file": "after-paired-midrun.png",
+      "note": "PAIRED mid-run desktop (after): run strip docked, tab strip + sector map corner"
+    },
+    {
+      "file": "after-paired-settled.png",
+      "note": "PAIRED settled desktop (after)"
+    },
+    {
+      "file": "after-phone-paired-midrun.png",
+      "note": "PAIRED mid-run phone 412x915 (after): run strip + tab strip"
+    }
+  ],
+  "geometry": {
+    "shellDesktop": {
+      "stage": {
+        "x": 263,
+        "y": 296.03125,
+        "w": 1166,
+        "h": 725,
+        "left": 263,
+        "top": 296.03125,
+        "right": 1429,
+        "bottom": 1021.03125
+      },
+      "minimap": {
+        "x": 1181,
+        "y": 733.265625,
+        "w": 232,
+        "h": 215.765625,
+        "left": 1181,
+        "top": 733.265625,
+        "right": 1413,
+        "bottom": 949.03125
+      },
+      "viewbar": {
+        "x": 1098.953125,
+        "y": 682.765625,
+        "w": 314.046875,
+        "h": 38.265625,
+        "left": 1098.953125,
+        "top": 682.765625,
+        "right": 1413,
+        "bottom": 721.03125
+      },
+      "tabs": [
+        {
+          "view": "overview",
+          "on": true,
+          "rect": {
+            "x": 1104.953125,
+            "y": 688.765625,
+            "w": 63.8125,
+            "h": 26.265625,
+            "left": 1104.953125,
+            "top": 688.765625,
+            "right": 1168.765625,
+            "bottom": 715.03125
+          },
+          "hitOk": true
+        },
+        {
+          "view": "foundry",
+          "on": false,
+          "rect": {
+            "x": 1173.765625,
+            "y": 688.765625,
+            "w": 58.9375,
+            "h": 26.265625,
+            "left": 1173.765625,
+            "top": 688.765625,
+            "right": 1232.703125,
+            "bottom": 715.03125
+          },
+          "hitOk": true
+        },
+        {
+          "view": "skyloft",
+          "on": false,
+          "rect": {
+            "x": 1237.703125,
+            "y": 688.765625,
+            "w": 51.203125,
+            "h": 26.265625,
+            "left": 1237.703125,
+            "top": 688.765625,
+            "right": 1288.90625,
+            "bottom": 715.03125
+          },
+          "hitOk": true
+        },
+        {
+          "view": "workshop",
+          "on": false,
+          "rect": {
+            "x": 1293.90625,
+            "y": 688.765625,
+            "w": 68.1875,
+            "h": 26.265625,
+            "left": 1293.90625,
+            "top": 688.765625,
+            "right": 1362.09375,
+            "bottom": 715.03125
+          },
+          "hitOk": true
+        },
+        {
+          "view": "yard",
+          "on": false,
+          "rect": {
+            "x": 1367.09375,
+            "y": 688.765625,
+            "w": 39.90625,
+            "h": 26.265625,
+            "left": 1367.09375,
+            "top": 688.765625,
+            "right": 1407,
+            "bottom": 715.03125
+          },
+          "hitOk": true
+        }
+      ],
+      "runCard": null,
+      "strip": null,
+      "noticeboard": null,
+      "quest": null,
+      "hint": {
+        "x": 279,
+        "y": 977.53125,
+        "w": 229.375,
+        "h": 27.5,
+        "left": 279,
+        "top": 977.53125,
+        "right": 508.375,
+        "bottom": 1005.03125
+      },
+      "shellMode": true,
+      "zoneName": "THE FLOOR",
+      "overflow": {
+        "sw": 1440,
+        "iw": 1440
+      }
+    },
+    "phoneShell": {
+      "stage": {
+        "x": 7,
+        "y": 440.03125,
+        "w": 398,
+        "h": 512.390625,
+        "left": 7,
+        "top": 440.03125,
+        "right": 405,
+        "bottom": 952.421875
+      },
+      "minimap": null,
+      "viewbar": {
+        "x": 82.953125,
+        "y": 824.15625,
+        "w": 314.046875,
+        "h": 38.265625,
+        "left": 82.953125,
+        "top": 824.15625,
+        "right": 397,
+        "bottom": 862.421875
+      },
+      "tabs": [
+        {
+          "view": "overview",
+          "on": true,
+          "rect": {
+            "x": 88.953125,
+            "y": 830.15625,
+            "w": 63.8125,
+            "h": 26.265625,
+            "left": 88.953125,
+            "top": 830.15625,
+            "right": 152.765625,
+            "bottom": 856.421875
+          },
+          "hitOk": true
+        },
+        {
+          "view": "foundry",
+          "on": false,
+          "rect": {
+            "x": 157.765625,
+            "y": 830.15625,
+            "w": 58.9375,
+            "h": 26.265625,
+            "left": 157.765625,
+            "top": 830.15625,
+            "right": 216.703125,
+            "bottom": 856.421875
+          },
+          "hitOk": true
+        },
+        {
+          "view": "skyloft",
+          "on": false,
+          "rect": {
+            "x": 221.703125,
+            "y": 830.15625,
+            "w": 51.203125,
+            "h": 26.265625,
+            "left": 221.703125,
+            "top": 830.15625,
+            "right": 272.90625,
+            "bottom": 856.421875
+          },
+          "hitOk": true
+        },
+        {
+          "view": "workshop",
+          "on": false,
+          "rect": {
+            "x": 277.90625,
+            "y": 830.15625,
+            "w": 68.1875,
+            "h": 26.265625,
+            "left": 277.90625,
+            "top": 830.15625,
+            "right": 346.09375,
+            "bottom": 856.421875
+          },
+          "hitOk": true
+        },
+        {
+          "view": "yard",
+          "on": false,
+          "rect": {
+            "x": 351.09375,
+            "y": 830.15625,
+            "w": 39.90625,
+            "h": 26.265625,
+            "left": 351.09375,
+            "top": 830.15625,
+            "right": 391,
+            "bottom": 856.421875
+          },
+          "hitOk": true
+        }
+      ],
+      "runCard": null,
+      "strip": null,
+      "noticeboard": null,
+      "quest": null,
+      "hint": {
+        "x": 15,
+        "y": 870.921875,
+        "w": 229.375,
+        "h": 27.5,
+        "left": 15,
+        "top": 870.921875,
+        "right": 244.375,
+        "bottom": 898.421875
+      },
+      "shellMode": true,
+      "zoneName": "THE FLOOR",
+      "overflow": {
+        "sw": 412,
+        "iw": 412
+      }
+    },
+    "pairedIdle": {
+      "stage": {
+        "x": 263,
+        "y": 220,
+        "w": 1166,
+        "h": 725,
+        "left": 263,
+        "top": 220,
+        "right": 1429,
+        "bottom": 945
+      },
+      "minimap": {
+        "x": 1181,
+        "y": 657.234375,
+        "w": 232,
+        "h": 215.765625,
+        "left": 1181,
+        "top": 657.234375,
+        "right": 1413,
+        "bottom": 873
+      },
+      "viewbar": {
+        "x": 1098.953125,
+        "y": 606.734375,
+        "w": 314.046875,
+        "h": 38.265625,
+        "left": 1098.953125,
+        "top": 606.734375,
+        "right": 1413,
+        "bottom": 645
+      },
+      "tabs": [
+        {
+          "view": "overview",
+          "on": true,
+          "rect": {
+            "x": 1104.953125,
+            "y": 612.734375,
+            "w": 63.8125,
+            "h": 26.265625,
+            "left": 1104.953125,
+            "top": 612.734375,
+            "right": 1168.765625,
+            "bottom": 639
+          },
+          "hitOk": true
+        },
+        {
+          "view": "foundry",
+          "on": false,
+          "rect": {
+            "x": 1173.765625,
+            "y": 612.734375,
+            "w": 58.9375,
+            "h": 26.265625,
+            "left": 1173.765625,
+            "top": 612.734375,
+            "right": 1232.703125,
+            "bottom": 639
+          },
+          "hitOk": true
+        },
+        {
+          "view": "skyloft",
+          "on": false,
+          "rect": {
+            "x": 1237.703125,
+            "y": 612.734375,
+            "w": 51.203125,
+            "h": 26.265625,
+            "left": 1237.703125,
+            "top": 612.734375,
+            "right": 1288.90625,
+            "bottom": 639
+          },
+          "hitOk": true
+        },
+        {
+          "view": "workshop",
+          "on": false,
+          "rect": {
+            "x": 1293.90625,
+            "y": 612.734375,
+            "w": 68.1875,
+            "h": 26.265625,
+            "left": 1293.90625,
+            "top": 612.734375,
+            "right": 1362.09375,
+            "bottom": 639
+          },
+          "hitOk": true
+        },
+        {
+          "view": "yard",
+          "on": false,
+          "rect": {
+            "x": 1367.09375,
+            "y": 612.734375,
+            "w": 39.90625,
+            "h": 26.265625,
+            "left": 1367.09375,
+            "top": 612.734375,
+            "right": 1407,
+            "bottom": 639
+          },
+          "hitOk": true
+        }
+      ],
+      "runCard": null,
+      "strip": null,
+      "noticeboard": null,
+      "quest": {
+        "x": 281,
+        "y": 238,
+        "w": 316,
+        "h": 78.953125,
+        "left": 281,
+        "top": 238,
+        "right": 597,
+        "bottom": 316.953125
+      },
+      "hint": {
+        "x": 279,
+        "y": 901.5,
+        "w": 229.375,
+        "h": 27.5,
+        "left": 279,
+        "top": 901.5,
+        "right": 508.375,
+        "bottom": 929
+      },
+      "shellMode": false,
+      "zoneName": "THE FLOOR",
+      "overflow": {
+        "sw": 1440,
+        "iw": 1440
+      }
+    },
+    "holdPending": {
+      "stage": {
+        "x": 263,
+        "y": -9,
+        "w": 1166,
+        "h": 725,
+        "left": 263,
+        "top": -9,
+        "right": 1429,
+        "bottom": 716
+      },
+      "minimap": {
+        "x": 1181,
+        "y": 428.234375,
+        "w": 232,
+        "h": 215.765625,
+        "left": 1181,
+        "top": 428.234375,
+        "right": 1413,
+        "bottom": 644
+      },
+      "viewbar": {
+        "x": 1098.953125,
+        "y": 377.734375,
+        "w": 314.046875,
+        "h": 38.265625,
+        "left": 1098.953125,
+        "top": 377.734375,
+        "right": 1413,
+        "bottom": 416
+      },
+      "tabs": [
+        {
+          "view": "overview",
+          "on": false,
+          "rect": {
+            "x": 1104.953125,
+            "y": 383.734375,
+            "w": 63.8125,
+            "h": 26.265625,
+            "left": 1104.953125,
+            "top": 383.734375,
+            "right": 1168.765625,
+            "bottom": 410
+          },
+          "hitOk": true
+        },
+        {
+          "view": "foundry",
+          "on": false,
+          "rect": {
+            "x": 1173.765625,
+            "y": 383.734375,
+            "w": 58.9375,
+            "h": 26.265625,
+            "left": 1173.765625,
+            "top": 383.734375,
+            "right": 1232.703125,
+            "bottom": 410
+          },
+          "hitOk": true
+        },
+        {
+          "view": "skyloft",
+          "on": false,
+          "rect": {
+            "x": 1237.703125,
+            "y": 383.734375,
+            "w": 51.203125,
+            "h": 26.265625,
+            "left": 1237.703125,
+            "top": 383.734375,
+            "right": 1288.90625,
+            "bottom": 410
+          },
+          "hitOk": true
+        },
+        {
+          "view": "workshop",
+          "on": false,
+          "rect": {
+            "x": 1293.90625,
+            "y": 383.734375,
+            "w": 68.1875,
+            "h": 26.265625,
+            "left": 1293.90625,
+            "top": 383.734375,
+            "right": 1362.09375,
+            "bottom": 410
+          },
+          "hitOk": true
+        },
+        {
+          "view": "yard",
+          "on": true,
+          "rect": {
+            "x": 1367.09375,
+            "y": 383.734375,
+            "w": 39.90625,
+            "h": 26.265625,
+            "left": 1367.09375,
+            "top": 383.734375,
+            "right": 1407,
+            "bottom": 410
+          },
+          "hitOk": true
+        }
+      ],
+      "runCard": null,
+      "strip": null,
+      "noticeboard": {
+        "x": 1111,
+        "y": 9,
+        "w": 302,
+        "h": 130.703125,
+        "left": 1111,
+        "top": 9,
+        "right": 1413,
+        "bottom": 139.703125
+      },
+      "quest": {
+        "x": 281,
+        "y": 9,
+        "w": 316,
+        "h": 78.953125,
+        "left": 281,
+        "top": 9,
+        "right": 597,
+        "bottom": 87.953125
+      },
+      "hint": {
+        "x": 279,
+        "y": 672.5,
+        "w": 229.375,
+        "h": 27.5,
+        "left": 279,
+        "top": 672.5,
+        "right": 508.375,
+        "bottom": 700
+      },
+      "shellMode": false,
+      "zoneName": "THE YARD",
+      "overflow": {
+        "sw": 1440,
+        "iw": 1440
+      }
+    },
+    "midRun": {
+      "stage": {
+        "x": 263,
+        "y": 87,
+        "w": 1166,
+        "h": 725,
+        "left": 263,
+        "top": 87,
+        "right": 1429,
+        "bottom": 812
+      },
+      "minimap": {
+        "x": 1181,
+        "y": 524.234375,
+        "w": 232,
+        "h": 215.765625,
+        "left": 1181,
+        "top": 524.234375,
+        "right": 1413,
+        "bottom": 740
+      },
+      "viewbar": {
+        "x": 1098.953125,
+        "y": 473.734375,
+        "w": 314.046875,
+        "h": 38.265625,
+        "left": 1098.953125,
+        "top": 473.734375,
+        "right": 1413,
+        "bottom": 512
+      },
+      "tabs": [
+        {
+          "view": "overview",
+          "on": false,
+          "rect": {
+            "x": 1104.953125,
+            "y": 479.734375,
+            "w": 63.8125,
+            "h": 26.265625,
+            "left": 1104.953125,
+            "top": 479.734375,
+            "right": 1168.765625,
+            "bottom": 506
+          },
+          "hitOk": true
+        },
+        {
+          "view": "foundry",
+          "on": false,
+          "rect": {
+            "x": 1173.765625,
+            "y": 479.734375,
+            "w": 58.9375,
+            "h": 26.265625,
+            "left": 1173.765625,
+            "top": 479.734375,
+            "right": 1232.703125,
+            "bottom": 506
+          },
+          "hitOk": true
+        },
+        {
+          "view": "skyloft",
+          "on": false,
+          "rect": {
+            "x": 1237.703125,
+            "y": 479.734375,
+            "w": 51.203125,
+            "h": 26.265625,
+            "left": 1237.703125,
+            "top": 479.734375,
+            "right": 1288.90625,
+            "bottom": 506
+          },
+          "hitOk": true
+        },
+        {
+          "view": "workshop",
+          "on": false,
+          "rect": {
+            "x": 1293.90625,
+            "y": 479.734375,
+            "w": 68.1875,
+            "h": 26.265625,
+            "left": 1293.90625,
+            "top": 479.734375,
+            "right": 1362.09375,
+            "bottom": 506
+          },
+          "hitOk": true
+        },
+        {
+          "view": "yard",
+          "on": true,
+          "rect": {
+            "x": 1367.09375,
+            "y": 479.734375,
+            "w": 39.90625,
+            "h": 26.265625,
+            "left": 1367.09375,
+            "top": 479.734375,
+            "right": 1407,
+            "bottom": 506
+          },
+          "hitOk": true
+        }
+      ],
+      "runCard": {
+        "x": 536,
+        "y": 766,
+        "w": 620,
+        "h": 34,
+        "left": 536,
+        "top": 766,
+        "right": 1156,
+        "bottom": 800
+      },
+      "strip": {
+        "x": 536,
+        "y": 766,
+        "w": 620,
+        "h": 34,
+        "left": 536,
+        "top": 766,
+        "right": 1156,
+        "bottom": 800
+      },
+      "noticeboard": null,
+      "quest": {
+        "x": 281,
+        "y": 105,
+        "w": 316,
+        "h": 136.1875,
+        "left": 281,
+        "top": 105,
+        "right": 597,
+        "bottom": 241.1875
+      },
+      "hint": {
+        "x": 279,
+        "y": 768.5,
+        "w": 229.375,
+        "h": 27.5,
+        "left": 279,
+        "top": 768.5,
+        "right": 508.375,
+        "bottom": 796
+      },
+      "shellMode": false,
+      "zoneName": "THE YARD",
+      "overflow": {
+        "sw": 1440,
+        "iw": 1440
+      }
+    },
+    "phonePairedIdle": {
+      "stage": {
+        "x": 7,
+        "y": 322.015625,
+        "w": 398,
+        "h": 512.390625,
+        "left": 7,
+        "top": 322.015625,
+        "right": 405,
+        "bottom": 834.40625
+      },
+      "minimap": null,
+      "viewbar": {
+        "x": 82.953125,
+        "y": 706.140625,
+        "w": 314.046875,
+        "h": 38.265625,
+        "left": 82.953125,
+        "top": 706.140625,
+        "right": 397,
+        "bottom": 744.40625
+      },
+      "tabs": [
+        {
+          "view": "overview",
+          "on": true,
+          "rect": {
+            "x": 88.953125,
+            "y": 712.140625,
+            "w": 63.8125,
+            "h": 26.265625,
+            "left": 88.953125,
+            "top": 712.140625,
+            "right": 152.765625,
+            "bottom": 738.40625
+          },
+          "hitOk": true
+        },
+        {
+          "view": "foundry",
+          "on": false,
+          "rect": {
+            "x": 157.765625,
+            "y": 712.140625,
+            "w": 58.9375,
+            "h": 26.265625,
+            "left": 157.765625,
+            "top": 712.140625,
+            "right": 216.703125,
+            "bottom": 738.40625
+          },
+          "hitOk": true
+        },
+        {
+          "view": "skyloft",
+          "on": false,
+          "rect": {
+            "x": 221.703125,
+            "y": 712.140625,
+            "w": 51.203125,
+            "h": 26.265625,
+            "left": 221.703125,
+            "top": 712.140625,
+            "right": 272.90625,
+            "bottom": 738.40625
+          },
+          "hitOk": true
+        },
+        {
+          "view": "workshop",
+          "on": false,
+          "rect": {
+            "x": 277.90625,
+            "y": 712.140625,
+            "w": 68.1875,
+            "h": 26.265625,
+            "left": 277.90625,
+            "top": 712.140625,
+            "right": 346.09375,
+            "bottom": 738.40625
+          },
+          "hitOk": true
+        },
+        {
+          "view": "yard",
+          "on": false,
+          "rect": {
+            "x": 351.09375,
+            "y": 712.140625,
+            "w": 39.90625,
+            "h": 26.265625,
+            "left": 351.09375,
+            "top": 712.140625,
+            "right": 391,
+            "bottom": 738.40625
+          },
+          "hitOk": true
+        }
+      ],
+      "runCard": null,
+      "strip": null,
+      "noticeboard": null,
+      "quest": {
+        "x": 17,
+        "y": 332.015625,
+        "w": 280,
+        "h": 136.1875,
+        "left": 17,
+        "top": 332.015625,
+        "right": 297,
+        "bottom": 468.203125
+      },
+      "hint": {
+        "x": 15,
+        "y": 752.90625,
+        "w": 229.375,
+        "h": 27.5,
+        "left": 15,
+        "top": 752.90625,
+        "right": 244.375,
+        "bottom": 780.40625
+      },
+      "shellMode": false,
+      "zoneName": "THE FLOOR",
+      "overflow": {
+        "sw": 415,
+        "iw": 415
+      }
+    },
+    "phoneHoldPending": {
+      "stage": {
+        "x": 7,
+        "y": -65.984375,
+        "w": 398,
+        "h": 512.390625,
+        "left": 7,
+        "top": -65.984375,
+        "right": 405,
+        "bottom": 446.40625
+      },
+      "minimap": null,
+      "viewbar": {
+        "x": 82.953125,
+        "y": 318.140625,
+        "w": 314.046875,
+        "h": 38.265625,
+        "left": 82.953125,
+        "top": 318.140625,
+        "right": 397,
+        "bottom": 356.40625
+      },
+      "tabs": [
+        {
+          "view": "overview",
+          "on": true,
+          "rect": {
+            "x": 88.953125,
+            "y": 324.140625,
+            "w": 63.8125,
+            "h": 26.265625,
+            "left": 88.953125,
+            "top": 324.140625,
+            "right": 152.765625,
+            "bottom": 350.40625
+          },
+          "hitOk": true
+        },
+        {
+          "view": "foundry",
+          "on": false,
+          "rect": {
+            "x": 157.765625,
+            "y": 324.140625,
+            "w": 58.9375,
+            "h": 26.265625,
+            "left": 157.765625,
+            "top": 324.140625,
+            "right": 216.703125,
+            "bottom": 350.40625
+          },
+          "hitOk": true
+        },
+        {
+          "view": "skyloft",
+          "on": false,
+          "rect": {
+            "x": 221.703125,
+            "y": 324.140625,
+            "w": 51.203125,
+            "h": 26.265625,
+            "left": 221.703125,
+            "top": 324.140625,
+            "right": 272.90625,
+            "bottom": 350.40625
+          },
+          "hitOk": true
+        },
+        {
+          "view": "workshop",
+          "on": false,
+          "rect": {
+            "x": 277.90625,
+            "y": 324.140625,
+            "w": 68.1875,
+            "h": 26.265625,
+            "left": 277.90625,
+            "top": 324.140625,
+            "right": 346.09375,
+            "bottom": 350.40625
+          },
+          "hitOk": true
+        },
+        {
+          "view": "yard",
+          "on": false,
+          "rect": {
+            "x": 351.09375,
+            "y": 324.140625,
+            "w": 39.90625,
+            "h": 26.265625,
+            "left": 351.09375,
+            "top": 324.140625,
+            "right": 391,
+            "bottom": 350.40625
+          },
+          "hitOk": true
+        }
+      ],
+      "runCard": null,
+      "strip": null,
+      "noticeboard": {
+        "x": 133,
+        "y": -55.984375,
+        "w": 262,
+        "h": 145.921875,
+        "left": 133,
+        "top": -55.984375,
+        "right": 395,
+        "bottom": 89.9375
+      },
+      "quest": {
+        "x": 17,
+        "y": -55.984375,
+        "w": 280,
+        "h": 136.1875,
+        "left": 17,
+        "top": -55.984375,
+        "right": 297,
+        "bottom": 80.203125
+      },
+      "hint": {
+        "x": 15,
+        "y": 364.90625,
+        "w": 229.375,
+        "h": 27.5,
+        "left": 15,
+        "top": 364.90625,
+        "right": 244.375,
+        "bottom": 392.40625
+      },
+      "shellMode": false,
+      "zoneName": "THE FLOOR",
+      "overflow": {
+        "sw": 415,
+        "iw": 415
+      }
+    },
+    "phoneMidRun": {
+      "stage": {
+        "x": 7,
+        "y": -65.984375,
+        "w": 398,
+        "h": 512.390625,
+        "left": 7,
+        "top": -65.984375,
+        "right": 405,
+        "bottom": 446.40625
+      },
+      "minimap": null,
+      "viewbar": {
+        "x": 82.953125,
+        "y": 318.140625,
+        "w": 314.046875,
+        "h": 38.265625,
+        "left": 82.953125,
+        "top": 318.140625,
+        "right": 397,
+        "bottom": 356.40625
+      },
+      "tabs": [
+        {
+          "view": "overview",
+          "on": true,
+          "rect": {
+            "x": 88.953125,
+            "y": 324.140625,
+            "w": 63.8125,
+            "h": 26.265625,
+            "left": 88.953125,
+            "top": 324.140625,
+            "right": 152.765625,
+            "bottom": 350.40625
+          },
+          "hitOk": true
+        },
+        {
+          "view": "foundry",
+          "on": false,
+          "rect": {
+            "x": 157.765625,
+            "y": 324.140625,
+            "w": 58.9375,
+            "h": 26.265625,
+            "left": 157.765625,
+            "top": 324.140625,
+            "right": 216.703125,
+            "bottom": 350.40625
+          },
+          "hitOk": true
+        },
+        {
+          "view": "skyloft",
+          "on": false,
+          "rect": {
+            "x": 221.703125,
+            "y": 324.140625,
+            "w": 51.203125,
+            "h": 26.265625,
+            "left": 221.703125,
+            "top": 324.140625,
+            "right": 272.90625,
+            "bottom": 350.40625
+          },
+          "hitOk": true
+        },
+        {
+          "view": "workshop",
+          "on": false,
+          "rect": {
+            "x": 277.90625,
+            "y": 324.140625,
+            "w": 68.1875,
+            "h": 26.265625,
+            "left": 277.90625,
+            "top": 324.140625,
+            "right": 346.09375,
+            "bottom": 350.40625
+          },
+          "hitOk": true
+        },
+        {
+          "view": "yard",
+          "on": false,
+          "rect": {
+            "x": 351.09375,
+            "y": 324.140625,
+            "w": 39.90625,
+            "h": 26.265625,
+            "left": 351.09375,
+            "top": 324.140625,
+            "right": 391,
+            "bottom": 350.40625
+          },
+          "hitOk": true
+        }
+      ],
+      "runCard": {
+        "x": 19,
+        "y": 400.40625,
+        "w": 374,
+        "h": 34,
+        "left": 19,
+        "top": 400.40625,
+        "right": 393,
+        "bottom": 434.40625
+      },
+      "strip": {
+        "x": 19,
+        "y": 400.40625,
+        "w": 374,
+        "h": 34,
+        "left": 19,
+        "top": 400.40625,
+        "right": 393,
+        "bottom": 434.40625
+      },
+      "noticeboard": null,
+      "quest": {
+        "x": 17,
+        "y": -55.984375,
+        "w": 280,
+        "h": 136.1875,
+        "left": 17,
+        "top": -55.984375,
+        "right": 297,
+        "bottom": 80.203125
+      },
+      "hint": {
+        "x": 15,
+        "y": 364.90625,
+        "w": 229.375,
+        "h": 27.5,
+        "left": 15,
+        "top": 364.90625,
+        "right": 244.375,
+        "bottom": 392.40625
+      },
+      "shellMode": false,
+      "zoneName": "THE FLOOR",
+      "overflow": {
+        "sw": 415,
+        "iw": 415
+      }
+    }
+  },
+  "regression": {
+    "runId": "6dcc28fd-58cf-47b9-8bb0-0e043482ab07",
+    "finalRecord": {
+      "state": "done",
+      "verdict": "APPROVED",
+      "crossFamily": false,
+      "error": null,
+      "stamps": 3
+    },
+    "doorstepLogEntries": 7,
+    "apiRunId": "efec6974-ed78-40b8-be3a-304a22d2a96a"
+  },
+  "luminance": {
+    "shellDesktop": {
+      "mean": 0.08069164478544984,
+      "samples": 1380,
+      "w": 1166,
+      "h": 725
+    },
+    "phoneShell": {
+      "mean": 0.06628584936778457,
+      "samples": 749,
+      "w": 597,
+      "h": 769
+    },
+    "pairedIdle": {
+      "mean": 0.08158026996305713,
+      "samples": 1380,
+      "w": 1166,
+      "h": 725
+    }
+  },
+  "verdict": "HUD CAPTURE (after): COMPLETE — 58/58 assertions"
+}
