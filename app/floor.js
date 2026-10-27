@@ -2948,11 +2948,18 @@ function nowText(a) {
 function focusStateSig(a) {
   const live = liveFor(a.id);
   const e = ents[a.id];
+  /* VOKREW EDIT (Phase 2 Stage 1): the dossier rides the same
+     signature, so an open panel re-renders when its lane's call
+     count or its stamp history changes — not only on room events. */
+  const dz = a.dossier || null;
+  const dzSig = dz ? [dz.laneCallsToday, dz.crewCallsToday, (dz.history || []).length,
+    dz.history && dz.history[0] ? dz.history[0].runId : "-"].join(":") : "-";
   return [
     a.id, a.status, a.lifecycleState, a.heartbeat, a.deskId, a.reportsTo,
     a.personality, a.xp, a.tasksDone, (a.memory || []).length, (a.beliefs || []).length,
     a.talkCount || 0,
-    live ? live.id : "-", e ? e.mode : "-", e ? e.activity : "-", modelName(a)
+    live ? live.id : "-", e ? e.mode : "-", e ? e.activity : "-", modelName(a),
+    dzSig
   ].join("|");
 }
 
@@ -3021,6 +3028,59 @@ function renderFocus() {
     return '<div class="memrow"><span class="when">' + esc(when) + '</span>' + esc(text) + '</div>';
   }).join("") : '<div class="muted">No memory yet.</div>';
 
+  /* VOKREW EDIT (Phase 2 Stage 1): the dossier — Identity / Today /
+     History sections rendered from a.dossier, the adapter's
+     translation of GET /crews + /lanes + /budget + /runs (see
+     dossierFor in floor-adapter.js). Fields the bridge did not
+     supply render as "—", never invented. When a dossier is
+     present it replaces floor-oc's Memory section: the structured
+     stamp history below carries the same stamps with their run
+     verdicts (the raw stamp lines still live in the run card). */
+  const dz = a.dossier || null;
+  let dossierHtml = "";
+  if (dz) {
+    const drow = (k, label, v) =>
+      '<div class="drow" data-k="' + k + '"><span class="dk">' + esc(label) + '</span>' +
+      '<span class="dv">' + esc(v === null || v === undefined || v === "" ? "—" : String(v)) + '</span></div>';
+    const idRows =
+      drow("crew", "Crew", dz.crew) +
+      drow("name", "Name", dz.nameless ? "unnamed — role label only" : dz.name) +
+      drow("seat", "Seat", dz.role + " · " + deskLabel(a.deskId)) +
+      drow("lane", "Lane", dz.laneId) +
+      drow("provider", "Provider", dz.provider) +
+      drow("model", "Model", dz.model) +
+      drow("family", "Family", dz.family) +
+      drow("tier", "Tier", dz.tier);
+    const todayRows =
+      drow("laneCalls", "Lane calls today", dz.laneCallsToday) +
+      drow("crewCalls", "Crew calls today", dz.crewCallsToday) +
+      drow("share", "Share of crew calls", dz.sharePct === null || dz.sharePct === undefined ? null : dz.sharePct + "%");
+    const hist = Array.isArray(dz.history) ? dz.history : [];
+    const histHtml = hist.length ? hist.map((h) => {
+      const bits = [h.identifier, h.role, (h.lane || "?") + " · " + (h.model || "?"), h.latencyMs + "ms"];
+      const attempts = h.attempts || [];
+      const failed = attempts.filter((x) => x.status !== "served");
+      if (attempts.length) bits.push("attempts " + attempts.length + (failed.length ? " (" + failed.map((x) => x.lane + " " + x.status).join("; ") + ")" : ""));
+      if (h.failover) bits.push("failover");
+      if (h.runState === "done") bits.push("verdict " + (h.verdict || "—"));
+      else if (h.runState === "failed") bits.push("run failed");
+      else bits.push("running");
+      if (h.role === "reviewer" && h.crossFamily === false) bits.push("same family as executor");
+      return '<div class="histrow" data-run="' + esc(h.runId) + '" data-role="' + esc(h.role) +
+        '" data-lane="' + esc(h.lane || "") + '" data-model="' + esc(h.model || "") +
+        '" data-latency="' + esc(h.latencyMs) + '" data-attempts="' + attempts.length +
+        '" data-failover="' + (h.failover ? "1" : "0") +
+        '" data-verdict="' + esc(h.runState === "done" ? (h.verdict || "") : "") +
+        '" data-runstate="' + esc(h.runState) +
+        '" data-xfam="' + (h.crossFamily === null || h.crossFamily === undefined ? "" : h.crossFamily ? "yes" : "no") + '">' +
+        esc(bits.join(" · ")) + '</div>';
+    }).join("") : '<div class="muted histempty">No runs yet in this bridge session — this agent has not served a stage since the bridge started.</div>';
+    dossierHtml =
+      '<div class="sec"><h3>Identity</h3><div class="drows">' + idRows + '</div></div>' +
+      '<div class="sec"><h3>Today</h3><div class="drows">' + todayRows + '</div></div>' +
+      '<div class="sec"><h3>History</h3><div class="dossier-history">' + histHtml + '</div></div>';
+  }
+
   panel.innerHTML =
     '<div class="panelhead"><div class="avatar" style="background:' + pal.body + ';box-shadow:0 0 16px ' + pal.glow + '66">' +
     esc(initials(a.name)) + (isCloud ? '<span class="cloud">\u2601</span>' : "") + '</div>' +
@@ -3040,7 +3100,8 @@ function renderFocus() {
     esc(live ? ((live.taskIdentifier || "run") + " \u00b7 " + ((tasks.find((x) => x.id === live.taskId) || {}).title || "")) : "") + '</div>' +
     '<div class="s" id="fRunStep">' + esc(live && live.lastStep ? String(live.lastStep.text || "") : "") + '</div></div></div>' +
     (a.instructions ? '<div class="sec"><h3>Instructions</h3><div class="pre">' + esc(a.instructions) + '</div></div>' : "") +
-    '<div class="sec"><h3>Memory</h3><div>' + memRows + '</div></div>' +
+    dossierHtml +
+    (dz ? "" : '<div class="sec"><h3>Memory</h3><div>' + memRows + '</div></div>') +
     '</div>';
 
   $id("f-close").onclick = () => { closePanels(); renderAll(); };

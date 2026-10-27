@@ -167,6 +167,12 @@
 #floorRoot .sec h3 .right {margin-left:auto;font-size:9px;letter-spacing:0;text-transform:none}
 #floorRoot .memrow {font-size:10.5px;color:#bdcbd9;line-height:1.45;padding:5px 0;border-bottom:1px dashed #1a2a3c}
 #floorRoot .memrow .when {color:#5f7287;font-size:8.5px;margin-right:5px}
+/* Phase 2 Stage 1: dossier rows in the focus panel (identity / today
+   key-values + the structured stamp history). */
+#floorRoot .drow {display:flex;justify-content:space-between;gap:10px;padding:4px 0;border-bottom:1px dashed #1a2a3c;font-size:10.5px}
+#floorRoot .drow .dk {color:#5f7287;font-size:9px;letter-spacing:.08em;text-transform:uppercase;padding-top:1px;white-space:nowrap}
+#floorRoot .drow .dv {color:#d7e1ec;text-align:right;word-break:break-word}
+#floorRoot .histrow {font-size:10.5px;color:#bdcbd9;line-height:1.45;padding:5px 0;border-bottom:1px dashed #1a2a3c;word-break:break-word}
 #floorRoot .inline {display:flex;gap:5px;margin-top:7px}
 #floorRoot .inline input, #floorRoot .inline textarea {flex:1;min-width:0}
 #floorRoot input, #floorRoot textarea, #floorRoot select {background:#08111a;border:1px solid #263b52;border-radius:6px;padding:6px 7px;outline:none}
