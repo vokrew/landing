@@ -18,9 +18,9 @@
  * polling, and the XP / CREW LV surfaces.
  *
  * State enters ONLY through VokrewFloor.applyState() (the adapter
- * boundary, spec §2). Stage 1 feeds it from floor-fixture.js (recorded
- * fixture state, deleted before Stage 2); Stage 2 feeds it from the
- * real bridge via floor-adapter.js. Nothing in this file fetches.
+ * boundary, spec §2). Stage 1 fed it from a recorded fixture (deleted
+ * in Stage 2); Stage 2 feeds it from the real bridge via
+ * floor-adapter.js. Nothing in this file fetches.
  *
  * Loaded lazily by app.js the first time the Floor tab opens.
  */

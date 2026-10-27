@@ -210,11 +210,10 @@ document.querySelectorAll(".tab").forEach((tab) => {
 /* ---------------- floor (Phase 1) ----------------
    floor.js (the room: world, engine, drawing — a fork of floor-oc) is
    lazy-loaded the first time the Floor tab opens, so the connect /
-   chat / run path never pays for it. STAGE 1 ONLY: the state source
-   is floor-fixture.js, which replays recorded Floor-shaped state
-   through the adapter boundary (VokrewFloor.applyState). Stage 2
-   swaps in floor-adapter.js against the real bridge and deletes the
-   fixture. */
+   chat / run path never pays for it. The state source is
+   floor-adapter.js (Stage 2): it polls the real bridge and feeds live
+   crews / runs / stamps / budget through the adapter boundary
+   (VokrewFloor.applyState). */
 
 let floorLoaded = false;
 let floorLoading = null;
@@ -234,7 +233,7 @@ async function openFloor() {
     if (!floorLoading) {
       floorLoading = (async () => {
         await loadScript("floor.js");
-        await loadScript("floor-fixture.js"); // STAGE 1 FIXTURE — deleted before Stage 2
+        await loadScript("floor-adapter.js"); // Stage 2: live bridge data (spec §3)
         floorLoaded = true;
       })();
     }
@@ -340,7 +339,10 @@ $("runForm").addEventListener("submit", async (ev) => {
   btn.disabled = true;
   btn.textContent = "Running…";
   try {
-    const data = await guardedCall("/run", { method: "POST", body });
+    // ?wait=1 is the blocking compat path (Stage 0 registry): it must
+    // out-wait the whole chain, so it overrides bridgeFetch's 30s
+    // default — a slow local lane would otherwise abort mid-run.
+    const data = await guardedCall("/run?wait=1", { method: "POST", body, timeoutMs: 600000 });
     const verdictEl = $("runVerdict");
     if (data.verdict === "CHANGES") {
       verdictEl.className = "verdict changes";

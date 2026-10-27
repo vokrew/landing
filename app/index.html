@@ -132,14 +132,30 @@ node src/cli.js serve</pre>
       <div id="laneList"></div>
     </div>
 
-    <!-- Floor (Phase 1 — the crew room; Stage 1 is fixture-fed, see floor-fixture.js) -->
+    <!-- Floor (Phase 1 — the crew room; Stage 2: live bridge data via floor-adapter.js) -->
     <div id="screen-floor" class="tab-screen hidden">
+      <form id="floorRunForm">
+        <input id="floorRunTask" type="text" placeholder="Give the crew a task — they plan, build, and review it live in the room…" autocomplete="off" />
+        <label class="floor-crew-pick">Crew
+          <select id="floorRunCrew"></select>
+        </label>
+        <button class="btn primary" id="floorRunBtn" type="submit">Run the crew</button>
+        <span id="floorRunStatus" role="status"></span>
+      </form>
+      <div id="floorRunCard" class="hidden">
+        <button class="btn ghost small" id="floorCardClose" type="button">Close</button>
+        <div class="verdict" id="floorCardVerdict"></div>
+        <div class="stage-block"><h3>Plan</h3><pre id="floorCardPlan"></pre></div>
+        <div class="stage-block"><h3>Work</h3><pre id="floorCardWork"></pre></div>
+        <div class="stage-block"><h3>Review</h3><pre id="floorCardReview"></pre></div>
+        <div class="stage-block"><h3>Stamps</h3><pre class="stamps" id="floorCardStamps"></pre></div>
+      </div>
       <div id="floorRoot">
         <div id="top">
-          <div class="brand"><div class="mark">▦</div><div><div class="name">THE FLOOR</div><div class="tagline">VOKREW CREW ROOM</div></div><div class="phase" id="floorModeChip">FIXTURE</div></div>
+          <div class="brand"><div class="mark">▦</div><div><div class="name">THE FLOOR</div><div class="tagline">VOKREW CREW ROOM</div></div><div class="phase" id="floorModeChip">CONNECTING</div></div>
           <div class="topstat hideSm"><span class="dot" id="connDot"></span><span id="floorStatus">connecting</span></div>
           <div class="topstat hideSm" id="runStat">RUNS <b id="runCount">0</b></div>
-          <div class="topstat" id="budgetWrap"><span class="resicon">⚡</span>BUDGET <b id="budgetStatus">0 / 1.0M</b></div>
+          <div class="topstat" id="budgetWrap"><span class="resicon">⚡</span>CALLS TODAY <b id="budgetStatus">—</b></div>
           <div class="spacer"></div>
           <div class="clock" id="clock">--:--:--</div>
         </div>
@@ -147,7 +163,7 @@ node src/cli.js serve</pre>
         <aside id="side">
           <div class="sidehead">
             <div class="kicker">▣ PARTY ROSTER</div>
-            <div class="title">Fixture Crew <span id="crewCount" style="color:var(--amber);font-size:11px"></span></div>
+            <div class="title" id="crewTitle">Crew <span id="crewCount" style="color:var(--amber);font-size:11px"></span></div>
             <div class="sub" id="crewSub">local + free cloud</div>
           </div>
           <div id="roster"></div>
@@ -155,7 +171,7 @@ node src/cli.js serve</pre>
           <div id="tasklist"></div>
           <div class="sidefoot">
             <div>RIG: <b id="rigFoot">checking…</b></div>
-            <div id="floorFoot">fixture state · stage 1 · no bridge</div>
+            <div id="floorFoot">live bridge · stage 2</div>
           </div>
         </aside>
 

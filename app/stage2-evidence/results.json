@@ -1,0 +1,258 @@
+{
+  "assertions": [
+    {
+      "name": "rig lane is the real local model (no mock)",
+      "ok": true,
+      "detail": "[\"local-gemma: reachable at http://127.0.0.1:18080/v1 (1 models)\"]"
+    },
+    {
+      "name": "app shell enters against the real bridge",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "adapter seats a 3-agent roster from the real bridge",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "(j) mode chip is LIVE, never FIXTURE",
+      "ok": true,
+      "detail": "chip=LIVE"
+    },
+    {
+      "name": "roster shows the rig crew by name",
+      "ok": true,
+      "detail": "Scout,Musky,Judge"
+    },
+    {
+      "name": "idle room screenshot captured",
+      "ok": true,
+      "detail": "353549 bytes"
+    },
+    {
+      "name": "run submitted from the Floor form is registered (async 202)",
+      "ok": true,
+      "detail": "10b68878-45e1-41c8-bc72-0fb86bdc7699"
+    },
+    {
+      "name": "(a) planner entity in work mode during phase planner",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "(b) executor entity in work mode during phase executor",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "(c) reviewer leaves its own cubicle during phase reviewer",
+      "ok": true,
+      "detail": "seat cell={\"cx\":15,\"cy\":63}"
+    },
+    {
+      "name": "(c) reviewer arrives at the executor's doorstep cell",
+      "ok": true,
+      "detail": "doorstep cell={\"cx\":23,\"cy\":46}"
+    },
+    {
+      "name": "reviewer-at-doorway screenshot captured during the reviewer phase",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "run completes done on the bridge",
+      "ok": true,
+      "detail": "state=done verdict=APPROVED"
+    },
+    {
+      "name": "(d) quest-log row carries the verdict",
+      "ok": true,
+      "detail": "RUN-10B6 · APPROVEDWrite a one-line bash command that prints the current folder path, then explain it in one short sente"
+    },
+    {
+      "name": "(d) run card verdict == GET /runs/:id verdict",
+      "ok": true,
+      "detail": "Reviewer verdict: APPROVED"
+    },
+    {
+      "name": "run card stamps name the real lane + model",
+      "ok": true,
+      "detail": "planner: agent=Scout lane=local-gemma provider=openai-compatible model=gemma-local family=gemma tier=local latency=76536ms"
+    },
+    {
+      "name": "completed run card screenshot captured",
+      "ok": true,
+      "detail": "70882 bytes"
+    },
+    {
+      "name": "(e) focus-panel stamps match the record (lane + model + family)",
+      "ok": true,
+      "detail": "planner:ok executor:ok reviewer:ok"
+    },
+    {
+      "name": "(f) budget pill increases by exactly the served stage count",
+      "ok": true,
+      "detail": "pill 0 -> 3, stamps=3"
+    },
+    {
+      "name": "(g) rig record reports crossFamily=false (single-family rig)",
+      "ok": true,
+      "detail": "crossFamily=false — if this is ever true, the rig changed, do not force it"
+    },
+    {
+      "name": "(g) 'same family' label visible (status line)",
+      "ok": true,
+      "detail": "Run complete — verdict APPROVED · same family review"
+    },
+    {
+      "name": "(g) 'same family' label visible (run card footer)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "(i) Chat tab answers with a real local-gemma stamp",
+      "ok": true,
+      "detail": "[executor · lane=local-gemma · model=gemma-local · 5216ms]"
+    },
+    {
+      "name": "(i) Budget tab lists the lane with its call count",
+      "ok": true,
+      "detail": "local-gemma3 used · unlimitedno cap on this lanetoday (2026-10-27) · the other surface used 1 calls "
+    },
+    {
+      "name": "(i) Crew tab lists crews + lanes",
+      "ok": true,
+      "detail": "defaultDefault crew — plain pipeline roles, no named agents.rigplanner Scout · Plan small, verifiabl"
+    },
+    {
+      "name": "(i) Run tab (?wait=1 compat) returns a stamped result as today",
+      "ok": true,
+      "detail": "Reviewer verdict: APPROVED | planner: agent=Scout lane=local-gemma provider=openai-compatible model=gemma-local family=gemma tier=local latency=25800ms"
+    },
+    {
+      "name": "bridge restart -> open card renders 'run lost — bridge restarted'",
+      "ok": true,
+      "detail": "run lost — bridge restarted"
+    },
+    {
+      "name": "(j) floor-fixture.js deleted and never loaded; chip never FIXTURE",
+      "ok": true,
+      "detail": "onDisk=false loaded=false chip=LIVE"
+    },
+    {
+      "name": "(h) zero console errors (excluding by-design restart-test network entries)",
+      "ok": true,
+      "detail": "probe404s=1 outageEntries=0; unexplained=none; nonLog=none"
+    }
+  ],
+  "consoleErrors": [
+    "log: Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:17717/runs/10b68878-45e1-41c8-bc72-0fb86bdc7699"
+  ],
+  "screenshots": [
+    {
+      "file": "stage2-room-idle.png",
+      "note": "live room, rig crew seated, no run yet"
+    },
+    {
+      "file": "stage2-reviewer-at-doorway.png",
+      "note": "reviewer entity standing on the executor doorstep cell during phase reviewer"
+    },
+    {
+      "file": "stage2-run-card.png",
+      "note": "completed run card opened from the quest-log entry"
+    }
+  ],
+  "rig": {
+    "llama": "gemma-local on :18080",
+    "bridge": "registry build on :17717, paired",
+    "runId": "10b68878-45e1-41c8-bc72-0fb86bdc7699",
+    "finalRecord": {
+      "state": "done",
+      "verdict": "APPROVED",
+      "crossFamily": false,
+      "stamps": [
+        {
+          "role": "planner",
+          "agent": "Scout",
+          "lane": "local-gemma",
+          "provider": "openai-compatible",
+          "model": "gemma-local",
+          "family": "gemma",
+          "tier": "local",
+          "latencyMs": 76536,
+          "failover": false,
+          "attempts": [
+            {
+              "lane": "local-gemma",
+              "status": "served"
+            }
+          ]
+        },
+        {
+          "role": "executor",
+          "agent": "Musky",
+          "lane": "local-gemma",
+          "provider": "openai-compatible",
+          "model": "gemma-local",
+          "family": "gemma",
+          "tier": "local",
+          "latencyMs": 20904,
+          "failover": false,
+          "attempts": [
+            {
+              "lane": "local-gemma",
+              "status": "served"
+            }
+          ]
+        },
+        {
+          "role": "reviewer",
+          "agent": "Judge",
+          "lane": "local-gemma",
+          "provider": "openai-compatible",
+          "model": "gemma-local",
+          "family": "gemma",
+          "tier": "local",
+          "latencyMs": 36181,
+          "failover": false,
+          "attempts": [
+            {
+              "lane": "local-gemma",
+              "status": "served"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "phases": [
+    {
+      "phase": "planner",
+      "state": "running",
+      "atSec": 0,
+      "stamps": 0
+    },
+    {
+      "phase": "executor",
+      "state": "running",
+      "atSec": 76,
+      "stamps": 1
+    },
+    {
+      "phase": "reviewer",
+      "state": "running",
+      "atSec": 97,
+      "stamps": 2
+    },
+    {
+      "phase": null,
+      "state": "done",
+      "atSec": 133,
+      "stamps": 3
+    }
+  ],
+  "runLostProbe404s": 1,
+  "bridgeOutageLogEntries": [],
+  "verdict": "STAGE 2 GATE: PASS"
+}

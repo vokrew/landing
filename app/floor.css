@@ -11,6 +11,18 @@
 
 /* Break out of the app shell's 880px main column; the room wants width. */
 #screen-floor { position:relative; left:50%; transform:translateX(-50%); width:min(1600px, calc(100vw - 20px)); }
+
+/* Stage 2: the Floor screen's run bar + run card (adapter-owned chrome,
+   fed by floor-adapter.js; the room itself stays floor.js/floor.css). */
+#floorRunForm { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin:0 0 10px; }
+#floorRunForm #floorRunTask { flex:1 1 320px; padding:9px 12px; border:1px solid var(--line, #cbd5e1);
+  border-radius:8px; font:inherit; min-width:220px; }
+#floorRunForm .floor-crew-pick { display:flex; align-items:center; gap:6px; font-size:13px; }
+#floorRunForm #floorRunStatus { font-size:13px; opacity:.85; min-height:1em; }
+#floorRunCard { position:relative; border:1px solid var(--line, #cbd5e1); border-radius:12px;
+  padding:14px 16px; margin:0 0 10px; }
+#floorRunCard #floorCardClose { position:absolute; top:10px; right:10px; }
+#floorRunCard .verdict { margin-right:90px; }
 #floorRoot { position:relative; height:calc(100vh - 235px); min-height:600px; overflow:hidden;
   border:1px solid #2a3b50; border-radius:12px; background:#06090e; color:#e8eef5;
   font-family:"Inter","Segoe UI",system-ui,-apple-system,sans-serif; font-size:13px; }
