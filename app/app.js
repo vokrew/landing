@@ -200,6 +200,9 @@ $("disconnectBtn").addEventListener("click", () => disconnect());
 /* ---------------- tabs ---------------- */
 
 function activateTab(name) {
+  // Phase 2 Stage 0 (G-2): floor mode lets the room take the viewport
+  // (see the floor-mode rules in app.css / floor.css).
+  document.body.classList.toggle("floor-on", name === "floor");
   document.querySelectorAll(".tab").forEach((t) => t.classList.toggle("active", t.dataset.screen === name));
   ["chat", "run", "budget", "crew", "floor"].forEach((s) => {
     $("screen-" + s).classList.toggle("hidden", s !== name);

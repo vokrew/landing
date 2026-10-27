@@ -217,3 +217,12 @@ body.door-open { overflow: hidden; }
   body { font-size: 15.5px; }
   .composer { flex-wrap: wrap; }
 }
+
+/* ---------- floor mode (Phase 2 Stage 0, G-2) ----------
+   While the Floor tab is active the shell yields its vertical space
+   to the room: the topbar un-sticks (it scrolls away so the room can
+   fill the screen — floor-oc has no outer bar at all), main's top
+   padding and the tab row tighten. Other tabs are untouched. */
+body.floor-on .topbar { position: static; }
+body.floor-on main { padding-top: 10px; padding-bottom: 24px; }
+body.floor-on .tabs { margin-bottom: 10px; }

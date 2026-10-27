@@ -19,10 +19,31 @@
   border-radius:8px; font:inherit; min-width:220px; }
 #floorRunForm .floor-crew-pick { display:flex; align-items:center; gap:6px; font-size:13px; }
 #floorRunForm #floorRunStatus { font-size:13px; opacity:.85; min-height:1em; }
-#floorRunCard { position:relative; border:1px solid var(--line, #cbd5e1); border-radius:12px;
-  padding:14px 16px; margin:0 0 10px; }
-#floorRunCard #floorCardClose { position:absolute; top:10px; right:10px; }
-#floorRunCard .verdict { margin-right:90px; }
+/* Phase 2 Stage 0 (G-1): the run card docks INSIDE the room as a slim
+   status strip over the stage's bottom edge — phase + calls served
+   while the run is live, the verdict when it settles. The full card
+   is a panel that grows up from the strip when clicked or when the
+   run settles; it overlays only while expanded, and the room is
+   never pushed down or hidden behind it (Phase 1 LOOK-GATE G-1,
+   where the in-flow card ate 481px and pushed the room off-screen). */
+#floorRunCard { position:absolute; z-index:30; left:50%; transform:translateX(-50%); bottom:12px;
+  width:min(620px, calc(100% - 24px)); }
+#floorCardStrip { display:flex; align-items:center; gap:10px; width:100%; height:34px; padding:0 12px;
+  border:1px solid #3d5a74; border-radius:9px; background:rgba(8,14,21,.92); color:#dceaf7;
+  font-family:var(--mono, ui-monospace, SFMono-Regular, Menlo, monospace); font-size:12.5px;
+  cursor:pointer; text-align:left; box-shadow:0 10px 30px rgba(0,0,0,.45);
+  backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); }
+#floorCardStrip:hover { border-color:#50708f; }
+#floorCardStrip #floorStripText { flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+#floorCardStrip #floorStripCaret { flex:none; color:var(--amber, #ffb224); }
+#floorCardBody { position:absolute; left:50%; transform:translateX(-50%); bottom:calc(100% + 8px);
+  width:min(680px, calc(100vw - 24px)); max-height:min(520px, 58dvh); overflow-y:auto;
+  border:1px solid var(--line, #cbd5e1); border-radius:12px; padding:14px 16px;
+  background:var(--panel, #10131a); color:var(--ink, #eef1f5);
+  box-shadow:0 24px 80px rgba(0,0,0,.6); }
+#floorCardBody #floorCardClose { position:absolute; top:10px; right:10px; }
+#floorCardBody .verdict { margin-right:90px; }
+#floorCardBody .stage-block pre { max-height:180px; overflow-y:auto; }
 #floorRoot { position:relative; height:calc(100vh - 235px); min-height:600px; overflow:hidden;
   border:1px solid #2a3b50; border-radius:12px; background:#06090e; color:#e8eef5;
   font-family:"Inter","Segoe UI",system-ui,-apple-system,sans-serif; font-size:13px; }
@@ -308,4 +329,31 @@
 @media (max-width:1180px) {
   #floorRoot .topstat.hideSm {display:none}
   #floorRoot .tb {padding:6px 7px}
+}
+
+/* Phase 2 Stage 0 (G-2) — desktop: the room takes the viewport.
+   floor-oc's stage is the window minus its one 52px bar; the Phase 1
+   shell left Vokrew's stage at 100vh-289 and the world rendered 28%
+   small (LOOK-GATE G-2). In floor mode the shell yields (app.css:
+   topbar un-sticks, tabs tighten), the run form becomes a fixed
+   38px row, the room takes the rest of the viewport height, and the
+   room's own top bar trims 52px -> 48px. Stage height lands at
+   100dvh - 86 vs floor-oc's 100dvh - 52 — inside the 5% parity band
+   at any window size, with the same fitScale camera math untouched. */
+@media (min-width:1024px) {
+  body.floor-on #floorRunForm { height:38px; margin:0; flex-wrap:nowrap; }
+  body.floor-on #floorRunForm #floorRunTask,
+  body.floor-on #floorRunForm #floorRunBtn { height:32px; }
+  body.floor-on #floorRunForm #floorRunTask { padding:4px 12px; }
+  body.floor-on #floorRunForm #floorRunBtn { padding:4px 16px; }
+  body.floor-on #floorRunForm .floor-crew-pick { margin:0; }
+  body.floor-on #floorRunForm .floor-crew-pick select { margin-top:0; height:32px; padding:4px 8px; }
+  body.floor-on #floorRoot { height:calc(100dvh - 38px); min-height:0; }
+  body.floor-on #floorRoot #top { height:48px; }
+  body.floor-on #floorRoot #side { top:48px; }
+  body.floor-on #floorRoot #stage { top:48px; }
+  body.floor-on #floorRoot .panel { top:58px; }
+}
+@media (min-width:721px) and (max-width:1023px) {
+  body.floor-on #floorRoot { height:calc(100dvh - 120px); min-height:480px; }
 }
