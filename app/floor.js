@@ -2582,7 +2582,7 @@ function drawLighting(now) {
     sg.beginPath(); sg.arc(gx, gy, gr, 0, 7); sg.fill();
   });
   ctx.save();
-  ctx.globalAlpha = 0.52;
+  ctx.globalAlpha = 0.45;
   ctx.imageSmoothingEnabled = true;
   ctx.drawImage(_shadeCv, 0, 0, WW, WH);
   ctx.restore();
