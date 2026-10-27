@@ -1,0 +1,353 @@
+{
+  "assertions": [
+    {
+      "name": "floor-oc reference: room loaded, 2 example agents, overview camera measured",
+      "ok": true,
+      "detail": "cam.s=0.35767 canvas=[1188,761]"
+    },
+    {
+      "name": "floor-oc idle screenshot captured",
+      "ok": true,
+      "detail": "495813 bytes"
+    },
+    {
+      "name": "floor-oc focus screenshot captured",
+      "ok": true,
+      "detail": "cam.s=0.8047574999671592"
+    },
+    {
+      "name": "floor-oc active screenshot captured (no walk observed in window)",
+      "ok": true,
+      "detail": "no entity moved >60 world px in 240s"
+    },
+    {
+      "name": "vokrew: paired through the page's own form",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "vokrew: rig crew seated, overview scale measured",
+      "ok": true,
+      "detail": "scale=0.25662 canvas=[1166,546]"
+    },
+    {
+      "name": "vokrew idle screenshot captured",
+      "ok": true,
+      "detail": "353907 bytes"
+    },
+    {
+      "name": "vokrew focus screenshot captured",
+      "ok": true,
+      "detail": "cam.s=0.7199999999694637"
+    },
+    {
+      "name": "video run registered on the bridge",
+      "ok": true,
+      "detail": "25bda1e5-9a7f-400c-a7db-c7e9d2fc9fe5"
+    },
+    {
+      "name": "video run settled on the bridge",
+      "ok": false,
+      "detail": "verdict=null duration=120s"
+    },
+    {
+      "name": "reviewer reached the executor doorstep during the recorded run",
+      "ok": false,
+      "detail": ""
+    },
+    {
+      "name": "reviewer walked back to its own cubicle after the verdict",
+      "ok": true,
+      "detail": "home at +121s"
+    },
+    {
+      "name": "screencast frames captured",
+      "ok": true,
+      "detail": "1139 frames; state log entries=289"
+    },
+    {
+      "name": "state log corroborates: planner + executor work modes seen",
+      "ok": false,
+      "detail": ""
+    },
+    {
+      "name": "state log corroborates: reviewer on doorstep cell in logged entries",
+      "ok": false,
+      "detail": "0 entries"
+    },
+    {
+      "name": "zero console errors across all captures (JS/console.error zero-tolerance; tallied transport noise named)",
+      "ok": false,
+      "detail": "nonLog=0 noise=0 unexplained=log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps | log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags"
+    }
+  ],
+  "consoleErrors": [
+    "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+    "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags",
+    "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+    "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags",
+    "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+    "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags",
+    "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+    "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags",
+    "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+    "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags",
+    "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+    "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags",
+    "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+    "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags",
+    "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+    "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags",
+    "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+    "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags",
+    "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+    "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags",
+    "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+    "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags",
+    "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+    "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags",
+    "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+    "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags",
+    "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+    "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags",
+    "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+    "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags",
+    "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+    "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags",
+    "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+    "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags",
+    "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+    "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags",
+    "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+    "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags",
+    "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+    "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags",
+    "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+    "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags",
+    "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+    "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags",
+    "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+    "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags",
+    "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+    "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags",
+    "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+    "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags",
+    "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+    "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags",
+    "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+    "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags",
+    "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+    "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags",
+    "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+    "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags"
+  ],
+  "screenshots": [
+    {
+      "file": "flooroc-idle.png",
+      "note": "REFERENCE (floor-oc, own server, example data): idle room, agents at desks, 1440x900 overview"
+    },
+    {
+      "file": "flooroc-focus-agent.png",
+      "note": "REFERENCE (floor-oc): focus view on the first agent — character + nameplate at focus zoom"
+    },
+    {
+      "file": "flooroc-active.png",
+      "note": "REFERENCE (floor-oc): no ambient walk observed in 240s; settled room frame"
+    },
+    {
+      "file": "vokrew-idle.png",
+      "note": "VOKREW FLOOR: idle room, rig crew (Scout/Musky/Judge) seated, 1440x900 overview — pairs with flooroc-idle.png"
+    },
+    {
+      "file": "vokrew-focus-agent.png",
+      "note": "VOKREW FLOOR: focus view on Musky (executor) — character + nameplate at focus zoom"
+    }
+  ],
+  "rig": {
+    "llama": "gemma-local on :18080",
+    "bridge": "registry build on :17717"
+  },
+  "readability": {
+    "flooroc": {
+      "camS": 0.35767,
+      "camMode": "overview",
+      "canvasBacking": [
+        1188,
+        761
+      ],
+      "canvasCss": [
+        1188,
+        761
+      ],
+      "agents": [
+        "Example CEO",
+        "Example Worker"
+      ],
+      "nameplateWorldPx": 9,
+      "characterWorldPx": 46,
+      "nameplateScreenPx": 3.22,
+      "characterScreenPx": 16.5
+    },
+    "floorocFocus": {
+      "camS": 0.8047574999671592,
+      "mode": "focus",
+      "nameplateScreenPx": 7.24,
+      "characterScreenPx": 37
+    },
+    "vokrew": {
+      "camS": 0.25662,
+      "W": 1166,
+      "H": 546,
+      "canvasBacking": [
+        1166,
+        546
+      ],
+      "canvasCss": [
+        1166,
+        546
+      ],
+      "names": [
+        "Scout",
+        "Musky",
+        "Judge"
+      ],
+      "effectiveScale": 0.25662,
+      "nameplateWorldPx": 9,
+      "characterWorldPx": 46,
+      "nameplateScreenPx": 2.31,
+      "characterScreenPx": 11.8
+    },
+    "vokrewFocus": {
+      "camS": 0.7199999999694637,
+      "nameplateScreenPx": 6.48,
+      "characterScreenPx": 33.1
+    }
+  },
+  "flooroc": {
+    "server": "floor-oc server.js from four-hands-clone/tools/floor on :13201, data = data.example.json (2 placeholder agents, 1 unassigned task)",
+    "activeMoment": {
+      "kind": "none observed in 240s window"
+    }
+  },
+  "video": {
+    "doorstepCell": {
+      "cx": 23,
+      "cy": 46
+    },
+    "screencastStartWallMs": 1793076647234,
+    "runId": "25bda1e5-9a7f-400c-a7db-c7e9d2fc9fe5",
+    "finalRecord": {
+      "state": "failed",
+      "verdict": null,
+      "crossFamily": null,
+      "stamps": []
+    },
+    "timeline": {
+      "runStartWallMs": 1793076649247,
+      "settledWallMs": 1793076769440,
+      "reviewerAtDoorstepWallMs": null,
+      "reviewerHomeWallMs": 1793076769909,
+      "runDurationSec": 120
+    },
+    "frameCount": 1139,
+    "frames": {
+      "first": {
+        "idx": 0,
+        "file": "frame_00000.jpg",
+        "tsSec": 1793076647.296929,
+        "wallMs": 1793076647382
+      },
+      "last": {
+        "idx": 1138,
+        "file": "frame_01138.jpg",
+        "tsSec": 1793076772.60788,
+        "wallMs": 1793076772687
+      }
+    },
+    "corroboration": {
+      "reviewerDoorstepLogEntries": 0,
+      "plannerWorkModeSeen": true,
+      "executorWorkModeSeen": false
+    }
+  },
+  "phases": [
+    {
+      "phase": "planner",
+      "state": "running",
+      "atSec": 0,
+      "stamps": 0
+    },
+    {
+      "phase": null,
+      "state": "failed",
+      "atSec": 120,
+      "stamps": 0
+    }
+  ],
+  "consoleClassification": {
+    "total": 58,
+    "nonLog": 0,
+    "transportNoise": 0,
+    "unexplained": [
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/ps",
+      "log: Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:13201/api/ollama/tags"
+    ]
+  },
+  "verdict": "STAGE 4 CAPTURE: COMPLETE WITH 5 MISS(ES) — see assertions"
+}

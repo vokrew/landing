@@ -1,0 +1,301 @@
+{
+  "assertions": [
+    {
+      "name": "page weight measured",
+      "ok": true,
+      "detail": "floor screen (floor.js+floor.css+floor-adapter.js) = 194861 B raw (190.3 KB) vs spec ceiling 160 KB; shell = 38661 B"
+    },
+    {
+      "name": "phone locked screenshot captured",
+      "ok": true,
+      "detail": "{\"iw\":412,\"docSW\":412,\"wide\":5}"
+    },
+    {
+      "name": "phone idle screenshot captured",
+      "ok": true,
+      "detail": "canvas css=[138,626] backing=[640,1252] dprRatio=4.64 wide=5"
+    },
+    {
+      "name": "phone idle frame times probed",
+      "ok": true,
+      "detail": "{\"n\":608,\"avgMs\":19.65,\"avgFps\":50.9,\"p50Ms\":16.7,\"p95Ms\":33.4,\"p99Ms\":83.3,\"maxMs\":266.6,\"over33\":54,\"over50\":14}"
+    },
+    {
+      "name": "phone mid-run screenshot captured (reviewer at doorstep)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "phone run settled",
+      "ok": true,
+      "detail": "verdict=CHANGES"
+    },
+    {
+      "name": "phone run frame times probed",
+      "ok": true,
+      "detail": "{\"n\":4079,\"avgMs\":27.11,\"avgFps\":36.9,\"p50Ms\":16.7,\"p95Ms\":66.7,\"p99Ms\":133.2,\"maxMs\":683.3,\"over33\":1323,\"over50\":296}"
+    },
+    {
+      "name": "phone: zero console errors (same classification as desktop)",
+      "ok": true,
+      "detail": "nonLog=0 noise=0 unexplained=none"
+    }
+  ],
+  "consoleErrors": [],
+  "screenshots": [
+    {
+      "file": "phone-locked.png",
+      "note": "PHONE 412x915 @DPR2.6: connect door over the locked room"
+    },
+    {
+      "file": "phone-idle.png",
+      "note": "PHONE 412x915 @DPR2.6: paired, rig crew seated, idle room"
+    },
+    {
+      "file": "phone-midrun.png",
+      "note": "PHONE 412x915 @DPR2.6: mid-run — reviewer on the executor doorstep"
+    }
+  ],
+  "rig": {
+    "llama": "gemma-local on :18080",
+    "bridge": "registry build on :17717"
+  },
+  "phone": {
+    "pageWeight": {
+      "files": {
+        "index.html": {
+          "bytes": 10928,
+          "gzipBytes": 3551
+        },
+        "app.css": {
+          "bytes": 10233,
+          "gzipBytes": 2829
+        },
+        "app.js": {
+          "bytes": 17500,
+          "gzipBytes": 5642
+        },
+        "floor.css": {
+          "bytes": 25887,
+          "gzipBytes": 6672
+        },
+        "floor.js": {
+          "bytes": 133303,
+          "gzipBytes": 37830
+        },
+        "floor-adapter.js": {
+          "bytes": 35671,
+          "gzipBytes": 11222
+        }
+      },
+      "floorScreenBytes": 194861,
+      "shellBytes": 38661,
+      "specCeilingBytes": 163840
+    },
+    "lockedAudit": {
+      "innerWidth": 412,
+      "innerHeight": 915,
+      "docScrollWidth": 412,
+      "bodyScrollWidth": 412,
+      "wideElements": [
+        "clock right=460",
+        "questtracker right=561",
+        "qhead right=548",
+        "qtitle right=548",
+        "qmeta right=548"
+      ],
+      "canvasCss": [
+        138,
+        626
+      ],
+      "canvasBacking": [
+        640,
+        1252
+      ],
+      "canvasDprRatio": 4.64,
+      "roster": {
+        "top": 464,
+        "left": 11,
+        "width": 251,
+        "height": 44
+      },
+      "tasklist": {
+        "top": 537,
+        "left": 11,
+        "width": 251,
+        "height": 426
+      },
+      "runForm": {
+        "top": 203,
+        "left": 10,
+        "width": 392,
+        "height": 44
+      },
+      "focus": {
+        "top": 0,
+        "left": 0,
+        "width": 0,
+        "height": 0
+      }
+    },
+    "idleAudit": {
+      "innerWidth": 415,
+      "innerHeight": 922,
+      "docScrollWidth": 415,
+      "bodyScrollWidth": 415,
+      "wideElements": [
+        "clock right=434",
+        "questtracker right=561",
+        "qhead right=548",
+        "qtitle right=548",
+        "qmeta right=548"
+      ],
+      "canvasCss": [
+        138,
+        626
+      ],
+      "canvasBacking": [
+        640,
+        1252
+      ],
+      "canvasDprRatio": 4.64,
+      "roster": {
+        "top": 472,
+        "left": 11,
+        "width": 251,
+        "height": 201
+      },
+      "tasklist": {
+        "top": 702,
+        "left": 11,
+        "width": 251,
+        "height": 269
+      },
+      "runForm": {
+        "top": 210,
+        "left": 10,
+        "width": 392,
+        "height": 44
+      },
+      "focus": {
+        "top": 0,
+        "left": 0,
+        "width": 0,
+        "height": 0
+      }
+    },
+    "frameTimesIdle": {
+      "n": 608,
+      "avgMs": 19.65,
+      "avgFps": 50.9,
+      "p50Ms": 16.7,
+      "p95Ms": 33.4,
+      "p99Ms": 83.3,
+      "maxMs": 266.6,
+      "over33": 54,
+      "over50": 14
+    },
+    "runId": "4940f3f2-5075-4d11-b20b-1a6f62f97b22",
+    "midRunPhase": "reviewer-at-doorstep",
+    "finalRecord": {
+      "state": "done",
+      "verdict": "CHANGES",
+      "crossFamily": false
+    },
+    "frameTimesRun": {
+      "n": 4079,
+      "avgMs": 27.11,
+      "avgFps": 36.9,
+      "p50Ms": 16.7,
+      "p95Ms": 66.7,
+      "p99Ms": 133.2,
+      "maxMs": 683.3,
+      "over33": 1323,
+      "over50": 296
+    },
+    "postRunAudit": {
+      "innerWidth": 415,
+      "innerHeight": 922,
+      "docScrollWidth": 415,
+      "bodyScrollWidth": 415,
+      "wideElements": [
+        "clock right=434",
+        "questtracker right=561",
+        "qhead right=548",
+        "qcycle right=548",
+        "qtitle right=548",
+        "qmeta right=548",
+        "qbar right=548",
+        "I right=547",
+        "qfoot right=548",
+        "qn right=548"
+      ],
+      "canvasCss": [
+        138,
+        626
+      ],
+      "canvasBacking": [
+        640,
+        1252
+      ],
+      "canvasDprRatio": 4.64,
+      "roster": {
+        "top": 1109,
+        "left": 11,
+        "width": 251,
+        "height": 201
+      },
+      "tasklist": {
+        "top": 1339,
+        "left": 11,
+        "width": 251,
+        "height": 269
+      },
+      "runForm": {
+        "top": 210,
+        "left": 10,
+        "width": 392,
+        "height": 44
+      },
+      "focus": {
+        "top": 0,
+        "left": 0,
+        "width": 0,
+        "height": 0
+      }
+    }
+  },
+  "phases": [
+    {
+      "phase": "planner",
+      "state": "running",
+      "atSec": 0,
+      "stamps": 0
+    },
+    {
+      "phase": "executor",
+      "state": "running",
+      "atSec": 69,
+      "stamps": 1
+    },
+    {
+      "phase": "reviewer",
+      "state": "running",
+      "atSec": 88,
+      "stamps": 2
+    },
+    {
+      "phase": null,
+      "state": "done",
+      "atSec": 110,
+      "stamps": 3
+    }
+  ],
+  "consoleClassification": {
+    "total": 0,
+    "nonLog": 0,
+    "transportNoise": 0,
+    "unexplained": []
+  },
+  "verdict": "STAGE 4 PHONE PASS: COMPLETE"
+}

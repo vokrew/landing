@@ -1,0 +1,254 @@
+{
+  "assertions": [
+    {
+      "name": "floor-oc reference: room loaded, 2 example agents, overview camera measured",
+      "ok": true,
+      "detail": "cam.s=0.35767 canvas=[1188,761]"
+    },
+    {
+      "name": "floor-oc idle screenshot captured",
+      "ok": true,
+      "detail": "495813 bytes"
+    },
+    {
+      "name": "floor-oc focus screenshot captured",
+      "ok": true,
+      "detail": "cam.s=0.8047574999671592"
+    },
+    {
+      "name": "floor-oc active screenshot captured (no walk observed in window)",
+      "ok": true,
+      "detail": "no entity moved >60 world px in 240s"
+    },
+    {
+      "name": "vokrew: paired through the page's own form",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lane warm-up chat completed through the bridge",
+      "ok": true,
+      "detail": "5618ms"
+    },
+    {
+      "name": "vokrew: rig crew seated, overview scale measured",
+      "ok": true,
+      "detail": "scale=0.25662 canvas=[1166,546]"
+    },
+    {
+      "name": "vokrew idle screenshot captured",
+      "ok": true,
+      "detail": "354173 bytes"
+    },
+    {
+      "name": "vokrew focus screenshot captured",
+      "ok": true,
+      "detail": "cam.s=0.719999980158851"
+    },
+    {
+      "name": "video run registered on the bridge",
+      "ok": true,
+      "detail": "48e8a0ec-d25a-4429-b08d-0a29af2cb1b6"
+    },
+    {
+      "name": "run card closed for the recording; room framed",
+      "ok": true,
+      "detail": "{\"cardHidden\":true}"
+    },
+    {
+      "name": "video run settled on the bridge",
+      "ok": false,
+      "detail": "verdict=null duration=119s"
+    },
+    {
+      "name": "reviewer reached the executor doorstep during the recorded run",
+      "ok": false,
+      "detail": ""
+    },
+    {
+      "name": "reviewer walked back to its own cubicle after the verdict",
+      "ok": true,
+      "detail": "home at +120s"
+    },
+    {
+      "name": "screencast frames captured",
+      "ok": true,
+      "detail": "740 frames; state log entries=256"
+    },
+    {
+      "name": "state log corroborates: planner + executor work modes seen",
+      "ok": false,
+      "detail": ""
+    },
+    {
+      "name": "state log corroborates: reviewer on doorstep cell in logged entries",
+      "ok": false,
+      "detail": "0 entries"
+    },
+    {
+      "name": "zero console errors across all captures (JS/console.error zero-tolerance; tallied transport noise + floor-oc rig polls named)",
+      "ok": true,
+      "detail": "nonLog=0 noise=0 floorocRigPoll=0 unexplained=none"
+    }
+  ],
+  "consoleErrors": [],
+  "screenshots": [
+    {
+      "file": "flooroc-idle.png",
+      "note": "REFERENCE (floor-oc, own server, example data): idle room, agents at desks, 1440x900 overview"
+    },
+    {
+      "file": "flooroc-focus-agent.png",
+      "note": "REFERENCE (floor-oc): focus view on the first agent — character + nameplate at focus zoom"
+    },
+    {
+      "file": "flooroc-active.png",
+      "note": "REFERENCE (floor-oc): no ambient walk observed in 240s; settled room frame"
+    },
+    {
+      "file": "vokrew-idle.png",
+      "note": "VOKREW FLOOR: idle room, rig crew (Scout/Musky/Judge) seated, 1440x900 overview — pairs with flooroc-idle.png"
+    },
+    {
+      "file": "vokrew-focus-agent.png",
+      "note": "VOKREW FLOOR: focus view on Musky (executor) — character + nameplate at focus zoom"
+    }
+  ],
+  "rig": {
+    "llama": "gemma-local on :18080",
+    "bridge": "registry build on :17717",
+    "warmup": {
+      "ms": 5618,
+      "ok": true,
+      "detail": "Ready\n"
+    }
+  },
+  "readability": {
+    "flooroc": {
+      "camS": 0.35767,
+      "camMode": "overview",
+      "canvasBacking": [
+        1188,
+        761
+      ],
+      "canvasCss": [
+        1188,
+        761
+      ],
+      "agents": [
+        "Example CEO",
+        "Example Worker"
+      ],
+      "nameplateWorldPx": 9,
+      "characterWorldPx": 46,
+      "nameplateScreenPx": 3.22,
+      "characterScreenPx": 16.5
+    },
+    "floorocFocus": {
+      "camS": 0.8047574999671592,
+      "mode": "focus",
+      "nameplateScreenPx": 7.24,
+      "characterScreenPx": 37
+    },
+    "vokrew": {
+      "camS": 0.25662,
+      "W": 1166,
+      "H": 546,
+      "canvasBacking": [
+        1166,
+        546
+      ],
+      "canvasCss": [
+        1166,
+        546
+      ],
+      "names": [
+        "Scout",
+        "Musky",
+        "Judge"
+      ],
+      "effectiveScale": 0.25662,
+      "nameplateWorldPx": 9,
+      "characterWorldPx": 46,
+      "nameplateScreenPx": 2.31,
+      "characterScreenPx": 11.8
+    },
+    "vokrewFocus": {
+      "camS": 0.719999980158851,
+      "nameplateScreenPx": 6.48,
+      "characterScreenPx": 33.1
+    }
+  },
+  "flooroc": {
+    "server": "floor-oc server.js from four-hands-clone/tools/floor on :13201, data = data.example.json (2 placeholder agents, 1 unassigned task)",
+    "activeMoment": {
+      "kind": "none observed in 240s window"
+    }
+  },
+  "video": {
+    "doorstepCell": {
+      "cx": 23,
+      "cy": 46
+    },
+    "cardHandling": "run card closed via its own Close button after submit; room scrolled into view before screencast start",
+    "screencastStartWallMs": 1793077496471,
+    "task": "Write a one-line bash command that prints the word hello, then explain it in one short sentence.",
+    "runId": "48e8a0ec-d25a-4429-b08d-0a29af2cb1b6",
+    "finalRecord": {
+      "state": "failed",
+      "verdict": null,
+      "crossFamily": null,
+      "error": "run failed: no lane could serve role \"planner\" (local-gemma:failed)",
+      "stamps": []
+    },
+    "timeline": {
+      "runStartWallMs": 1793077499657,
+      "settledWallMs": 1793077619057,
+      "reviewerAtDoorstepWallMs": null,
+      "reviewerHomeWallMs": 1793077619842,
+      "runDurationSec": 119
+    },
+    "frameCount": 740,
+    "frames": {
+      "first": {
+        "idx": 0,
+        "file": "frame_00000.jpg",
+        "tsSec": 1793077496.516353,
+        "wallMs": 1793077496553
+      },
+      "last": {
+        "idx": 739,
+        "file": "frame_00739.jpg",
+        "tsSec": 1793077622.792034,
+        "wallMs": 1793077622841
+      }
+    },
+    "corroboration": {
+      "reviewerDoorstepLogEntries": 0,
+      "plannerWorkModeSeen": true,
+      "executorWorkModeSeen": false
+    }
+  },
+  "phases": [
+    {
+      "phase": "planner",
+      "state": "running",
+      "atSec": 0,
+      "stamps": 0
+    },
+    {
+      "phase": null,
+      "state": "failed",
+      "atSec": 119,
+      "stamps": 0
+    }
+  ],
+  "consoleClassification": {
+    "total": 0,
+    "nonLog": 0,
+    "transportNoise": 0,
+    "floorocRigPoll": 0,
+    "unexplained": []
+  },
+  "verdict": "STAGE 4 CAPTURE: COMPLETE WITH 4 MISS(ES) — see assertions"
+}
