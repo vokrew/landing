@@ -1,0 +1,321 @@
+{
+  "assertions": [
+    {
+      "name": "(0) connect door up over the locked room",
+      "ok": true,
+      "detail": "{\"overlayVisible\":true,\"chip\":\"OFFLINE\"}"
+    },
+    {
+      "name": "(1) paired through the page form",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "(1) warm-up chat served by the real lane",
+      "ok": true,
+      "detail": "ok"
+    },
+    {
+      "name": "(1) warm-up run through the bridge chain",
+      "ok": true,
+      "note": true,
+      "detail": "FAILED twice — measured runs may hit the G-9 timeout"
+    },
+    {
+      "name": "(a) window frame is the Phase 1 house recipe (1440 wide; layout height recorded)",
+      "ok": true,
+      "detail": "1440x813"
+    },
+    {
+      "name": "(a) canvas width within 5% of floor-oc 1188",
+      "ok": true,
+      "detail": "canvas=1166,725 ref=1188,761"
+    },
+    {
+      "name": "(a) canvas height within 5% of floor-oc 761",
+      "ok": true,
+      "detail": "canvas=1166,725 ref=1188,761"
+    },
+    {
+      "name": "(a) overview scale within 5% of floor-oc 0.35767",
+      "ok": true,
+      "detail": "scale=0.34075 ref=0.35767"
+    },
+    {
+      "name": "(a) character px within 5% of floor-oc 16.5",
+      "ok": true,
+      "detail": "char=15.7 ref=16.5"
+    },
+    {
+      "name": "(a) nameplate px within 5% of floor-oc 3.22",
+      "ok": true,
+      "detail": "nameplate=3.07 ref=3.22"
+    },
+    {
+      "name": "(a) desktop idle screenshot captured",
+      "ok": true,
+      "detail": "345830 bytes"
+    },
+    {
+      "name": "(d) Run tab state (LIGHT run: fold not yet applied)",
+      "ok": true,
+      "note": true,
+      "detail": "{\"tabBtn\":true,\"screen\":true}"
+    },
+    {
+      "name": "(b) run #1 submitted from the Floor form",
+      "ok": true,
+      "detail": "d6eba05e-ee61-4919-ad84-278de31850cc"
+    },
+    {
+      "name": "(b) during the run the card is a slim strip (<=44px), expanded body hidden",
+      "ok": true,
+      "detail": "strip={\"top\":766,\"bottom\":800,\"left\":536,\"right\":1156,\"height\":34} bodyVisible=false cardHidden=false"
+    },
+    {
+      "name": "(b) the card never covers the room: expanded body overlaps 0px, the docked strip is a HUD sliver (<=8% of canvas area)",
+      "ok": true,
+      "detail": "bodyOverlap=0 stripArea=2.49% of canvas"
+    },
+    {
+      "name": "(b) room canvas fully inside the viewport during the run (no evaluator scrolling)",
+      "ok": true,
+      "detail": "{\"top\":87,\"bottom\":812,\"left\":263,\"right\":1429,\"width\":1166,\"height\":725} innerHeight=813"
+    },
+    {
+      "name": "(b) pixel probe: the room is rendered on the canvas (not blank/covered)",
+      "ok": true,
+      "detail": "{\"ok\":true,\"nonBg\":12154,\"total\":17368,\"frac\":0.7,\"backing\":[1166,725]}"
+    },
+    {
+      "name": "(b) strip text tells the truth: live phase + served calls == bridge record",
+      "ok": true,
+      "detail": "strip=\"RUN-D6EB · Scout is planning · ⚡ 0 calls served ▸\" phase=planner stamps=0"
+    },
+    {
+      "name": "(b) a real click on an agent mid-run opens the focus panel (room stays clickable)",
+      "ok": true,
+      "detail": "click={\"x\":515,\"y\":348}"
+    },
+    {
+      "name": "(b) reviewer reached the executor doorstep during run #1",
+      "ok": false,
+      "detail": "doorstep={\"cx\":23,\"cy\":46}"
+    },
+    {
+      "name": "(b) run #1 settles done on the bridge",
+      "ok": false,
+      "detail": "verdict=null"
+    },
+    {
+      "name": "(d) on settle the card auto-expands (body visible, no click)",
+      "ok": true,
+      "detail": "bodyVisible=true strip=\"RUN-D6EB · failed — run failed: no lane could serve role \"planner\" (local-gemma:failed) · ⚡ 0 calls ▾\""
+    },
+    {
+      "name": "(d) settled card Plan text == bridge record plan (full stage text)",
+      "ok": false,
+      "detail": "card=0B record=0B"
+    },
+    {
+      "name": "(d) settled card Work text == bridge record work (full stage text)",
+      "ok": false,
+      "detail": "card=0B record=0B"
+    },
+    {
+      "name": "(d) settled card Review text == bridge record review (full stage text)",
+      "ok": false,
+      "detail": "card=0B record=0B"
+    },
+    {
+      "name": "(d) settled card verdict + stamps name the real lane/model/agents",
+      "ok": false,
+      "detail": "Run failed — run failed: no lane could serve role \"planner\" (local-gemma:failed)"
+    },
+    {
+      "name": "(d) 'same family' is labeled on the settled card (single-family rig)",
+      "ok": false,
+      "detail": "crossFamily=null"
+    },
+    {
+      "name": "(d) desktop settled screenshot captured",
+      "ok": true,
+      "detail": "396478 bytes"
+    },
+    {
+      "name": "(d) budget pill increased by exactly the served stage count",
+      "ok": true,
+      "detail": "pill 0 -> 0, stamps=0"
+    },
+    {
+      "name": "(h) zero console errors across the whole session (pair, runs, reload, phone)",
+      "ok": true,
+      "detail": "transport=0; unexplained=none; nonLog=none"
+    }
+  ],
+  "consoleErrors": [],
+  "screenshots": [
+    {
+      "file": "verify-desktop-idle.png",
+      "note": "desktop 1440x900 idle overview, rig crew seated"
+    },
+    {
+      "file": "verify-desktop-settled.png",
+      "note": "desktop: run #1 settled, card auto-expanded with full stage text"
+    }
+  ],
+  "rig": {
+    "llama": "gemma-local on :18080",
+    "bridge": "registry build on :17717",
+    "warmUpRun": null,
+    "run1": "d6eba05e-ee61-4919-ad84-278de31850cc",
+    "finalRecord1": {
+      "state": "failed",
+      "verdict": null,
+      "crossFamily": null,
+      "stamps": 0
+    }
+  },
+  "label": "verify",
+  "measurements": {
+    "desktopIdle": {
+      "innerWidth": 1440,
+      "innerHeight": 813,
+      "canvasCss": [
+        1166,
+        725
+      ],
+      "canvasBacking": [
+        1166,
+        725
+      ],
+      "canvasRect": {
+        "top": 218,
+        "bottom": 943,
+        "left": 263,
+        "right": 1429
+      },
+      "rootRect": {
+        "top": 169,
+        "bottom": 944,
+        "height": 775,
+        "width": 1420
+      },
+      "stageRect": {
+        "top": 218,
+        "bottom": 943,
+        "height": 725,
+        "width": 1166
+      },
+      "camS": 0.34075,
+      "camMode": "overview",
+      "charPx": 15.7,
+      "nameplatePx": 3.07,
+      "floorOcStageHeight": 761
+    },
+    "runTab": {
+      "tabBtn": true,
+      "screen": true
+    },
+    "midRunCard": {
+      "present": true,
+      "cardHidden": false,
+      "cardBox": {
+        "top": 766,
+        "bottom": 800,
+        "left": 536,
+        "right": 1156,
+        "width": 620,
+        "height": 34
+      },
+      "stripPresent": true,
+      "stripVisible": true,
+      "stripBox": {
+        "top": 766,
+        "bottom": 800,
+        "left": 536,
+        "right": 1156,
+        "height": 34
+      },
+      "stripText": "RUN-D6EB · Scout is planning · ⚡ 0 calls served ▸",
+      "bodyPresent": true,
+      "bodyVisible": false,
+      "bodyBox": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 0,
+        "width": 0,
+        "height": 0
+      },
+      "canvasBox": {
+        "top": 87,
+        "bottom": 812,
+        "left": 263,
+        "right": 1429,
+        "width": 1166,
+        "height": 725
+      },
+      "stripCanvasOverlap": 21080,
+      "stripAreaFrac": 2.49,
+      "bodyCanvasOverlap": 0,
+      "verdict": "Run failed — run failed: no lane could serve role \"planner\" (local-gemma:failed)"
+    },
+    "pixelProbe": {
+      "ok": true,
+      "nonBg": 12154,
+      "total": 17368,
+      "frac": 0.7,
+      "backing": [
+        1166,
+        725
+      ]
+    },
+    "settledCard": {
+      "present": true,
+      "cardHidden": false,
+      "cardBox": {
+        "top": 766,
+        "bottom": 800,
+        "left": 536,
+        "right": 1156,
+        "width": 620,
+        "height": 34
+      },
+      "stripPresent": true,
+      "stripVisible": true,
+      "stripBox": {
+        "top": 766,
+        "bottom": 800,
+        "left": 536,
+        "right": 1156,
+        "height": 34
+      },
+      "stripText": "RUN-D6EB · failed — run failed: no lane could serve role \"planner\" (local-gemma:failed) · ⚡ 0 calls ▾",
+      "bodyPresent": true,
+      "bodyVisible": true,
+      "bodyBox": {
+        "top": 311.75,
+        "bottom": 758,
+        "left": 506,
+        "right": 1186,
+        "width": 680,
+        "height": 446.25
+      },
+      "canvasBox": {
+        "top": 87,
+        "bottom": 812,
+        "left": 263,
+        "right": 1429,
+        "width": 1166,
+        "height": 725
+      },
+      "stripCanvasOverlap": 21080,
+      "stripAreaFrac": 2.49,
+      "bodyCanvasOverlap": 303450,
+      "verdict": "Run failed — run failed: no lane could serve role \"planner\" (local-gemma:failed)"
+    }
+  },
+  "transportNoise": [],
+  "verdict": "PHASE 2 STAGE 0 GATE: FAIL (7)"
+}
