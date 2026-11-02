@@ -4135,10 +4135,10 @@ export function createFloor(canvas, { onSelect } = {}) {
     rr(g, x, y + 3, 3, h - 6, 1.5);
     g.fill();
 
-    const dotColor = status === "working" ? "#ffcb6b"
+    const dotColor = status === "working" ? "#B9A080"
       : status === "reviewing" ? pal.light
         : status === "walking" ? "#64b5ff"
-          : status === "done" ? "#5fd39b" : "#5c6880";
+          : status === "done" ? "#70A076" : "#5c6880";
     g.fillStyle = dotColor;
     g.beginPath();
     g.arc(x + 10.5, y + 10.2, 2.1, 0, Math.PI * 2);
@@ -4188,7 +4188,7 @@ export function createFloor(canvas, { onSelect } = {}) {
     const h = 13 + lines.length * 12;
     const x = clamp(px - w / 2, 6, WIDTH - w - 6);
     const y = Math.max(6, py - 44 - h);
-    const tone = b.kind === "failover" ? "#ff7185" : b.kind === "good" ? "#5fd39b" : b.kind === "warn" ? "#ffcb6b" : "#64b5ff";
+    const tone = b.kind === "failover" ? "#C08071" : b.kind === "good" ? "#70A076" : b.kind === "warn" ? "#B9A080" : "#64b5ff";
     const age = Math.max(0, Math.min(1, (now - (b.at || now)) / 180));
     const ease = 1 - Math.pow(1 - age, 3);
 

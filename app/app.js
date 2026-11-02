@@ -988,7 +988,7 @@ function renderBudgetPage() {
     card("⌁", "chat surface today", other, "calls, separate ledger", "var(--sunset)"),
   );
 
-  const tints = ["#64b5ff", "#bb95ff", "#ffa05c", "#5fd39b", "#ffcb6b", "#ff7185"];
+  const tints = ["#64b5ff", "#bb95ff", "#ffa05c", "#70A076", "#B9A080", "#C08071"];
   rows.replaceChildren(...app.budget.lanes.map((l, i) => {
     const used = Number(l.used) || 0;
     const metered = l.cap !== null && l.cap !== undefined;
