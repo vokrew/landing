@@ -8,23 +8,23 @@
    Night-studio palette: deep slate rooms, warm desk lamps, one accent per role. */
 
 :root {
-  --bg: #05070c;
-  --bg2: #090d15;
-  --panel: #0f1622;
-  --panel2: #141d2b;
-  --panel3: #1a2434;
-  --line: #263349;
-  --line-soft: #1b2536;
-  --ink: #edf2fb;
-  --ink2: #c0cadb;
-  --muted: #8592a9;
-  --faint: #5f6c84;
-  --sunset: #ffa05c;
-  --sunset-soft: rgba(255, 160, 92, .14);
-  --ocean: #64b5ff;
-  --ocean-soft: rgba(100, 181, 255, .14);
-  --violet: #bb95ff;
-  --violet-soft: rgba(187, 149, 255, .14);
+  --bg: #060B1E;
+  --bg2: #0A1029;
+  --panel: #0B1439;
+  --panel2: #111C4A;
+  --panel3: #16235C;
+  --line: #26305C;
+  --line-soft: #1A2450;
+  --ink: #EEF0F6;
+  --ink2: #C6CBE8;
+  --muted: #98A0C8;
+  --faint: #646EA3;
+  --sunset: #7D82D9;
+  --sunset-soft: rgba(125, 130, 217, .14);
+  --ocean: #93A5FF;
+  --ocean-soft: rgba(147, 165, 255, .14);
+  --violet: #B9BDF0;
+  --violet-soft: rgba(185, 189, 240, .14);
   --good: #5fd39b;
   --good-soft: rgba(95, 211, 155, .13);
   --warn: #ffcb6b;
@@ -34,7 +34,7 @@
   --radius: 16px;
   --radius-sm: 11px;
   --shadow: 0 28px 80px rgba(0, 0, 0, .58);
-  --glass: rgba(13, 19, 30, .72);
+  --glass: rgba(6, 11, 30, .72);
   --hair: rgba(255, 255, 255, .055);
   --mono: "Vokrew Pixel", ui-monospace, monospace;
   --sans: "Vokrew Pixel", ui-sans-serif, sans-serif;
