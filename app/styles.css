@@ -1,3 +1,9 @@
+@font-face {
+  font-family: "Vokrew Pixel";
+  src: url("/fonts/VokrewPixel.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
 /* Vokrew web face — the floor.
    Night-studio palette: deep slate rooms, warm desk lamps, one accent per role. */
 
@@ -30,8 +36,8 @@
   --shadow: 0 28px 80px rgba(0, 0, 0, .58);
   --glass: rgba(13, 19, 30, .72);
   --hair: rgba(255, 255, 255, .055);
-  --mono: ui-monospace, "SF Mono", "JetBrains Mono", "Fira Code", Menlo, Consolas, monospace;
-  --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Inter, Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: "Vokrew Pixel", ui-monospace, monospace;
+  --sans: "Vokrew Pixel", ui-sans-serif, sans-serif;
 }
 
 * { box-sizing: border-box; }
