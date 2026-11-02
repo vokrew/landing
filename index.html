@@ -406,6 +406,27 @@
         .run-step, .tline { transition: none; }
         .bar i { transition: none; }
       }
+
+      /* ---------- life layer v2 — four designs, Spark-authored, reviewed; retinted to the locked logo palette 2026-11-02 (gold stamp/done, periwinkle signal + prompt, steel/RAM blues on tiles) ---------- */
+      .vk-crew{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:0 0 12px}
+      .vk-tile{border:1px solid var(--line);background:var(--panel);padding:10px 12px;font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.08em;display:flex;align-items:center;gap:8px;border-radius:0;line-height:1}
+      .vk-light{width:8px;height:8px;flex:none;background:transparent;border:1px solid var(--dim);border-radius:0}
+      .vk-label{color:var(--ink)}
+      .vk-state{margin-left:auto;color:var(--dim)}
+      .vk-tile.is-work .vk-light{background:var(--c);border-color:var(--c)}
+      .vk-tile.is-work .vk-state{color:var(--ink)}
+      .vk-tile.is-done .vk-light{background:var(--amber);border-color:var(--amber)}
+      .vk-cmd{background:var(--panel);border:1px solid var(--line);padding:14px 16px;border-radius:0;font-family:var(--mono);font-size:13px;color:var(--ink);margin:0 0 18px}
+      .vk-prompt{color:var(--lime);margin-right:8px}
+      .vk-caret{display:inline-block;width:8px;height:14px;background:var(--lime);vertical-align:-2px;margin-left:4px}
+      .vk-stamp{display:inline-block;margin-top:10px;border:1.5px solid var(--amber);color:var(--amber);font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:6px 10px;border-radius:0}
+      .vk-rv{opacity:0;transform:translateY(16px)}
+      .vk-rv.vk-in{opacity:1;transform:none;transition:opacity .38s steps(6),transform .38s cubic-bezier(.2,.9,.25,1)}
+      .vk-signal{position:absolute;inset:0;pointer-events:none;z-index:0;opacity:.55;background-image:radial-gradient(circle at center,rgba(125,130,217,.14),transparent 60%),linear-gradient(var(--line-soft) 1px,transparent 1px),linear-gradient(90deg,var(--line-soft) 1px,transparent 1px);background-size:340px 340px,56px 56px,56px 56px;background-position:0 0,0 0,0 0;background-repeat:repeat;animation:vk-sig 11s linear infinite}
+      @keyframes vk-sig{from{background-position:0 0,0 0,0 0}to{background-position:340px 0,0 0,0 0}}
+      .hero .wrap{position:relative;z-index:1}
+      @media(max-width:700px){.vk-crew{grid-template-columns:repeat(2,1fr)}}
+      @media(prefers-reduced-motion:reduce){.vk-rv{opacity:1!important;transform:none!important;transition:none!important}.vk-signal{animation:none!important}.vk-caret{display:none}}
     </style>
   </head>
   <body>
@@ -881,6 +902,41 @@
           simReset.hidden = true;
         });
       })();
+    </script>
+
+    
+    <script>
+      /* life layer v2 — authored by Muse Spark (muse-spark-1.3); tail completed + reviewed by Casey */
+
+      (()=>{
+      var d=document,rm=false;
+      try{rm=d.defaultView.matchMedia('(prefers-reduced-motion: reduce)').matches}catch(e){}
+      var hero=d.querySelector('.hero'),wrap=d.querySelector('.hero .wrap');
+      if(hero&&!hero.querySelector('.vk-signal')){var sg=d.createElement('div');sg.className='vk-signal';sg.setAttribute('aria-hidden','true');hero.insertBefore(sg,hero.firstChild)}
+      if(wrap){
+      var defs=[['PLAN','var(--sky)'],['BUILD','var(--lime-deep)'],['CHECKS','var(--sky)'],['REVIEW','var(--lime-deep)']];
+      var crew=d.createElement('div');crew.className='vk-crew';
+      var tiles=defs.map(function(x){var t=d.createElement('div');t.className='vk-tile';t.style.setProperty('--c',x[1]);var l=d.createElement('span');l.className='vk-light';var n=d.createElement('span');n.className='vk-label';n.textContent=x[0];var st=d.createElement('span');st.className='vk-state';st.textContent='IDLE';t.appendChild(l);t.appendChild(n);t.appendChild(st);crew.appendChild(t);return{t:t,s:st}});
+      wrap.insertBefore(crew,wrap.firstChild);
+      var cmd=d.createElement('div');cmd.className='vk-cmd';cmd.setAttribute('aria-hidden','true');
+      var line=d.createElement('div');var pr=d.createElement('span');pr.className='vk-prompt';pr.textContent='\u203A';var ty=d.createElement('span');var cu=d.createElement('span');cu.className='vk-caret';line.appendChild(pr);line.appendChild(ty);line.appendChild(cu);cmd.appendChild(line);
+      var stamp=d.createElement('div');stamp.className='vk-stamp';stamp.textContent='DONE \u2014 CHECKED BY A DIFFERENT FAMILY';stamp.style.display='none';cmd.appendChild(stamp);
+      if(crew.nextSibling)wrap.insertBefore(cmd,crew.nextSibling);else wrap.appendChild(cmd);
+      var txt='ship the fix \u2014 but check the edge cases first';
+      if(rm){ty.textContent=txt;stamp.style.display='inline-block';cu.style.display='none';tiles.forEach(function(o){o.t.classList.add('is-done');o.s.textContent='DONE'})}
+      else{
+      (function loop(){var i=0;tiles.forEach(function(o){o.t.classList.remove('is-work','is-done');o.s.textContent='IDLE'});function step(){if(i>=tiles.length){setTimeout(loop,1600);return}var o=tiles[i];o.t.classList.add('is-work');o.s.textContent='WORKING';setTimeout(function(){o.t.classList.remove('is-work');o.t.classList.add('is-done');o.s.textContent='DONE';i++;setTimeout(step,260)},850)}setTimeout(step,400)})();
+      (function type(){var k=0;ty.textContent='';stamp.style.display='none';cu.style.display='';(function tick(){if(k<=txt.length){ty.textContent=txt.slice(0,k);k++;setTimeout(tick,55)}else{cu.style.display='none';stamp.style.display='inline-block';setTimeout(type,4000)}})()})();
+      }
+      try{
+      var sel='.step,.plan,.versus .vrow,.faq-list details,.stage-panel,.ledger';
+      if(!rm&&'IntersectionObserver' in window&&d.querySelectorAll){
+      var els=d.querySelectorAll(sel);var counts=new Map();
+      var io=new IntersectionObserver(function(es){for(var a=0;a<es.length;a++){var e=es[a];if(e&&e.isIntersecting&&e.target){e.target.classList.add('vk-in');io.unobserve(e.target)}}},{threshold:.12,rootMargin:'0px 0px -8% 0px'});
+      for(var j=0;j<els.length;j++){var el=els[j];if(!el||!el.parentElement)continue;var k=counts.get(el.parentElement)||0;counts.set(el.parentElement,k+1);el.classList.add('vk-rv');el.style.transitionDelay=((k%4)*70)+'ms';io.observe(el)}
+      }
+      }catch(_){}
+      }})();
     </script>
   </body>
 </html>
