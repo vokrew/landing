@@ -7,13 +7,13 @@
     <link rel="canonical" href="https://vokrew.com/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Vokrew">
-<meta property="og:title" content="Vokrew — One prompt. A crew of AIs. Checked before it ships.">
-<meta property="og:description" content="Vokrew routes your prompt to a crew of AIs — one plans, another builds, a different family checks. Free-first, with a visible quota ledger.">
+<meta property="og:title" content="Vokrew: One prompt. A crew of AIs. Checked before it ships.">
+<meta property="og:description" content="Vokrew routes your prompt to a crew of AIs. One plans, another builds, a different family checks. Free-first, with a visible quota ledger.">
 <meta property="og:url" content="https://vokrew.com/">
 <meta name="twitter:card" content="summary">
-<meta name="description" content="Vokrew routes your prompt to a crew of AIs — one plans, another builds, a different family checks. Free-first, with a visible quota ledger." />
+<meta name="description" content="Vokrew routes your prompt to a crew of AIs. One plans, another builds, a different family checks. Free-first, with a visible quota ledger." />
     <link rel="icon" type="image/png" href="/favicon.png" />
-    <title>Vokrew — One prompt. A crew of AIs. Checked before it ships.</title>
+    <title>Vokrew: One prompt. A crew of AIs. Checked before it ships.</title>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <style>
       @font-face {
@@ -37,7 +37,7 @@
         --lime-ink: #060B1E;
         --sky: #93A5FF;
         --amber: #B29673; /* logo gold: sampled RAM-contact #A88860, lightened ~12% for contrast */
-        --rose: #C08071; /* palette discipline (full-site audit 2026-11-02): retired #ff8296 stray to the band token — the palette's one red */
+        --rose: #C08071; /* palette discipline (full-site audit 2026-11-02): retired #ff8296 stray to the band token, the palette's one red */
         /* Full logo palette (Kevin 2026-11-02 "push it all") - sampled from the locked Altman artwork, files/logos/BRAND.md */
         --gold: #B29673;
         --gold-deep: #A88860;
@@ -413,7 +413,7 @@
         .bar i { transition: none; }
       }
 
-      /* ---------- life layer v2 — four designs, Spark-authored, reviewed; retinted to the locked logo palette 2026-11-02 (gold stamp/done, periwinkle signal + prompt, steel/RAM blues on tiles) ---------- */
+      /* ---------- life layer v2: four designs, Spark-authored, reviewed; retinted to the locked logo palette 2026-11-02 (gold stamp/done, periwinkle signal + prompt, steel/RAM blues on tiles) ---------- */
       .vk-crew{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:0 0 12px}
       .vk-tile{border:1px solid var(--line);background:var(--panel);padding:10px 12px;font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.08em;display:flex;align-items:center;gap:8px;border-radius:0;line-height:1}
       .vk-light{width:8px;height:8px;flex:none;background:transparent;border:1px solid var(--dim);border-radius:0}
@@ -433,7 +433,7 @@
       .hero .wrap{position:relative;z-index:1}
       .hero-altman{display:block;height:130px;width:auto;margin:10px 0 4px}
       .final-altman{display:block;height:290px;width:auto;margin:0 auto 20px}
-      /* ---------- Altman idle life — hero Altman is STATIONARY (Kevin 2026-11-02: the wave sprite's arm read broken, wave removed). The seated finale Altman keeps its bob + glint. All animation lives ONLY under (prefers-reduced-motion: no-preference). ---------- */
+      /* ---------- Altman idle life: hero Altman is STATIONARY (Kevin 2026-11-02: the wave sprite's arm read broken, wave removed). The seated finale Altman keeps its bob + glint. All animation lives ONLY under (prefers-reduced-motion: no-preference). ---------- */
       .altman-wrap{position:relative;display:block}
       .hero-altman-wrap{width:fit-content;margin:10px 0 4px}
       .hero-altman-wrap .hero-altman{margin:0}
@@ -443,7 +443,7 @@
       .glint-final{-webkit-mask-image:url(/img/altman-sitting-mask.png);mask-image:url(/img/altman-sitting-mask.png);-webkit-mask-size:100% 100%;mask-size:100% 100%}
       @keyframes vkBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
       @keyframes vkGlint{0%{background-position:130% 0}14%{background-position:-30% 0}100%{background-position:-30% 0}}
-      /* ---------- Slogan lockup — Altman's line beside the hero Altman, short stamp at the finale. Static text; no animation touches it. ---------- */
+      /* ---------- Slogan lockup: Altman's line beside the hero Altman, short stamp at the finale. Static text; no animation touches it. ---------- */
       .hero-altman-row{display:flex;align-items:center;gap:20px;margin:10px 0 4px}
       .hero-altman-row .hero-altman-wrap{margin:0;flex:none}
       .hero-slogan{margin:0;line-height:1.3}
@@ -467,7 +467,7 @@
       <div class="wrap">
         <div class="brandrow">
           <div class="wordmark"><span class="dot"></span>VOKREW <small>your voice, your crew</small></div>
-          <div class="status-pill"><span class="pulse"></span> Waitlist open — invites roll out in batches</div>
+          <div class="status-pill"><span class="pulse"></span> Waitlist open. Invites roll out in batches</div>
         </div>
 
         <div class="hero-grid">
@@ -480,7 +480,7 @@
               <p class="hero-slogan"><span class="hs-strong">YOUR RAM. YOUR RULES.</span><span class="hs-sub">BUILD THE BRAIN YOUR WAY.</span></p>
             </div>
             <p class="hero-sub">
-              Vokrew routes your task to the best free brain first — one model plans, another builds,
+              Vokrew routes your task to the best free brain first. One model plans, another builds,
               a <em>different family</em> checks the work. When a free lane caps out, it fails over
               automatically. You never hit a dead end, and you never burn credit you didn't have to.
             </p>
@@ -489,49 +489,49 @@
               <div class="wl-row">
                 <label class="sr-only" for="email-hero">Email address</label>
                 <input id="email-hero" type="email" name="email" placeholder="you@your.dev" autocomplete="email" />
-                <button class="btn" type="submit">Join the waitlist — free tier stays free-strong</button>
+                <button class="btn" type="submit">Join the waitlist, free tier stays free-strong</button>
               </div>
-              <p class="wl-note" data-wl-note aria-live="polite">Coding first. One email when your invite opens — no drip campaign.</p>
+              <p class="wl-note" data-wl-note aria-live="polite">Coding first. One email when your invite opens. No drip campaign.</p>
             </form>
             <div class="wl-done" data-wl-done role="status">
               <span class="tick">✓</span>
               <div>
                 <p><strong>You're on the list.</strong>
-                We'll write to <span class="mono" data-wl-email></span> when your invite opens. Free tier stays free-strong — that's the deal.</p>
+                We'll write to <span class="mono" data-wl-email></span> when your invite opens. Free tier stays free-strong. That's the deal.</p>
                 <button class="again" type="button" data-wl-again>Use a different email</button>
               </div>
             </div>
 
-            <p class="proof">Vokrew runs on a <b>36-route router already in production</b> for the people building it — free lanes first, paid only as a catcher.</p>
-            <p class="proof"><b>How the app works:</b> Vokrew runs on your own machine first — a small bridge program that talks to your local AI (like Ollama) or your own lanes. This website runs no AI on a server. Start the bridge, it prints a 6-digit code, then open the app <b>on that same device</b> and pair.</p>
+            <p class="proof">Vokrew runs on a <b>36-route router already in production</b> for the people building it. Free lanes first, paid only as a catcher.</p>
+            <p class="proof"><b>How the app works:</b> Vokrew runs on your own machine first: a small bridge program that talks to your local AI (like Ollama) or your own lanes. This website runs no AI on a server. Start the bridge, it prints a 6-digit code, then open the app <b>on that same device</b> and pair.</p>
           </div>
 
           <div class="runpanel" aria-label="Example of a Vokrew crew run">
             <div class="runpanel-head">
               <span class="d"></span><span class="d"></span><span class="d"></span>
-              <span>vokrew — crew run</span>
+              <span>vokrew: crew run</span>
               <button type="button" id="replay-run">↻ replay</button>
             </div>
             <div class="runbody">
-              <div class="run-cmd"><span class="prompt-char">$</span> vokrew run "add rate-limiting to the checkout API — cover the edge cases"</div>
+              <div class="run-cmd"><span class="prompt-char">$</span> vokrew run "add rate-limiting to the checkout API, cover the edge cases"</div>
               <div class="run-step" data-step>
                 <span class="stage">PLAN</span>
-                <span class="what"><b>llama-4-scout</b> — breaks the task down, picks the approach</span>
+                <span class="what"><b>llama-4-scout</b>: breaks the task down, picks the approach</span>
                 <span class="cost"><span class="free">free lane</span> · 0.8s</span>
               </div>
               <div class="run-step" data-step>
                 <span class="stage">BUILD</span>
-                <span class="what"><b>qwen3-coder</b> — writes the patch from the plan</span>
+                <span class="what"><b>qwen3-coder</b>: writes the patch from the plan</span>
                 <span class="cost"><span class="free">free lane</span> · 6.2s</span>
               </div>
               <div class="run-step" data-step>
                 <span class="stage">CHECKS</span>
-                <span class="what"><b>14 passed · 0 failed</b> — scripted, between stages</span>
+                <span class="what"><b>14 passed · 0 failed</b>: scripted, between stages</span>
                 <span class="cost">local · 1.1s</span>
               </div>
               <div class="run-step" data-step>
                 <span class="stage">REVIEW</span>
-                <span class="what"><b>deepseek-v3</b> — a different family reads it cold</span>
+                <span class="what"><b>deepseek-v3</b>: a different family reads it cold</span>
                 <span class="cost"><span class="free">free lane</span> · 2.1s</span>
               </div>
               <div class="run-verdict" data-step>
@@ -551,18 +551,18 @@
           <div class="conduct-copy">
             <p class="label">Signature feature</p>
             <h2>Conduct your crew.</h2>
-            <p><b>Talk to your whole crew at once.</b> You're the conductor: speak, and the crew takes its parts — one plans, one builds, one checks — then answers back out loud.</p>
-            <p>Text works too. But hearing your crew answer is the ten-second “oh, I get it” moment — no wall of tabs, no model dropdown, just you and the podium.</p>
+            <p><b>Talk to your whole crew at once.</b> You're the conductor: speak, and the crew takes its parts: one plans, one builds, one checks, then answers back out loud.</p>
+            <p>Text works too. But hearing your crew answer is the ten-second “oh, I get it” moment. No wall of tabs, no model dropdown, just you and the podium.</p>
           </div>
           <div class="stage-panel">
             <div class="wave" id="wave" aria-hidden="true"></div>
             <button class="conduct-btn" id="conduct-btn" type="button"><span class="mic"></span> Tap to conduct</button>
             <div class="transcript" id="transcript" aria-live="polite">
-              <div class="tline you"><span class="who">You</span><p>“Ship the fix — but check the edge cases first.”</p></div>
-              <div class="tline plan"><span class="who">Planner</span><p>“Plan's set. Splitting it three ways — <b>patch, tests, docs.</b>”</p></div>
+              <div class="tline you"><span class="who">You</span><p>“Ship the fix, but check the edge cases first.”</p></div>
+              <div class="tline plan"><span class="who">Planner</span><p>“Plan's set. Splitting it three ways: <b>patch, tests, docs.</b>”</p></div>
               <div class="tline build"><span class="who">Builder</span><p>“Patch written. Running the scripted checks… <b>14 passed.</b>”</p></div>
-              <div class="tline review"><span class="who">Reviewer</span><p>“Different family, fresh eyes. Edge cases covered — <b>approved.</b>”</p></div>
-              <div class="tline crew"><span class="who">The crew</span><p><b>“Done. Checked before it shipped.”</b> — spoken back to you, out loud.</p></div>
+              <div class="tline review"><span class="who">Reviewer</span><p>“Different family, fresh eyes. Edge cases covered, <b>approved.</b>”</p></div>
+              <div class="tline crew"><span class="who">The crew</span><p><b>“Done. Checked before it shipped.”</b>, spoken back to you, out loud.</p></div>
             </div>
             <p class="conduct-hint">Voice in, voice out. Every spoken answer still carries its stamp.</p>
           </div>
@@ -579,12 +579,12 @@
           <div class="step">
             <span class="num">01</span>
             <h3>Ask once</h3>
-            <p>Code, debug, research, write — one surface, one prompt. No model-picking, no tab-hopping, no “which one is good at this again?”</p>
+            <p>Code, debug, research, write. One surface, one prompt. No model-picking, no tab-hopping, no “which one is good at this again?”</p>
           </div>
           <div class="step">
             <span class="num">02</span>
             <h3>The crew works</h3>
-            <p>Planner → executor → cross-family reviewer, with scripted checks between stages — not vibes. If a free lane caps mid-task, the next lane picks it up.</p>
+            <p>Planner → executor → cross-family reviewer, with scripted checks between stages, not vibes. If a free lane caps mid-task, the next lane picks it up.</p>
             <div class="flowline"><b>plan</b> <span class="arr">→</span> <b>build</b> <span class="arr">→</span> <b>checks</b> <span class="arr">→</span> <b>review</b> <span class="arr">→</span> <b>ship</b></div>
           </div>
           <div class="step">
@@ -595,7 +595,7 @@
               <span><i class="tier-dot t-free"></i> free lane</span>
               <span><i class="tier-dot t-keys"></i> your keys</span>
               <span><i class="tier-dot t-local"></i> your local machine</span>
-              <span><i class="tier-dot t-paid"></i> paid — only when you say so</span>
+              <span><i class="tier-dot t-paid"></i> paid: only when you say so</span>
             </div>
           </div>
         </div>
@@ -607,7 +607,7 @@
       <div class="wrap">
         <p class="label">The honest comparison</p>
         <h2>Why not just Poe, OpenRouter, or a model dropdown?</h2>
-        <p class="lede">Because their free tiers keep shrinking, and a dropdown hands the two hardest jobs — routing and judging — right back to you.</p>
+        <p class="lede">Because their free tiers keep shrinking, and a dropdown hands the two hardest jobs, routing and judging, right back to you.</p>
         <div class="versus">
           <div class="vrow">
             <span class="who"><span class="vmark no">✕</span> Poe</span>
@@ -616,7 +616,7 @@
           </div>
           <div class="vrow">
             <span class="who"><span class="vmark no">✕</span> OpenRouter</span>
-            <p>A good pipe — but a pipe. Free is capped at <b>50 requests a day</b>, and routing, failover, and verification are still your problem.</p>
+            <p>A good pipe, but a pipe. Free is capped at <b>50 requests a day</b>, and routing, failover, and verification are still your problem.</p>
             <span class="vstat">free tier<b>50 req /day</b></span>
           </div>
           <div class="vrow">
@@ -626,7 +626,7 @@
           </div>
           <div class="vrow vokrew">
             <span class="who"><span class="vmark yes">✓</span> Vokrew</span>
-            <p><b>Free-first by design.</b> Vokrew routes and verifies across every lane you have — and your local Ollama is a first-class brain: unlimited, private, $0.</p>
+            <p><b>Free-first by design.</b> Vokrew routes and verifies across every lane you have, and your local Ollama is a first-class brain: unlimited, private, $0.</p>
             <span class="vstat">router &amp; judge<b>the crew</b></span>
           </div>
         </div>
@@ -640,7 +640,7 @@
           <div class="ledger-copy">
             <p class="label">The quota ledger</p>
             <h2>One budget you can actually see.</h2>
-            <p>Every lane you own — free-model daily caps, plan windows, your own keys, your local GPU — rolls into <b>one visible ledger</b>, protected by the router.</p>
+            <p>Every lane you own (free-model daily caps, plan windows, your own keys, your local GPU) rolls into <b>one visible ledger</b>, protected by the router.</p>
             <p>Coding and chat get <b>separate budgets</b>, so one big task can't silently eat the rest of your month. No shared-pool surprises.</p>
             <p>Try it: fire the biggest task you've got and watch what doesn't move.</p>
           </div>
@@ -649,7 +649,7 @@
               <div class="ledger-head"><b>QUOTA LEDGER</b><span>this month · all lanes</span></div>
               <div class="budget">
                 <div class="budget-top">
-                  <span class="name">CODING <em>— crew work lives here</em></span>
+                  <span class="name">CODING <em>(crew work lives here)</em></span>
                   <span class="pct"><b id="coding-pct">78%</b> left</span>
                 </div>
                 <div class="bar" id="coding-bar"><i style="width:78%"></i></div>
@@ -657,12 +657,12 @@
                   <span><i class="tier-dot t-free"></i> Free lanes <span class="amt" id="coding-free">31 of 50 req today</span></span>
                   <span><i class="tier-dot t-keys"></i> Your keys <span class="amt">healthy</span></span>
                   <span><i class="tier-dot t-local"></i> Local machine <span class="amt">unlimited · $0</span></span>
-                  <span><i class="tier-dot t-paid"></i> Paid catcher <span class="amt">off — asks first</span></span>
+                  <span><i class="tier-dot t-paid"></i> Paid catcher <span class="amt">off, asks first</span></span>
                 </div>
               </div>
               <div class="budget">
                 <div class="budget-top">
-                  <span class="name">CHAT <em>— separate budget, on purpose</em></span>
+                  <span class="name">CHAT <em>(separate budget, on purpose)</em></span>
                   <span class="pct"><b id="chat-pct">94%</b> left</span>
                 </div>
                 <div class="bar" id="chat-bar"><i style="width:94%"></i></div>
@@ -691,9 +691,9 @@
           <div class="plan">
             <span class="pname">Free</span>
             <div class="price">$0</div>
-            <p class="pdesc">BYOK-free + local, plus a hosted taste of the crew. Strong on purpose — the free tier is the product, not the demo.</p>
+            <p class="pdesc">BYOK-free + local, plus a hosted taste of the crew. Strong on purpose. The free tier is the product, not the demo.</p>
             <ul>
-              <li><b>Bring your own free keys</b> — routed for you</li>
+              <li><b>Bring your own free keys</b>, routed for you</li>
               <li><b>Local Ollama</b> as a first-class brain</li>
               <li>Planner → builder → reviewer chains</li>
               <li>Full quota ledger, both budgets</li>
@@ -703,19 +703,19 @@
           <div class="plan pro">
             <span class="pname">Pro <span class="ptag">The full crew</span></span>
             <div class="price">$10<small> /mo</small></div>
-            <p class="pdesc">Managed routing with a capped open-model bundle — you stop thinking about lanes entirely.</p>
+            <p class="pdesc">Managed routing with a capped open-model bundle, so you stop thinking about lanes entirely.</p>
             <ul>
               <li><b>Managed routing</b> across the full roster</li>
               <li><b>Capped open-model bundle</b> included</li>
               <li>Longer crew chains, bigger tasks</li>
               <li><b>Reviewer pass on everything</b></li>
-              <li>Conduct mode — voice, full crew</li>
+              <li>Conduct mode: voice, full crew</li>
             </ul>
           </div>
           <div class="plan">
             <span class="pname">Team</span>
             <div class="price">Later</div>
-            <p class="pdesc">For crews of humans, too. Arrives after Pro proves out — waitlist members hear first.</p>
+            <p class="pdesc">For crews of humans, too. Arrives after Pro proves out. Waitlist members hear first.</p>
             <ul>
               <li>Shared workspaces</li>
               <li>Shared budgets &amp; ledgers</li>
@@ -724,7 +724,7 @@
             </ul>
           </div>
         </div>
-        <p class="sketch-note">Waitlist sketch — final numbers lock before launch, and waitlist members keep the sketch price.</p>
+        <p class="sketch-note">Waitlist sketch: final numbers lock before launch, and waitlist members keep the sketch price.</p>
       </div>
     </section>
 
@@ -736,19 +736,19 @@
         <div class="faq-list">
           <details class="faq">
             <summary>Is free really free?</summary>
-            <div class="a">Yes. Routes run on <b>your free keys, your local models, and capped hosted lanes</b> first — in that spirit, every time. Paid only fires when you say so: Vokrew asks before it ever spends a cent of yours.</div>
+            <div class="a">Yes. Routes run on <b>your free keys, your local models, and capped hosted lanes</b> first, in that spirit, every time. Paid only fires when you say so: Vokrew asks before it ever spends a cent of yours.</div>
           </details>
           <details class="faq">
             <summary>Do you pool other people's free accounts?</summary>
-            <div class="a"><span class="never">No. Never.</span> Your keys are yours, your quota is yours, and nobody else's usage touches it. Nothing is pooled, shared, or resold — that's how platforms get shut down, and it's not a foundation we'd build on.</div>
+            <div class="a"><span class="never">No. Never.</span> Your keys are yours, your quota is yours, and nobody else's usage touches it. Nothing is pooled, shared, or resold. That's how platforms get shut down, and it's not a foundation we'd build on.</div>
           </details>
           <details class="faq">
             <summary>Which models?</summary>
-            <div class="a">Dozens of free routes at the router level — <b>36 today</b> — plus the major providers when you bring your own keys, and your local Ollama models. The roster rotates as free lanes open and close; the router tracks it so you don't have to.</div>
+            <div class="a">Dozens of free routes at the router level (<b>36 today</b>), plus the major providers when you bring your own keys, and your local Ollama models. The roster rotates as free lanes open and close; the router tracks it so you don't have to.</div>
           </details>
           <details class="faq">
             <summary>Coding only?</summary>
-            <div class="a"><b>Coding first</b> — that's where the crew earns its keep today. The chat face follows on the same core: same router, same ledger, same stamps, its own separate budget.</div>
+            <div class="a"><b>Coding first</b>: that's where the crew earns its keep today. The chat face follows on the same core: same router, same ledger, same stamps, its own separate budget.</div>
           </details>
         </div>
       </div>
@@ -764,12 +764,12 @@
         <p class="altman-stamp">YOUR RAM. YOUR RULES.</p>
         <p class="label">Your voice, your crew</p>
         <h2>Stop routing by hand. Start conducting.</h2>
-        <p>Join the waitlist and be in the first batch of invites. The free tier stays free-strong — that's the whole point of Vokrew.</p>
+        <p>Join the waitlist and be in the first batch of invites. The free tier stays free-strong. That's the whole point of Vokrew.</p>
         <form class="waitlist" data-waitlist novalidate action="/api/waitlist" method="post">
           <div class="wl-row">
             <label class="sr-only" for="email-final">Email address</label>
             <input id="email-final" type="email" name="email" placeholder="you@your.dev" autocomplete="email" />
-            <button class="btn" type="submit">Join the waitlist — free tier stays free-strong</button>
+            <button class="btn" type="submit">Join the waitlist, free tier stays free-strong</button>
           </div>
           <p class="wl-note" data-wl-note aria-live="polite"></p>
         </form>
@@ -777,7 +777,7 @@
           <span class="tick">✓</span>
           <div>
             <p><strong>You're on the list.</strong>
-            We'll write to <span class="mono" data-wl-email></span> when your invite opens. Free tier stays free-strong — that's the deal.</p>
+            We'll write to <span class="mono" data-wl-email></span> when your invite opens. Free tier stays free-strong. That's the deal.</p>
             <button class="again" type="button" data-wl-again>Use a different email</button>
           </div>
         </div>
@@ -795,8 +795,10 @@
             <a href="#ledger">Quota ledger</a>
             <a href="#pricing">Pricing</a>
             <a href="#faq">FAQ</a>
+            <a href="/privacy/">Privacy</a>
+            <a href="/terms/">Terms</a>
           </nav>
-          <small>© 2026 Vokrew — your voice, your crew. Vokrew is in development; invites roll out in batches.</small>
+          <small>© 2026 Vokrew. Your voice, your crew. Vokrew is in development; invites roll out in batches.</small>
         </div>
       </div>
     </footer>
@@ -820,7 +822,7 @@
             if (!isEmail(v)) {
               input.classList.add("invalid");
               input.focus();
-              if (note) { note.textContent = "That email doesn't look complete — check it and try again."; note.classList.add("err"); }
+              if (note) { note.textContent = "That email doesn't look complete. Check it and try again."; note.classList.add("err"); }
               return;
             }
             input.classList.remove("invalid");
@@ -841,7 +843,7 @@
             }).catch(function () {
               if (btn) { btn.disabled = false; }
               input.classList.add("invalid");
-              if (note) { note.textContent = "Something went wrong — check your connection and try again."; note.classList.add("err"); }
+              if (note) { note.textContent = "Something went wrong. Check your connection and try again."; note.classList.add("err"); }
             });
           });
           input.addEventListener("input", function () {
@@ -925,7 +927,7 @@
           codingBar.classList.add("warn");
           codingPct.textContent = "26%";
           codingFree.textContent = "4 of 50 req today";
-          simNote.innerHTML = "That refactor burned <b>52 points of coding budget</b> — planner, builder, checks, reviewer, two failovers. Chat never felt it: <b>94%, untouched.</b> Separate budgets, no silent drain.";
+          simNote.innerHTML = "That refactor burned <b>52 points of coding budget</b>: planner, builder, checks, reviewer, two failovers. Chat never felt it: <b>94%, untouched.</b> Separate budgets, no silent drain.";
           simBtn.disabled = true;
           simBtn.textContent = "✓ Huge task absorbed";
           simReset.hidden = false;
@@ -945,7 +947,7 @@
 
     
     <script>
-      /* life layer v2 — authored by Muse Spark (muse-spark-1.3); tail completed + reviewed by Casey */
+      /* life layer v2: authored by Muse Spark (muse-spark-1.3); tail completed + reviewed by Casey */
 
       (()=>{
       var d=document,rm=false;
