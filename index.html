@@ -149,10 +149,7 @@
         background: repeating-linear-gradient(to bottom, rgba(0,0,0,0.13) 0 1px, transparent 1px 3px);
         mix-blend-mode: multiply;
       }
-      /* Altman art rendered as green phosphor duotone so the mascot sits in the app's world */
-      .hero-altman, .final-altman {
-        filter: grayscale(1) sepia(1) hue-rotate(62deg) saturate(2.4) brightness(0.94) contrast(1.05);
-      }
+      /* Tanaka assets are pre-graded to the site's phosphor green — no filter needed */
       .hero-sub { color: var(--mut); font-size: 19px; line-height: 1.6; margin: 0 0 30px; max-width: 54ch; }
       .hero-sub em { color: var(--ink); font-style: normal; font-weight: 600; }
 
@@ -489,7 +486,7 @@
             <h1>One prompt.<br />A crew of AIs.<br /><span class="hl">Checked before it ships.</span></h1>
             <div class="hero-altman-row">
               <span class="altman-wrap hero-altman-wrap">
-                <img class="hero-altman" src="/img/altman-ram-hero.webp" alt="Altman, the Vokrew mascot, hugging a rubber-banded bundle of RAM sticks" width="71" height="130" />
+                <img class="hero-altman" src="/img/tanaka-anim.webp" alt="Tanaka, a Vokrew crew member — animated crew portrait cycling through his working expressions" width="150" height="130" />
               </span>
               <p class="hero-slogan"><span class="hs-strong">YOUR RAM. YOUR RULES.</span><span class="hs-sub">BUILD THE BRAIN YOUR WAY.</span></p>
             </div>
@@ -772,8 +769,7 @@
     <section class="final">
       <div class="wrap">
         <span class="altman-wrap final-altman-wrap">
-          <img class="final-altman" src="/img/altman-sitting-ram.webp" alt="Altman sitting cross-legged on the floor, surrounded by stacks of RAM sticks" width="158" height="290" />
-          <span class="altman-glint glint-final" aria-hidden="true"></span>
+          <img class="final-altman" src="/img/tanaka-anim.webp" alt="Tanaka, a Vokrew crew member — animated crew portrait cycling through his working expressions" width="334" height="290" />
         </span>
         <p class="altman-stamp">YOUR RAM. YOUR RULES.</p>
         <p class="label">Your voice, your crew</p>
