@@ -433,10 +433,11 @@
       .vk-tile.is-work .vk-light{background:var(--c);border-color:var(--c)}
       .vk-tile.is-work .vk-state{color:var(--ink)}
       .vk-tile.is-done .vk-light{background:var(--amber);border-color:var(--amber)}
-      .vk-cmd{background:var(--panel);border:1px solid var(--line);padding:14px 16px;border-radius:0;font-family:var(--mono);font-size:13px;color:var(--ink);margin:0 0 18px}
+      .vk-cmd{background:var(--panel);border:1px solid var(--line);padding:14px 16px;border-radius:0;font-family:var(--mono);font-size:13px;color:var(--ink);margin:0 0 18px;position:relative;min-height:88px}
+      @media(max-width:700px){.vk-cmd{min-height:110px}}
       .vk-prompt{color:var(--lime);margin-right:8px}
       .vk-caret{display:inline-block;width:8px;height:14px;background:var(--lime);vertical-align:-2px;margin-left:4px}
-      .vk-stamp{display:inline-block;margin-top:10px;border:1.5px solid var(--amber);color:var(--amber);font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:6px 10px;border-radius:0}
+      .vk-stamp{display:inline-block;position:absolute;left:16px;bottom:12px;margin-top:0;border:1.5px solid var(--amber);color:var(--amber);font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:6px 10px;border-radius:0}
       .vk-rv{opacity:0;transform:translateY(16px)}
       .vk-rv.vk-in{opacity:1;transform:none;transition:opacity .38s steps(6),transform .38s cubic-bezier(.2,.9,.25,1)}
       .vk-signal{position:absolute;inset:0;pointer-events:none;z-index:0;opacity:.55;background-image:radial-gradient(circle at center,rgba(125,255,154,.14),transparent 60%),linear-gradient(var(--line-soft) 1px,transparent 1px),linear-gradient(90deg,var(--line-soft) 1px,transparent 1px);background-size:340px 340px,56px 56px,56px 56px;background-position:0 0,0 0,0 0;background-repeat:repeat;animation:vk-sig 11s linear infinite}
@@ -469,6 +470,59 @@
       }
       @media(max-width:700px){.vk-crew{grid-template-columns:repeat(2,1fr)}}
       @media(prefers-reduced-motion:reduce){.vk-rv{opacity:1!important;transform:none!important;transition:none!important}.vk-signal{animation:none!important}.vk-caret{display:none}}
+
+      /* ---------- life layer v3 (Kevin 2026-11-09: "more life and animations through it") ---------- */
+      /* CRT sweep: a soft phosphor band travels down the screen on a slow cycle */
+      body::before {
+        content: ""; position: fixed; left: 0; right: 0; top: -18vh; height: 18vh; z-index: 59;
+        pointer-events: none; opacity: 0;
+        background: linear-gradient(to bottom, transparent, rgba(125,255,154,0.045) 55%, rgba(125,255,154,0.09) 85%, transparent);
+      }
+      /* interactive lift: cards and tiles answer the cursor */
+      .plan, .vk-tile, .sim-btn { transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease, background .18s ease; }
+      .plan:hover, .vk-tile:hover { transform: translateY(-3px); border-color: var(--lime-deep); box-shadow: 0 10px 28px rgba(0,0,0,0.45), 0 0 18px rgba(125,255,154,0.10); }
+      .vrow { transition: background .18s ease; }
+      .vrow:hover { background: rgba(125,255,154,0.06); }
+      .wl-row button { transition: transform .15s ease, box-shadow .15s ease; }
+      .wl-row button:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(0,0,0,0.4), 0 0 20px rgba(125,255,154,0.35); }
+      @media (prefers-reduced-motion: no-preference) {
+        body::before { animation: vkSweep 11s linear infinite; }
+        @keyframes vkSweep { 0% { transform: translateY(0); opacity: 0; } 4% { opacity: 1; } 46% { opacity: 1; } 50% { transform: translateY(130vh); opacity: 0; } 100% { transform: translateY(130vh); opacity: 0; } }
+        /* hero power-on: the page wakes up like a tube warming */
+        .hero .wrap { animation: vkPower .9s steps(14) 1; }
+        @keyframes vkPower { 0% { opacity: .2; filter: brightness(1.9); } 18% { opacity: .9; filter: brightness(.7); } 34% { opacity: .45; filter: brightness(1.5); } 52% { opacity: 1; filter: brightness(.92); } 70% { opacity: .8; filter: brightness(1.12); } 100% { opacity: 1; filter: brightness(1); } }
+        /* wordmark dot breathes phosphor */
+        .wordmark .dot { animation: vkDot 2.6s ease-in-out infinite; }
+        @keyframes vkDot { 0%,100% { box-shadow: 0 0 0 rgba(125,255,154,0); } 50% { box-shadow: 0 0 14px rgba(125,255,154,0.85); } }
+        /* section labels carry a live terminal caret */
+        .label::after { content: "▮"; margin-left: 7px; color: var(--lime); animation: vkBlink 1.15s steps(1) infinite; }
+        @keyframes vkBlink { 0%, 55% { opacity: 1; } 56%, 100% { opacity: 0; } }
+        /* Tanaka breathes in both of his slots */
+        .hero-altman, .final-altman { animation: vkBreathe 4.2s ease-in-out infinite; }
+        @keyframes vkBreathe { 0%,100% { filter: drop-shadow(0 0 6px rgba(125,255,154,0.18)); } 50% { filter: drop-shadow(0 0 16px rgba(125,255,154,0.38)); } }
+        /* the finale stamp glows on a slow cycle */
+        .altman-stamp { animation: vkStampGlow 3.8s ease-in-out infinite; }
+        @keyframes vkStampGlow { 0%,100% { box-shadow: 0 0 0 rgba(125,255,154,0); } 50% { box-shadow: 0 0 18px rgba(125,255,154,0.22); } }
+        /* CHECKED stamp in the demo panel pulses like a fresh approval */
+        .stamp { animation: vkStampPulse 3.2s ease-in-out infinite; }
+        @keyframes vkStampPulse { 0%,100% { box-shadow: 0 0 0 rgba(125,255,154,0); } 50% { box-shadow: 0 0 14px rgba(125,255,154,0.28); } }
+      }
+
+      /* ---------- life layer v3.1: every panel is an interactive display ---------- */
+      .runpanel, .stage-panel, .ledger, .plan, .versus { position: relative; }
+      .runpanel::after, .stage-panel::after, .ledger::after, .plan::after, .versus::after {
+        content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+        background: radial-gradient(340px circle at var(--mx, 50%) var(--my, 50%), rgba(125,255,154,0.09), transparent 65%);
+        opacity: 0; transition: opacity .3s ease; z-index: 3;
+      }
+      .runpanel:hover::after, .stage-panel:hover::after, .ledger:hover::after, .plan:hover::after, .versus:hover::after { opacity: 1; }
+      .vrow { transition: background .35s ease, box-shadow .35s ease; }
+      .vrow.vk-live { background: rgba(125,255,154,0.07); box-shadow: inset 3px 0 0 var(--lime); }
+      .vrow.vk-live p { color: var(--ink); }
+      .vrow.vk-live .who { color: var(--lime); }
+      details.faq summary { transition: color .2s ease, background .2s ease; }
+      details.faq summary:hover { color: var(--lime); background: rgba(125,255,154,0.05); }
+      details.faq[open ] { border-color: var(--lime-deep); box-shadow: 0 0 16px rgba(125,255,154,0.08); }
     </style>
   </head>
   <body>
@@ -988,6 +1042,67 @@
       }
       }catch(_){}
       }})();
+    </script>
+
+    <script>
+      /* life layer v3.1 drivers: cursor glow on panels, run panel living loop, versus scan, conduct idle wave */
+      (function () {
+        var d = document;
+        var rm = false;
+        try { rm = d.defaultView.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
+        if (rm) return;
+
+        /* cursor-tracking phosphor glow on every panel */
+        d.querySelectorAll('.runpanel, .stage-panel, .ledger, .plan, .versus').forEach(function (p) {
+          p.addEventListener('mousemove', function (ev) {
+            var r = p.getBoundingClientRect();
+            p.style.setProperty('--mx', ((ev.clientX - r.left) / r.width * 100) + '%');
+            p.style.setProperty('--my', ((ev.clientY - r.top) / r.height * 100) + '%');
+          });
+        });
+
+        /* run panel: keep the crew run cycling while it is on screen */
+        var rp = d.querySelector('.runpanel');
+        var replay = d.getElementById('replay-run');
+        if (rp && replay) {
+          var rpVisible = false;
+          if ('IntersectionObserver' in window) {
+            new IntersectionObserver(function (es) { rpVisible = es[0].isIntersecting; }, { threshold: 0.25 }).observe(rp);
+          }
+          setInterval(function () {
+            if (rpVisible && !d.hidden) replay.click();
+          }, 11000);
+        }
+
+        /* versus table: a scan highlight walks the rows */
+        var rows = Array.prototype.slice.call(d.querySelectorAll('.versus .vrow'));
+        if (rows.length) {
+          var vi = 0, vPaused = false;
+          var versus = d.querySelector('.versus');
+          versus.addEventListener('mouseenter', function () { vPaused = true; });
+          versus.addEventListener('mouseleave', function () { vPaused = false; });
+          setInterval(function () {
+            if (vPaused || d.hidden) return;
+            rows.forEach(function (r) { r.classList.remove('vk-live'); });
+            rows[vi % rows.length].classList.add('vk-live');
+            vi++;
+          }, 2100);
+        }
+
+        /* conduct wave: gentle idle motion until the demo takes it live */
+        var wave = d.getElementById('wave');
+        if (wave) {
+          var bars = Array.prototype.slice.call(wave.querySelectorAll('i'));
+          var t0 = Date.now();
+          setInterval(function () {
+            if (d.hidden || wave.classList.contains('live')) return;
+            var t = (Date.now() - t0) / 900;
+            bars.forEach(function (bar, idx) {
+              bar.style.height = (14 + Math.abs(Math.sin(t + idx * 0.55)) * 16) + '%';
+            });
+          }, 240);
+        }
+      })();
     </script>
   </body>
 </html>
